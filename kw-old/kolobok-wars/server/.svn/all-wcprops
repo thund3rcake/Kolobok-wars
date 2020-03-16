@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/234/kolobok-wars/server
+END
+Makefile.Release
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/233/kolobok-wars/server/Makefile.Release
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/233/kolobok-wars/server/Makefile
+END
+Makefile.Debug
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/233/kolobok-wars/server/Makefile.Debug
+END
+server.pro
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/233/kolobok-wars/server/server.pro
+END

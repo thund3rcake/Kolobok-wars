@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/215/client/branches/0.4.0/src/GameInterface
+END
+HUD.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/215/client/branches/0.4.0/src/GameInterface/HUD.cpp
+END
+Console.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/202/client/branches/0.4.0/src/GameInterface/Console.cpp
+END
+GamePanel.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/128/client/branches/0.4.0/src/GameInterface/GamePanel.cpp
+END
+Statistics.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/154/client/branches/0.4.0/src/GameInterface/Statistics.cpp
+END
