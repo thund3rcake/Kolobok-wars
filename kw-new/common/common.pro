@@ -4,6 +4,11 @@ QT += widgets \
             network \
             core \
 
+# Defines
+DEFINES += KOLOBOK_CLIENT \
+    NET_VERSION=1 \
+    NET_SUBVERSION=0 # \
+
 HEADERS += \
     Bullet.h \
     CommonGlobal.h \
@@ -16,7 +21,8 @@ HEADERS += \
     Serializable.h \
     Weapon.h \
     Versions.h \
-    XmlParser.h
+    XmlParser.h \
+    MetaRegistrator.h
 
 SOURCES += \
     bullet.cpp \

@@ -13,7 +13,7 @@ namespace consts {
     static const int weaponDamage = 10;
 }
 
-class DATA_EXPORT Weapon {
+class DATA_EXPORT Weapon : public Serializable {
 public:
     enum Type  { Blaster, RocketGun };
     enum State { Fire, NoFire };

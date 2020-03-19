@@ -18,15 +18,15 @@ class Exception // Класс просто присваивает те знач�
 {
 public:
     explicit Exception(int no) {
-        errno = no;
+        errNo = no;
     }
 
     Exception(int no, const QString & msg) {
-        errno = no;
+        errNo = no;
         message = msg;
     }
 
-    int errno;
+    int errNo;
     QString message;
 };
 

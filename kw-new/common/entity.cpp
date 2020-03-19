@@ -106,6 +106,10 @@ QString PolygonEntity::getTexturePath() {
     return texturePath;
 }
 
+void PolygonEntity::setTexturePath (QString path) {
+    texturePath = path;
+}
+
 void PolygonEntity::paint (
                           QPainter * painter,
                           const QStyleOptionGraphicsItem *,

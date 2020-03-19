@@ -6,6 +6,7 @@
 #include<CommonGlobal.h>
 #include<QVector2D>
 #include<Weapon.h>
+#include<MetaRegistrator.h>
 
 namespace Net {
 
@@ -28,6 +29,7 @@ class DATA_EXPORT BroadcastData : public Serializable {
 public:
     BroadcastData() {}
     BroadcastData(
+                                    MetaRegistrator<BroadcastData> broadcastDataRegistrator,
                                     const QString & signature,
                                     const QString & servername,
                                     const QString & mapName,
@@ -88,6 +90,7 @@ public:
     void setMaxPlayers(quint8 maxPlayers);
 
 private:
+    MetaRegistrator<BroadcastData> broadcastDataRegistrator;
     QString signature;
     QString serverName;
     QString mapName;
@@ -98,6 +101,9 @@ private:
     quint8 players;
     quint8 maxPlayers;
 };
+
+Q_DECLARE_METATYPE(BroadcastData);
+Q_DECLARE_TYPEINFO(BroadcastData, Q_COMPLEX_TYPE);
 
 struct ServerAbout {
     QHostAddress address;

@@ -2,6 +2,7 @@
 
 /*BrodacastData*/
 BroadcastData::BroadcastData(
+                                                                    MetaRegistrator<BroadcastData> broadcastDataRegistrator,
                                                                     const QString & signature,
                                                                     const QString & serverName,
                                                                     const QString & mapName,
@@ -12,6 +13,7 @@ BroadcastData::BroadcastData(
                                                                     quint8   players,
                                                                     quint8   maxPlayers
                                                                     ):
+    broadcastDataRegistrator(broadcastDataRegistrator),
     signature( signature ),
     serverName( serverName ),
     mapName( mapName ),
@@ -20,7 +22,7 @@ BroadcastData::BroadcastData(
     subversion( subversion ),
     bots( bots ),
     players( players ),
-    maxPlayers( maxPlayers ) {}
+    maxPlayers(maxPlayers) {}
 
 QString BroadcastData::getSignature() const {
     return signature;

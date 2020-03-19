@@ -1,0 +1,7 @@
+Datagramm classes:
+	-Solve problems with MetaRegistrator in class BroadcastData
+	-Add MetaRegistrator to each datagramm(Datagramms.h, Weapon.h)
+	-Test all datagramms as BroadcastData in main.cpp
+
+GameWorld classes:
+	-Delete all painters from common lib (they must be only in client)
