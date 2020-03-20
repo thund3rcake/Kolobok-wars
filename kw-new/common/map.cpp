@@ -8,7 +8,7 @@
 using namespace GameWorld;
 
 QPoint abstractMap::getSize () {
-    return QPoint(m_sizeW, m_sizeH);
+    //return QPoint(m_sizeW, m_sizeH);
 }
 
 void abstractMap::setSize (uint width, uint height) {
