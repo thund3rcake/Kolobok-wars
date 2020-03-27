@@ -1,24 +1,83 @@
 ﻿#include <Datagramms.h>
+#include<Weapon.h>
 #include <QtCore>
 #include<assert.h>
 #include<iostream>
 
+
 int main (){
-//    MetaRegistrator<BroadcastData> broadcastDataRegistrator (MetaRegistrator<BroadcastData>("BroadcastData"));
-//    const QString signature = QString("sign");
-//    const QString serverName = QString("server");
-//    const QString mapName = QString("map");
-//    const quint16 tcpPort = 1;
-//    const quint8 version = 2;
-//    const quint8 subversion = 3;
-//    const quint8 bots = 4;
-//    const quint8 players = 5;
-//    const quint8 maxPlayers = 6;
+
+    //    GameProperties::Type type = GameProperties::UdpPort;
+    //    const QString firstQString = QString("first");
+    //    const QString secondQString = QString("second");
+    //    qint64 firstQInt = 1;
+    //    qint64 secondQInt = 2;
+    //    qreal firstQReal = 3.0;
+    //    qreal secondQReal = 4.0;
+
+    //    GameProperties data1 (
+    //                type,
+    //                firstQString,
+    //                secondQString,
+    //                firstQInt,
+    //                secondQInt,
+    //                firstQReal,
+    //                secondQReal
+    //                );
+
+    GameWorld::Weapon::Type type = GameWorld::Weapon::Blaster;
+    GameWorld::Weapon::State state = GameWorld::Weapon::NoFire;
+    const QPointF target = QPointF(1.0, 0.0);
+    quint16 masterId = 1;
+
+//    const GameWorld::Weapon data1(
+//                type,
+//                state,
+//                target,
+//                masterId
+//                );
+
+    quint32 timestamp = 1;
+    MovingObjectProperties::Type type1 = MovingObjectProperties::Player;
+    MovingObjectProperties::Team team = MovingObjectProperties::Red;
+    quint16 id = 2;
+    const QPointF position = QPointF(1.0, 0.0);
+    const QVector2D intent = QVector2D(2.0, 0.0);
+    const QVector2D head = QVector2D(3.0, 0.0);
+    quint8 hp = 3;
+    const GameWorld::Weapon weapon = GameWorld::Weapon(
+                                                                                                                                type,
+                                                                                                                                state,
+                                                                                                                                target,
+                                                                                                                                masterId
+                                                                                                                                );
+
+    const MovingObjectProperties data1(
+                timestamp,
+                type1,
+                team,
+                id,
+                position,
+                intent,
+                head,
+                hp,
+                weapon
+    );
+
+
+//    const QString & signature = QString("sign");
+//    const QString & servername = QString("Sname");
+//    const QString & mapName = QString("Mname");
+//    quint16 tcpPort = 1;
+//    quint8 version = 2;
+//    quint8 subversion = 3;
+//    quint8 bots = 4;
+//    quint8 players = 5;
+//    quint8 maxPlayers = 6;
 
 //    BroadcastData data1(
-//                broadcastDataRegistrator,
 //                signature,
-//                serverName,
+//                servername,
 //                mapName,
 //                tcpPort,
 //                version,
@@ -26,24 +85,24 @@ int main (){
 //                bots,
 //                players,
 //                maxPlayers
-//    );
+//                );
 
-//    QByteArray buffer = QByteArray();
-//    QDataStream wStream(&buffer, QIODevice::OpenModeFlag::WriteOnly);
 
-//    wStream << data1;
+    QByteArray buffer = QByteArray();
+    QDataStream wStream(&buffer, QIODevice::OpenModeFlag::WriteOnly);
 
-//    QDataStream rStream(buffer);
+    wStream << data1;
 
+    QDataStream rStream(buffer);
+
+//    GameProperties data2;
+//    GameWorld::Weapon data2;
+    MovingObjectProperties data2;
 //    BroadcastData data2;
 
-//    rStream >> data2;
+    rStream >> data2;
 
-//    std::cout << data1.getSignature().toStdString() << std::endl;
-//    std::cout << data2.getSignature().toStdString() << std::endl;
-
-
-//    assert(data1.getSignature() == data2.getSignature());
+    assert(data1 == data2);
 
     return 0;
 }

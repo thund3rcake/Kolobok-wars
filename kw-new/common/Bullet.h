@@ -12,7 +12,7 @@ namespace GameWorld
 class Bullet: public MovingEntity, public QGraphicsRectItem
 {
 public:
-    Bullet (int, const QPointF&, QPointF&, Weapon::Type );
+    Bullet (int, const QPointF&, QPointF&, Weapon::Type);
 
     virtual
     //отрисовывает пулю
@@ -30,7 +30,7 @@ private:
     Bullet& operator= (const Bullet& rhs);
 
     Weapon weapon;
-    bool  reached; //temporary flag, this flag needs until bullets don't removed
+    bool reached; //temporary flag, this flag needs until bullets don't removed
 };
 
 } /* namespace GameWorld */

@@ -1,4 +1,6 @@
-﻿#include <qmetaobject.h>
+﻿#include <QMetaObject>
+#include <iostream>
+#include<QMetaType>
 
 #include <QDebug>
 
@@ -29,12 +31,14 @@ Serializable::~Serializable() {
 
 QDataStream & operator << (QDataStream & stream, const Serializable & data) {
 
-    for (qint32 i = 0; i < data.metaObject() -> propertyCount(); ++i) {
-        if (data.metaObject() -> property(i).isStored(&data)
-                && data.metaObject() -> property(i).isReadable()
-                && data.metaObject() -> property(i).isWritable()) {
+    const Serializable * p_data = & data;
+
+    for (qint32 i = 0; i < p_data -> metaObject() -> propertyCount(); ++i) {
+        if (p_data -> metaObject() -> property(i).isStored(p_data)
+                && p_data -> metaObject() -> property(i).isReadable()
+                && p_data -> metaObject() -> property(i).isWritable()) {
             stream << i;
-            stream << data.metaObject() -> property(i).read(&data);
+            stream << p_data -> metaObject() -> property(i).read(p_data);
         }
     }
 

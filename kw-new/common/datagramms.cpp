@@ -1,8 +1,11 @@
 ﻿#include <Datagramms.h>
 
 /*BrodacastData*/
+BroadcastData::BroadcastData(QObject *parent) :
+    Serializable(parent),
+    broadcastDataRegistrator(MetaRegistrator<BroadcastData>("broadcastData")) {}
+
 BroadcastData::BroadcastData(
-                                                                    MetaRegistrator<BroadcastData> broadcastDataRegistrator,
                                                                     const QString & signature,
                                                                     const QString & serverName,
                                                                     const QString & mapName,
@@ -11,9 +14,11 @@ BroadcastData::BroadcastData(
                                                                     quint8   subversion,
                                                                     quint8   bots,
                                                                     quint8   players,
-                                                                    quint8   maxPlayers
+                                                                    quint8   maxPlayers,
+                                                                    QObject * parent
                                                                     ):
-    broadcastDataRegistrator(broadcastDataRegistrator),
+    Serializable(parent),
+    broadcastDataRegistrator(MetaRegistrator<BroadcastData>("BroadcastData")),
     signature( signature ),
     serverName( serverName ),
     mapName( mapName ),
@@ -23,6 +28,36 @@ BroadcastData::BroadcastData(
     bots( bots ),
     players( players ),
     maxPlayers(maxPlayers) {}
+
+BroadcastData::BroadcastData(const BroadcastData &rhs) :
+    Serializable(rhs.parent()),
+    broadcastDataRegistrator(rhs.broadcastDataRegistrator) {}
+
+BroadcastData::~BroadcastData() {}
+
+bool BroadcastData::operator== (const BroadcastData & rhs) const {
+
+    if (rhs.signature == this -> signature) {
+        if (rhs.serverName == this -> serverName) {
+            if (rhs.mapName == this -> mapName) {
+                if (rhs.tcpPort == this -> tcpPort) {
+                    if (rhs.version == this -> version) {
+                        if (rhs.subversion == this -> subversion) {
+                            if (rhs.bots == this -> bots) {
+                                if (rhs.players == this -> players) {
+                                    if (rhs.maxPlayers == this -> maxPlayers) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
 
 QString BroadcastData::getSignature() const {
     return signature;
@@ -86,20 +121,32 @@ quint8 BroadcastData::getMaxPlayers() const {
 void BroadcastData::setMaxPlayers(quint8 maxPlayers) {
     this -> maxPlayers = maxPlayers;
 }
-/*BrodacastData*/
+/*End BrodacastData*/
+
+
+
 
 /*MovingObjectProperties*/
+MovingObjectProperties::MovingObjectProperties(QObject *parent) :
+    Serializable(parent),
+    movingObjectPropertiesRegistrator(MetaRegistrator<MovingObjectProperties>("MovingObjectProperties")),
+    weaponRegistrator(MetaRegistrator<GameWorld::Weapon>("GameWorld::Weapon")) {}
+
 MovingObjectProperties::MovingObjectProperties(
-                                                                                                            quint32   timestamp,
-                                                                                                            Type      type,
-                                                                                                            Team      team,
-                                                                                                            quint16   id,
-                                                                                                            const QPoint    & position,
+                                                                                                            quint32 timestamp,
+                                                                                                            Type type,
+                                                                                                            Team team,
+                                                                                                            quint16 id,
+                                                                                                            const QPointF & position,
                                                                                                             const QVector2D & intent,
                                                                                                             const QVector2D & head,
-                                                                                                            quint8    hp,
-                                                                                                            const GameWorld::Weapon & weapon
+                                                                                                            quint8 hp,
+                                                                                                            const GameWorld::Weapon & weapon,
+                                                                                                            QObject * parent
                                                                                                             ):
+    Serializable(parent),
+    movingObjectPropertiesRegistrator(MetaRegistrator<MovingObjectProperties>("MovingObjectProperties")),
+    weaponRegistrator(MetaRegistrator<GameWorld::Weapon>("GameWorld::Weapon")) ,
     timestamp( timestamp ),
     type( type ),
     team( team ),
@@ -110,9 +157,35 @@ MovingObjectProperties::MovingObjectProperties(
     hp( hp ),
     weapon( weapon ) {};
 
-MovingObjectProperties::~MovingObjectProperties() {
-    //qDebug() << "~MovingObjectProperties";
-    //qDebug() << (void*) this;
+MovingObjectProperties::MovingObjectProperties(const MovingObjectProperties &rhs) :
+    Serializable(rhs.parent()),
+    movingObjectPropertiesRegistrator(rhs.movingObjectPropertiesRegistrator),
+    weaponRegistrator(rhs.weaponRegistrator) {}
+
+MovingObjectProperties::~MovingObjectProperties() {}
+
+bool MovingObjectProperties::operator== (const MovingObjectProperties & rhs) const {
+
+    if (rhs.timestamp == this -> timestamp) {
+        if (rhs.type == this -> type) {
+            if (rhs.team == this -> team) {
+                if (rhs.id == this -> id) {
+                    if (rhs.position == this -> position) {
+                        if (rhs.intent == this -> intent) {
+                            if (rhs.head == this -> head) {
+                                if (rhs.hp == this -> hp) {
+                                    if (rhs.weapon == this -> weapon) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 quint32 MovingObjectProperties::getTimestamp() const {
@@ -177,9 +250,56 @@ GameWorld::Weapon MovingObjectProperties::getWeapon() const {
 void MovingObjectProperties::setWeapon(GameWorld::Weapon weapon) {
     this -> weapon = weapon;
 }
-/*MovingObjectProperties*/
+
+quint8 MovingObjectProperties::getQuintType() const {
+    return static_cast<quint8>(this -> type);
+}
+void MovingObjectProperties::setQuintType(quint8 type) {
+    this -> type = static_cast<MovingObjectProperties::Type>(type);
+}
+
+quint8 MovingObjectProperties::getQuintTeam() const {
+    return static_cast<quint8>(this -> team);
+}
+void MovingObjectProperties::setQuintTeam(quint8 team) {
+    this -> team = static_cast<MovingObjectProperties::Team>(team);
+}
+/*End MovingObjectProperties*/
+
+
+
 
 /*TCP-options*/
+GameProperties::GameProperties(QObject *parent) :
+    Serializable(parent),
+    gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")) {}
+
+GameProperties::GameProperties(const GameProperties &rhs) :
+    Serializable(rhs.parent()),
+    gamePropertiesRegistrator(rhs.gamePropertiesRegistrator) {}
+
+GameProperties::~GameProperties() {}
+
+bool GameProperties::operator== (const GameProperties & rhs) const {
+
+    if (rhs.type == this -> type) {
+        if (rhs.firstQString == this -> firstQString) {
+            if (rhs.secondQString == this -> secondQString) {
+                if (rhs.firstQInt == this -> firstQInt) {
+                    if (rhs.secondQInt == this -> secondQInt) {
+                        if (rhs.firstQReal == this -> firstQReal) {
+                            if (rhs.secondQReal == this -> secondQReal) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
 GameProperties::Type GameProperties::getType() const {
     return type;
 }
@@ -229,4 +349,10 @@ void GameProperties::setSecondQReal(qreal secondQReal) {
     this -> secondQReal = secondQReal;
 }
 
-/*TCP-options*/
+quint8 GameProperties::getQuintType() const {
+    return static_cast<quint8>(this -> type);
+}
+void GameProperties::setQuintType(quint8 type) {
+    this -> type = static_cast<GameProperties::Type>(type);
+}
+/*End TCP-options*/

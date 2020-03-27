@@ -22,9 +22,10 @@ class MetaRegistrator {
     inline MetaRegistrator(const char * metaTypeName);
     inline explicit MetaRegistrator(const MetaRegistrator<MetaType> & rhs);
     inline MetaRegistrator<MetaType>& operator=(const MetaRegistrator<MetaType> & rhs);
-    MetaRegistrator() {};
+
 
   private:
+    MetaRegistrator() {};
     inline void registrate();
     static bool registered;
     QString     typeName;

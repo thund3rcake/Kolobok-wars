@@ -25,21 +25,27 @@ static const QString QStringSignature = "Kolobok";
  */
 
 class DATA_EXPORT BroadcastData : public Serializable {
+    Q_OBJECT
 
 public:
-    BroadcastData() {}
+    explicit BroadcastData(QObject * parent = 0);
     BroadcastData(
-                                    MetaRegistrator<BroadcastData> broadcastDataRegistrator,
                                     const QString & signature,
                                     const QString & servername,
                                     const QString & mapName,
                                     quint16 tcpPort,
-                                    quint8   version,
-                                    quint8   subversion,
-                                    quint8   bots,
-                                    quint8   players,
-                                    quint8   maxPlayers
+                                    quint8 version,
+                                    quint8 subversion,
+                                    quint8 bots,
+                                    quint8 players,
+                                    quint8 maxPlayers,
+                                    QObject * parent = 0
                                     );
+
+    BroadcastData(const BroadcastData & rhs);
+    virtual ~BroadcastData();
+
+    bool operator== (const BroadcastData & rhs) const;
 
     Q_PROPERTY(QString signature
                READ getSignature
@@ -65,7 +71,7 @@ public:
     Q_PROPERTY(quint8 players
                READ getPlayers
                WRITE setPlayers);
-    Q_PROPERTY(quin8 maxPlayers
+    Q_PROPERTY(quint8 maxPlayers
                READ getMaxPlayers
                WRITE setMaxPlayers);
 
@@ -130,34 +136,47 @@ static const QStringList tableHeadLabels =
  */
 
 class DATA_EXPORT MovingObjectProperties: public Serializable {
+Q_OBJECT
 
 public:
-    enum Type {Player, Bullet, Timestamp};
-    enum Team {Red, Blue};
+    enum Type {
+                            Player = 1,
+                            Bullet = 2,
+                            Timestamp = 3
+    };
+    enum Team {
+                            Red = 1,
+                            Blue = 2
+    };
 
-    MovingObjectProperties () {};
+    explicit MovingObjectProperties (QObject * parent = 0);
     MovingObjectProperties (
                                                         quint32 timestamp,
-                                                        Type type, Team team,
+                                                        Type type,
+                                                        Team team,
                                                         quint16 id,
-                                                        const QPoint & position,
+                                                        const QPointF & position,
                                                         const QVector2D & intent,
-                                                        const QVector2D & heap,
+                                                        const QVector2D & head,
                                                         quint8 hp,
-                                                        const GameWorld::Weapon & weapon
+                                                        const GameWorld::Weapon & weapon,
+                                                        QObject * parent = 0
                                                         );
 
-    ~MovingObjectProperties ();
+    MovingObjectProperties (const MovingObjectProperties & rhs);
+    virtual ~MovingObjectProperties ();
+
+    bool operator== (const MovingObjectProperties & rhs) const;
 
     Q_PROPERTY(quint32 timestamp
                READ getTimestamp
                WRITE setTimestamp);
-    Q_PROPERTY(Type type
-               READ getType
-               WRITE setType);
-    Q_PROPERTY(Team team
-               READ getTeam
-               WRITE setTeam);
+    Q_PROPERTY(quint8 type
+               READ getQuintType
+               WRITE setQuintType);
+    Q_PROPERTY(quint8 team
+               READ getQuintTeam
+               WRITE setQuintTeam);
     Q_PROPERTY(quint16 id
                READ getId
                WRITE setId);
@@ -178,8 +197,10 @@ public:
                WRITE setWeapon);
 
     quint32 getTimestamp() const;
-    Type getType() const;
-    Team getTeam() const;
+    MovingObjectProperties::Type getType() const;
+    MovingObjectProperties::Team getTeam() const;
+    quint8 getQuintType() const;
+    quint8 getQuintTeam() const;
     quint16 getId() const;
     QPointF getPosition() const;
     QVector2D getIntent() const;
@@ -188,8 +209,10 @@ public:
     GameWorld::Weapon getWeapon() const;
 
     void setTimestamp(quint32 timestamp);
-    void setType(Type type);
-    void setTeam(Team team);
+    void setType(MovingObjectProperties::Type type);
+    void setTeam(MovingObjectProperties::Team team);
+    void setQuintType(quint8 type);
+    void setQuintTeam(quint8 team);
     void setId(quint16 id);
     void setPosition(QPointF position);
     void setIntent(QVector2D intent);
@@ -198,6 +221,8 @@ public:
     void setWeapon(GameWorld::Weapon weapon);
 
 private:
+    MetaRegistrator<MovingObjectProperties> movingObjectPropertiesRegistrator;
+    MetaRegistrator<GameWorld::Weapon> weaponRegistrator;
     quint32 timestamp;
     Type type;
     Team team;
@@ -209,76 +234,101 @@ private:
     GameWorld::Weapon weapon;
 };
 
+Q_DECLARE_METATYPE(MovingObjectProperties);
+Q_DECLARE_TYPEINFO(MovingObjectProperties, Q_COMPLEX_TYPE);
+
 /* UDP Client*/
 
 
 
 /*
- *
- *
- * TCP - options
- *
- */
+// *
+// *
+// * TCP - options
+// *
+// */
 
 class DATA_EXPORT GameProperties: public Serializable {
+    Q_OBJECT
 
 public:
-    enum Type {UdpPort};
+    enum Type {UdpPort = 1};
 
-    GameProperties() {}
+    explicit GameProperties(QObject * parent = 0);
     GameProperties(
-                                        Type type,
-                                        const QString & firstQString
+                                        GameProperties::Type type,
+                                        const QString & firstQString,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type(type),
             firstQString(firstQString) {}
     GameProperties(
-                                        Type type,
-                                        qint64 firstQInt
+                                        GameProperties::Type type,
+                                        qint64 firstQInt,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type(type),
             firstQInt(firstQInt) {}
     GameProperties(
-                                        Type type,
-                                        qreal firstQReal
+                                        GameProperties::Type type,
+                                        qreal firstQReal,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type( type ),
             firstQReal(firstQReal) {}
     GameProperties(
-                                        Type type,
+                                        GameProperties::Type type,
                                         const QString & firstQString,
-                                        qint64 firstQInt
+                                        qint64 firstQInt,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type(type),
             firstQString(firstQString),
             firstQInt(firstQInt) {}
     GameProperties(
-                                        Type type,
+                                        GameProperties::Type type,
                                         const QString & firstQString,
-                                        qreal firstQReal
+                                        qreal firstQReal,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type(type),
             firstQString(firstQString),
             firstQReal(firstQReal) {}
     GameProperties(
-                                        Type type,
+                                        GameProperties::Type type,
                                         const QString & firstQString,
                                         qint64 firstQInt,
-                                        qreal  firstQReal
+                                        qreal  firstQReal,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type(type),
             firstQString(firstQString),
             firstQInt(firstQInt),
             firstQReal(firstQReal) {}
     GameProperties(
-                                        Type type,
+                                        GameProperties::Type type,
                                         const QString & firstQString,
                                         const QString & secondQString,
                                         qint64 firstQInt,
                                         qint64 secondQInt,
                                         qreal  firstQReal,
-                                        qreal  secondQReal
+                                        qreal  secondQReal,
+                                        QObject * parent = 0
                                     ):
+            Serializable(parent),
+            gamePropertiesRegistrator(MetaRegistrator<GameProperties>("GameProperties")),
             type(type),
             firstQString(firstQString),
             secondQString(secondQString),
@@ -287,9 +337,14 @@ public:
             firstQReal(firstQReal),
             secondQReal(secondQReal) {}
 
-    Q_PROPERTY(Type type
-               READ getType
-               WRITE setType);
+    GameProperties (const GameProperties & rhs);
+    virtual ~GameProperties();
+
+    bool operator== (const GameProperties & rhs) const;
+
+    Q_PROPERTY(quint8 Type
+               READ getQuintType
+               WRITE setQuintType);
     Q_PROPERTY(QString firstQString
                READ getFirstQString
                WRITE setFirstQstring);
@@ -309,7 +364,8 @@ public:
                READ getSecondQReal
                WRITE setSecondQReal);
 
-    Type getType()  const;
+    GameProperties::Type getType()  const;
+    quint8 getQuintType()  const;
     QString getFirstQString() const;
     QString getSecondQString() const;
     quint64 getFirstQInt() const;
@@ -317,7 +373,8 @@ public:
     qreal getFirstQReal() const;
     qreal getSecondQReal() const;
 
-    void setType(Type type);
+    void setType(GameProperties::Type type);
+    void setQuintType(quint8 type);
     void setFirstQstring(QString firstQString);
     void setSecondQstring(QString secondQString);
     void setFirstQInt(quint64 firstQInt);
@@ -326,6 +383,7 @@ public:
     void setSecondQReal(qreal secondQReal);
 
 private:
+    MetaRegistrator<GameProperties> gamePropertiesRegistrator;
     Type type;
     QString firstQString;
     QString secondQString;
@@ -334,6 +392,9 @@ private:
     qreal firstQReal;
     qreal secondQReal;
 };
+
+Q_DECLARE_METATYPE(GameProperties);
+Q_DECLARE_TYPEINFO(GameProperties, Q_COMPLEX_TYPE);
 
 /* TCP - options */
 

@@ -2,6 +2,7 @@
 #include <Entity.h>
 #include <QPainter>
 #include <CommonGlobal.h>
+#include<Weapon.h>
 #include <GameWorldConsts.h>
 #include <math.h>
 
@@ -15,8 +16,8 @@ GameWorld::Bullet::Bullet (
     reached(false)
 {
     setPosition (position);
-    weapon.type = typ;
-    weapon.target = targAbs;
+    weapon.setType(typ);
+    weapon.setTarget(targAbs);
     setRect(position.x(), position.y(),
             consts::playerSize/4, consts::playerSize/4);
 }
@@ -43,13 +44,13 @@ bool GameWorld::Bullet::isTargetReach ()
 {
   if ( reached == true ) return true;
 
-  double dx = abs ( getPosition().x() - weapon.target.rx() );
-  double dy = abs ( getPosition().y() - weapon.target.ry() );
+  double dx = abs ( getPosition().x() - weapon.getTarget().rx() );
+  double dy = abs ( getPosition().y() - weapon.getTarget().ry() );
 
   if ( dx < consts::bulletVelocity &&
        dy < consts::bulletVelocity )
   {
-    setPosition ( weapon.target );
+    setPosition (weapon.getTarget());
     reached = true;
     return true;
   }
