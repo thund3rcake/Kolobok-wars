@@ -3,7 +3,7 @@
 #include <QPixmap>
 #include <QDebug>
 #include <QPixmap>
-#include <CommonGlobal.h>
+#include <Utils.h>
 
 Player::Player()
 {

@@ -1,9 +1,10 @@
 ﻿#ifndef WEAPON_H_
 #define WEAPON_H_
 
-#include<CommonGlobal.h>
-#include<Serializable.h>
-#include<MetaRegistrator.h>
+#include <CommonGlobal.h>
+#include <Utils.h>
+#include <Serializable.h>
+#include <MetaRegistrator.h>
 #include <QPoint>
 #include <Versions.h>
 
@@ -13,7 +14,7 @@ namespace consts {
     static const int weaponDamage = 10;
 }
 
-class DATA_EXPORT Weapon : public Serializable {
+class KW_COMMON_EXPORT Weapon : public Serializable {
     Q_OBJECT
 public:
     enum Type  { Blaster = 1,

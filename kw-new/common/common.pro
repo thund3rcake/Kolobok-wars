@@ -1,3 +1,6 @@
+# Template
+TEMPLATE = lib
+
 # Libs
 QT += widgets \
             xml \
@@ -7,7 +10,8 @@ QT += widgets \
 # Defines
 DEFINES += KOLOBOK_CLIENT \
     NET_VERSION=1 \
-    NET_SUBVERSION=0 # \
+    NET_SUBVERSION=0 \
+    COMMON_LIBRARY
 
 HEADERS += \
     Bullet.h \
@@ -19,6 +23,7 @@ HEADERS += \
     Map.h \
     Player.h \
     Serializable.h \
+    Utils.h \
     Weapon.h \
     Versions.h \
     XmlParser.h \
@@ -26,13 +31,13 @@ HEADERS += \
 
 SOURCES += \
     bullet.cpp \
-    commonGlobal.cpp \
     datagramms.cpp \
     entity.cpp \
     geometryAlgorithms.cpp \
     map.cpp \
     player.cpp \
     serializable.cpp \
+    utils.cpp \
     weapon.cpp \
     xmlParser.cpp \
     main.cpp

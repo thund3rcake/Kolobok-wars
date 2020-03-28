@@ -3,14 +3,15 @@
 
 #include <QGraphicsPolygonItem>
 #include <QVector2D>
+#include <CommonGlobal.h>
 
 //using namespace GameWorld;
 
-const int NOT_VALID = -1;
+const int KW_COMMON_EXPORT NOT_VALID = -1;
 
-class Entity: public QObject {
+class KW_COMMON_EXPORT Entity: public QObject {
     Q_OBJECT
-    friend class XmlHandler;
+    friend class KW_COMMON_EXPORT XmlHandler;
 
 public:
     Entity ();
@@ -31,9 +32,9 @@ signals:
     void error (int, QString);
 };
 
-class PolygonEntity: public Entity, public QGraphicsPolygonItem {
+class KW_COMMON_EXPORT PolygonEntity: public Entity, public QGraphicsPolygonItem {
 
-    friend class XmlHandler;
+    friend class KW_COMMON_EXPORT XmlHandler;
 
 public:
     PolygonEntity ();
@@ -62,7 +63,7 @@ private:
     OverlayModes overlay;
 };
 
-class MovingEntity: public Entity {
+class KW_COMMON_EXPORT MovingEntity: public Entity {
     Q_OBJECT
 
 public:

@@ -2,12 +2,12 @@
 #define SERIALIZABLE_H
 
 #include <CommonGlobal.h>
-
+#include <Utils.h>
 #include <QObject>
 #include <QString>
 #include <QDataStream>
 
-class DATA_EXPORT Serializable: public QObject {
+class KW_COMMON_EXPORT Serializable: public QObject {
     Q_OBJECT
 
 public:
@@ -19,10 +19,10 @@ public:
 
     static const QDataStream::Version version = QDataStream::Qt_4_6;
 
-    friend DATA_EXPORT QDataStream & operator << (QDataStream & stream,
+    friend KW_COMMON_EXPORT QDataStream & operator << (QDataStream & stream,
         const Serializable & data);
 
-    friend DATA_EXPORT QDataStream & operator >> (QDataStream & stream,
+    friend KW_COMMON_EXPORT QDataStream & operator >> (QDataStream & stream,
         Serializable & data);
 };
 

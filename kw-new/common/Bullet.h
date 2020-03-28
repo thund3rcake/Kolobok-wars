@@ -4,12 +4,13 @@
 #include <Entity.h>
 #include <Weapon.h>
 #include <QVector2D>
+#include <CommonGlobal.h>
 
 namespace GameWorld
 {
 
 //Наследуется от MovingEntity (координаты точки + направление) и от QGraphicsRectItem (прямоугольник)
-class Bullet: public MovingEntity, public QGraphicsRectItem
+class KW_COMMON_EXPORT Bullet: public MovingEntity, public QGraphicsRectItem
 {
 public:
     Bullet (int, const QPointF&, QPointF&, Weapon::Type);

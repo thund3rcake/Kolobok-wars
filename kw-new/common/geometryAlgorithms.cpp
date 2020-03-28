@@ -1,7 +1,8 @@
 ﻿
 #include <QPoint>
 #include <GeometryAlgorithms.h>
-#include <CommonGlobal.h>
+#include <Utils.h>
+
 
 
 

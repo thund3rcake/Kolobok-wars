@@ -7,10 +7,11 @@
 #include <GameWorldConsts.h>
 #include <QGraphicsItem>
 #include <QGraphicsPolygonItem>
+#include <CommonGlobal.h>
 
 using namespace GameWorld;
 
-class Player: public MovingEntity, public QGraphicsRectItem
+class KW_COMMON_EXPORT Player: public MovingEntity, public QGraphicsRectItem
 {
 
 public:

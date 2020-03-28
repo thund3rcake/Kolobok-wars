@@ -5,13 +5,13 @@
 #include <QVector>
 #include <QVector2D>
 #include <QTreeWidget>
-
+#include <Utils.h>
 #include <Entity.h>
 #include <CommonGlobal.h>
 
-class abstractMap: public QObject
+class KW_COMMON_EXPORT abstractMap: public QObject
 {
-    friend class XmlHandler;
+    friend class KW_COMMON_EXPORT XmlHandler;
 public:
     abstractMap() {};
     const QString & getName ();
@@ -36,7 +36,7 @@ private:
 
 #ifndef KOLOBOK_BOT /* #IFDEF CLIENT || SERVER */
 
-class abstractNoAIMap: public abstractMap
+class KW_COMMON_EXPORT abstractNoAIMap: public abstractMap
 {
 Q_OBJECT
     friend class XmlHandler;
@@ -70,12 +70,12 @@ signals:
     void error (int, QString);
 };
 
-inline bool isDotInAnyRect (
+inline bool KW_COMMON_EXPORT isDotInAnyRect (
                             QPointF dot,
                             QList<PolygonEntity*> & polygons,
                             QList<PolygonEntity*> & suspiciousPols
                            );
-void markTheNearest (
+void KW_COMMON_EXPORT markTheNearest (
                      int x, int y,
                      int srcX, int srcY,
                      QVector<QVector<quint8> > & availableDots
@@ -85,7 +85,7 @@ void markTheNearest (
 
 #ifdef KOLOBOK_BOT
 
-class Map: public abstractMap
+class KW_COMMON_EXPORT Map: public abstractMap
 {
 private:
     Map (const Map & rhs);
@@ -96,7 +96,7 @@ private:
 
 #ifdef KOLOBOK_CLIENT
 
-class Map : public abstractNoAIMap /* client map */ {
+class KW_COMMON_EXPORT Map : public abstractNoAIMap /* client map */ {
 public:
     explicit Map(QString);
 
@@ -110,7 +110,7 @@ private:
 
 #ifdef KOLOBOK_SERVER
 
-class Map : public abstractNoAIMap /* server map */ {
+class KW_COMMON_EXPORT Map : public abstractNoAIMap /* server map */ {
 public:
     explicit
     Map(QString);

@@ -1,0 +1,12 @@
+To add external library to your project:
+1) Right click on project name
+2) Click Add library
+3) Choose External
+4) Specify path to library
+5) PROFIT
+
+Tip: you can specify name of the build directory:
+1) Click "Projects" on right grey pannel
+2) Change "Build directory"
+
+For common library I suggest renaming it to "build_common"

@@ -1,7 +1,7 @@
 ﻿#include <Bullet.h>
 #include <Entity.h>
 #include <QPainter>
-#include <CommonGlobal.h>
+#include <Utils.h>
 #include<Weapon.h>
 #include <GameWorldConsts.h>
 #include <math.h>

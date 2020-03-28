@@ -7,15 +7,14 @@
 #include<QVector2D>
 #include<Weapon.h>
 #include<MetaRegistrator.h>
+#include <Utils.h>
 
-namespace Net {
+namespace Net {}
 
-}
+static const int KW_COMMON_EXPORT MaxSignatureLength = 16;
+static const int KW_COMMON_EXPORT  MaxMapNameLength = 16;
 
-static const int MaxSignatureLength = 16;
-static const int MaxMapNameLength = 16;
-
-static const QString QStringSignature = "Kolobok";
+static const QString KW_COMMON_EXPORT QStringSignature = "Kolobok";
 
 /*
  *
@@ -24,7 +23,7 @@ static const QString QStringSignature = "Kolobok";
  *
  */
 
-class DATA_EXPORT BroadcastData : public Serializable {
+class KW_COMMON_EXPORT BroadcastData : public Serializable {
     Q_OBJECT
 
 public:
@@ -111,14 +110,14 @@ private:
 Q_DECLARE_METATYPE(BroadcastData);
 Q_DECLARE_TYPEINFO(BroadcastData, Q_COMPLEX_TYPE);
 
-struct ServerAbout {
+struct KW_COMMON_EXPORT ServerAbout {
     QHostAddress address;
     quint16 port;
     BroadcastData data;
     quint8 latency;
 };
 
-static const QStringList tableHeadLabels =
+static const QStringList KW_COMMON_EXPORT tableHeadLabels =
                         QList<QString>() << "Servers"
                                                              << "Players (B/P/M)"
                                                              << "Map"
@@ -135,7 +134,7 @@ static const QStringList tableHeadLabels =
  *
  */
 
-class DATA_EXPORT MovingObjectProperties: public Serializable {
+class KW_COMMON_EXPORT MovingObjectProperties: public Serializable {
 Q_OBJECT
 
 public:
@@ -248,7 +247,7 @@ Q_DECLARE_TYPEINFO(MovingObjectProperties, Q_COMPLEX_TYPE);
 // *
 // */
 
-class DATA_EXPORT GameProperties: public Serializable {
+class KW_COMMON_EXPORT GameProperties: public Serializable {
     Q_OBJECT
 
 public:

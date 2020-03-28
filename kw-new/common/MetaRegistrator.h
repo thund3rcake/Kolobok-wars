@@ -1,22 +1,12 @@
-﻿/*
- *
- * Created on: 12.06.2013
- *
- * metaRegistrator.h
- * This file is part of HASP-Stat-Viewer, Kolobok-wars
- *
- * Copyright (C) 2013 - Ivan Penkin
- * grek.penkin@gmail.com
- *
- */
-
+﻿
 #ifndef METAREGISTRATOR_H_
 #define METAREGISTRATOR_H_
 
 #include <QMetaType>
+#include <CommonGlobal.h>
 
 template <class MetaType>
-class MetaRegistrator {
+class KW_COMMON_EXPORT MetaRegistrator {
 
   public:
     inline MetaRegistrator(const char * metaTypeName);
@@ -32,25 +22,25 @@ class MetaRegistrator {
 };
 
 template<class MetaType>
-bool MetaRegistrator<MetaType>::registered = false;
+bool KW_COMMON_EXPORT MetaRegistrator<MetaType>::registered = false;
 
 
 template <class MetaType>
-inline MetaRegistrator<MetaType>::MetaRegistrator(const char * metaTypeName)
+inline KW_COMMON_EXPORT MetaRegistrator<MetaType>::MetaRegistrator(const char * metaTypeName)
     :typeName(metaTypeName) {
 
   registrate();
 }
 
 template <class MetaType>
-inline MetaRegistrator<MetaType>::MetaRegistrator(const MetaRegistrator<MetaType> & rhs)
+inline KW_COMMON_EXPORT MetaRegistrator<MetaType>::MetaRegistrator(const MetaRegistrator<MetaType> & rhs)
     :typeName(rhs.typeName) {
 
   registrate();
 }
 
 template <class MetaType>
-inline MetaRegistrator<MetaType> & MetaRegistrator<MetaType>::operator=
+inline KW_COMMON_EXPORT MetaRegistrator<MetaType> & MetaRegistrator<MetaType>::operator=
                                       (const MetaRegistrator<MetaType> & rhs) {
 
   typeName = rhs.typeName;
@@ -60,7 +50,7 @@ inline MetaRegistrator<MetaType> & MetaRegistrator<MetaType>::operator=
 }
 
 template <class MetaType>
-inline void MetaRegistrator<MetaType>::registrate() {
+inline void KW_COMMON_EXPORT MetaRegistrator<MetaType>::registrate() {
 
   if (!registered) {
     qRegisterMetaType<MetaType>(typeName.toLocal8Bit().constData());

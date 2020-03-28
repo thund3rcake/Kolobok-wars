@@ -6,8 +6,9 @@
 #include <QXmlDefaultHandler>
 #include <Map.h>
 #include <Entity.h>
+#include <CommonGlobal.h>
 
-class XmlHandler : public QXmlDefaultHandler
+class KW_COMMON_EXPORT XmlHandler : public QXmlDefaultHandler
 {
   public:
     XmlHandler(abstractNoAIMap& map, QString file);

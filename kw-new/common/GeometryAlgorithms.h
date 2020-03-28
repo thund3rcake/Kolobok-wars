@@ -5,19 +5,20 @@
 #include <QPoint>
 #include <Entity.h>
 #include <QList>
+#include <CommonGlobal.h>
 
-enum { Inside, Outside, Boundary }; // dot position
+enum KW_COMMON_EXPORT { Inside, Outside, Boundary }; // dot position
 
-enum { Touching,    Crossing,     Inessential }; // edge position
+enum KW_COMMON_EXPORT { Touching,    Crossing,     Inessential }; // edge position
 
-enum {Left,  Right,  Beyond,  Behind, Between, Origin, Destination};
+enum KW_COMMON_EXPORT {Left,  Right,  Beyond,  Behind, Between, Origin, Destination};
 
-bool isDotInAnyPolygon (QPointF &tested, QList<PolygonEntity*> suspicious);
-bool isDotInPolygon (QPointF &tested, PolygonEntity* polygon );
+bool KW_COMMON_EXPORT isDotInAnyPolygon (QPointF &tested, QList<PolygonEntity*> suspicious);
+bool KW_COMMON_EXPORT isDotInPolygon (QPointF &tested, PolygonEntity* polygon );
 
-int classifyPoint (QPointF tested, QPointF p0, QPointF p1);
+int KW_COMMON_EXPORT classifyPoint (QPointF tested, QPointF p0, QPointF p1);
 
-int analyseEdge (QPointF tested, QPointF p0, QPointF p1);
+int KW_COMMON_EXPORT analyseEdge (QPointF tested, QPointF p0, QPointF p1);
 
 
 #endif // GEOMETRYALGORITHMS_H
