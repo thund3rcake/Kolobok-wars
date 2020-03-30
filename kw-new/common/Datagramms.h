@@ -11,10 +11,10 @@
 
 namespace Net {}
 
-static const int KW_COMMON_EXPORT MaxSignatureLength = 16;
-static const int KW_COMMON_EXPORT  MaxMapNameLength = 16;
+static const int MaxSignatureLength = 16;
+static const int MaxMapNameLength = 16;
 
-static const QString KW_COMMON_EXPORT QStringSignature = "Kolobok";
+static const QString QStringSignature = "Kolobok";
 
 /*
  *
@@ -117,7 +117,7 @@ struct KW_COMMON_EXPORT ServerAbout {
     quint8 latency;
 };
 
-static const QStringList KW_COMMON_EXPORT tableHeadLabels =
+static const QStringList tableHeadLabels =
                         QList<QString>() << "Servers"
                                                              << "Players (B/P/M)"
                                                              << "Map"

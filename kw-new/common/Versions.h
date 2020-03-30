@@ -7,10 +7,10 @@
 namespace Net
 {
 
-static const qint16 KW_COMMON_EXPORT ProtVersion    = NET_VERSION;
-static const qint16 KW_COMMON_EXPORT ProtSubversion = NET_SUBVERSION;
+static const qint16 ProtVersion    = NET_VERSION;
+static const qint16 ProtSubversion = NET_SUBVERSION;
 
-static const int KW_COMMON_EXPORT DataStreamVersion = QDataStream::Qt_4_0;
+static const int DataStreamVersion = QDataStream::Qt_4_0;
 
 } /* namespace Net */
 

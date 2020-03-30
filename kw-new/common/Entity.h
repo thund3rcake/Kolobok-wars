@@ -7,7 +7,7 @@
 
 //using namespace GameWorld;
 
-const int KW_COMMON_EXPORT NOT_VALID = -1;
+const int NOT_VALID = -1;
 
 class KW_COMMON_EXPORT Entity: public QObject {
     Q_OBJECT
