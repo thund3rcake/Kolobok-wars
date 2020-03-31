@@ -34,7 +34,7 @@
 #include <QDataStream>
 #include <QThread>
 
-#include <Datagramms.h>
+#include <Datagrams.h>
 #include <Versions.h>
 
 namespace Net
