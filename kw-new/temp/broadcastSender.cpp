@@ -52,7 +52,7 @@ void BroadcastSender::generateDatagram()
                                 parent
                                );
   datagram = QByteArray();
-  QDataStream wStream( &buffer, QIODevice::OpenModeFlag::WriteOnly );
+  QDataStream wStream( &datagram, QIODevice::OpenModeFlag::WriteOnly );
 
   wStream << data;
 }
