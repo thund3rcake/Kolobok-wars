@@ -1,4 +1,4 @@
-#ifndef UTILS_H
+﻿#ifndef UTILS_H
 #define UTILS_H
 
 #include <QtGui>
@@ -15,9 +15,9 @@ public:
         errNo = no;
     }
 
-    Exception(int no, const QString & msg) {
+    Exception(int no, const QString & message) {
         errNo = no;
-        message = msg;
+        this -> message = message;
     }
 
     int errNo;
