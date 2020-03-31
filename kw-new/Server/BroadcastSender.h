@@ -57,7 +57,7 @@ class BroadcastSender: public QThread
     void run();
 
   signals:
-    void error(int errno, QString message);
+    void error (int errNo, QString message);
 };
 
 

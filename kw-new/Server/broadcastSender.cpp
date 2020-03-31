@@ -39,8 +39,8 @@ void BroadcastSender::generateDatagram()
 
   datagram.clear();
 
-  BroadcastData data(
-                                Net::QStringSignature,
+  BroadcastData dataToSend(
+                                QStringSignature,
                                 serverName,
                                 mapName,
                                 tcpPort,
@@ -48,13 +48,17 @@ void BroadcastSender::generateDatagram()
                                 quint8( Net::ProtSubversion ),
                                 bots,
                                 players,
-                                maxPlayers,
-                                parent
+                                maxPlayers
                                );
-  datagram = QByteArray();
-  QDataStream wStream( &datagram, QIODevice::OpenModeFlag::WriteOnly );
 
-  wStream << data;
+  //datagram = QByteArray();
+
+  QDataStream request(&datagram, QIODevice::OpenModeFlag::WriteOnly);
+
+  request << (quint32)0;
+  request << dataToSend;
+  request.device() -> seek(0);
+  request << (quint32)(datagram.size() - sizeof(quint32));
 }
 
 void BroadcastSender::setMapName( const QString & name )
@@ -100,6 +104,8 @@ void BroadcastSender::run()
   }
   mutex.unlock();
 }
+
+
 
 
 
