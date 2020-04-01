@@ -40,7 +40,7 @@ private:
     QVector<ServerAbout> & servers;
 
 private slots:
-    void processWaitingDatagramms();
+    void processPendingDatagramms();
 
 signals:
     void newServer(int vectorIndex);

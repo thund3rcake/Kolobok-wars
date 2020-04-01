@@ -1,33 +1,35 @@
-﻿#include "BroadcastReceiver.h"
-#include <QtNetwork/QtNetwork>
+﻿#include <QtNetwork/QtNetwork>
+#include<QtNetwork/QTcpSocket>
+
 #include <BroadcastReceiver.h>
+#include<Serializable.h>
 
-
-using namespace Net;
 
 BroadcastReceiver::BroadcastReceiver
     (
-      QVector<ServerAbout> & servers,
+      QVector<ServerAbout> & srvs,
       QWidget * parent
     ):
     QUdpSocket( (QObject *)parent ),
-    servers( servers )
+    servers( srvs )
 {
   if ( !(bind( 27030, QUdpSocket::ShareAddress )) )
   {
     throw Exception( error(), errorString() );
   }
 
-    QObject::connect( this, SIGNAL( readyRead()), this, SLOT(processWaitingDatagramms()) );
+  QObject::connect( this, SIGNAL( readyRead()),
+                    this, SLOT( processPendingDatagrams()) );
 }
 
 
-void BroadcastReceiver::processWaitingDatagramms()
-{
-  while ( hasPendingDatagrams() )
-  {
-    static QByteArray  block;
-    static ServerAbout info;
+void BroadcastReceiver::processPendingDatagrams() {
+
+  while(hasPendingDatagrams()) {
+    QByteArray block;
+    ServerAbout info;
+    quint32 size = 0;
+
 
     block.clear();
     block.resize( pendingDatagramSize() );
@@ -39,7 +41,7 @@ void BroadcastReceiver::processWaitingDatagramms()
                   &(info.port)
                  );
 
-    info.data << block;
+    info.data.deserialize( block );
     info.port = info.data.tcpPort;
 
 
