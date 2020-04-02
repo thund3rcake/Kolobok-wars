@@ -9,8 +9,6 @@
 #include<MetaRegistrator.h>
 #include <Utils.h>
 
-namespace Net {}
-
 static const int MaxSignatureLength = 16;
 static const int MaxMapNameLength = 16;
 

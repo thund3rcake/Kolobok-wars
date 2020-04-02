@@ -41,7 +41,7 @@ void BroadcastReceiver::processPendingDatagramms() {
         info.port = info.data.getTcpPort();
 
 
-        if(/*info.data.getSignature() != Net::QStringSignature ||*/ //Net::QStringSignature not exist
+        if(info.data.getSignature() != QStringSignature ||
               info.data.getVersion() != Net::ProtVersion ||
               info.data.getSubversion() != Net::ProtSubversion)
         {
