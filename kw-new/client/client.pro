@@ -6,8 +6,8 @@ DEFINES += KOLOBOK_CLIENT \
     NET_SUBVERSION=0 # \
 
 
-QT +=
-    network
+QT +=  network \
+                core
 
 HEADERS += \
     TcpClient.h \
