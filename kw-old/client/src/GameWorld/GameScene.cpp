@@ -187,53 +187,6 @@ void GameScene::characterSteer()
     if ( keyState.right ) v.setX(  1 );
   }
 
-//  double dX = consts::(time -> elapsed() - elapsed)/3*v.normalized().x();
-//  double dY = consts::(time -> elapsed() - elapsed)/3*v.normalized().y();
-//
-//  QPointF oldPosition = mainCharacter.getPosition();
-//  QPointF newPosition = mainCharacter.getPosition();
-//  newPosition.rx() += dX;
-//  newPosition.ry() += dY;
-//
-//  if (
-//      newPosition.rx() < 0 ||
-//      newPosition.rx() > s_size.rx()
-//     ) newPosition.rx() -= dX;
-//  if (
-//      newPosition.ry() < 0  ||
-//      newPosition.ry() > s_size.ry()
-//     ) newPosition.ry() -= dY;
-//
-//  bool avail = map->isDotAvailable ( newPosition.toPoint() );
-//  if ( !avail )
-//  {
-//    newPosition.setY(oldPosition.ry());
-//    if ( map->isDotAvailable ( newPosition.toPoint() ) )
-//    {
-//      oldPosition.rx() += dX;
-//      avail = true;
-//    }
-//    else
-//    {
-//      newPosition.setY(newPosition.ry());
-//      newPosition.setX(oldPosition.rx());
-//      if ( map->isDotAvailable ( newPosition.toPoint() ) )
-//      {
-//        oldPosition.ry() += dY;
-//        avail = true;
-//      }
-//      else
-//      {
-//        newPosition.setY(oldPosition.ry());
-//      }
-//    }
-//    newPosition = oldPosition;
-//  }
-
-//  mainCharacter.setPosition ( newPosition );
-//  topLeft = QPointF(mainCharacter.getPosition().x() - desktopSize.rwidth() /2 + scaledPlayerSize()/2,
-//                    mainCharacter.getPosition().y() - desktopSize.rheight()/2 + scaledPlayerSize()/2);
-
   v.normalize();
 
   mainCharacter.setIntent ( v );
@@ -287,6 +240,10 @@ void GameScene::updatePlayerPos ( NetDataContainer<Net::MovingObjectProperties> 
         inpId = 0;
         break;
       }
+    }
+    // NEW CODE
+    foreach (AIBot * bot, bots) {
+
     }
 
     if ( inpId != 0 )

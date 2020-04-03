@@ -38,6 +38,7 @@
 #include <QGraphicsItemAnimation>
 #include <QTimeLine>
 #include <Player.h>
+#include <AIBot.h>
 #include <Bullet.h>
 #include <HUD.h>
 #include <Map.h>
@@ -116,6 +117,7 @@ class GameScene: public QGraphicsScene
     KeysState  keyState;
 
     QLinkedList<Player*> players;
+    QLinkedList<AIBot*> bots;
     QLinkedList<Bullet*> bullets;
 
     QHostAddress   server;

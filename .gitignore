@@ -1,6 +1,3 @@
 /*/build*
 /kw-new/common/common.pro.user*
-/kw-old/*/Makefile*
-/kw-old/client/kolobok-wars-client
-/kw-old/*.o
-/kw-old/*moc_*.cpp
+/kw-old/*

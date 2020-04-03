@@ -55,6 +55,7 @@ SOURCES += src/Network/Datagrams.cpp \
     src/GraphicsView.cpp \
     src/kolobok-wars-client.cpp
 HEADERS = include/Network/BroadcastReceiver.h \
+    include/GameWorld/AIBot.h \
     include/Network/Datagrams.h \
     include/Network/NetDataContainer.h \
     include/Network/TCPClient.h \
