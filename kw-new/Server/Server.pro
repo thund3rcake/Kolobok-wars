@@ -12,7 +12,8 @@ HEADERS += \
     BroadcastSender.h
 
 SOURCES += \
-    broadcastSender.cpp
+    broadcastSender.cpp \
+    main.cpp
 
 INCLUDEPATH += $$PWD/../common
 DEPENDPATH += $$PWD/../common
