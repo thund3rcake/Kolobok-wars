@@ -28,9 +28,6 @@ class BroadcastSender: public QThread
     virtual
     ~BroadcastSender();
 
-    virtual
-    void run();
-
   public slots:
     void generateDatagram();
     void setMapName(const QString & mapName);
@@ -56,8 +53,8 @@ class BroadcastSender: public QThread
     QByteArray datagram;
 
   protected:
-//    virtual
-//    void run();
+    virtual
+    void run();
 
   signals:
     void error (int errNo, QString message);

@@ -9,11 +9,11 @@ DEFINES += KOLOBOK_SERVER \
     NET_SUBVERSION=0 \
 
 HEADERS += \
-    BroadcastSender.h
+    BroadcastSender.h \
+    Versions.h
 
 SOURCES += \
-    broadcastSender.cpp \
-    main.cpp
+    broadcastSender.cpp
 
 INCLUDEPATH += $$PWD/../common
 DEPENDPATH += $$PWD/../common

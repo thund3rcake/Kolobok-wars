@@ -8,36 +8,37 @@ BroadcastReceiver::BroadcastReceiver(
                                                                                     ):
     QUdpSocket((QObject * ) parent),
     servers(srvs) {
-    if (!(bind(27030, QUdpSocket::ShareAddress))) {
+    if (!bind(27030, QUdpSocket::ShareAddress)) {
         throw Exception(error(), errorString());
     }
 
-    QObject::connect(this, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
+    connect(this, &QUdpSocket::readyRead,
+            this, &BroadcastReceiver::processPendingDatagramms);
+
 }
 
 
 void BroadcastReceiver::processPendingDatagramms() {
 
-    while(hasPendingDatagrams()) {
+    while (hasPendingDatagrams()) {
         QByteArray data1;
-        QDataStream response(data1);
+        QDataStream response(&data1, QIODevice::OpenModeFlag::ReadOnly); //BroadcastSender and BroadcastReceiver must call the same constructor
         ServerAbout info;
         quint32 size;
 
+        //When DataStream versions in BroadcastSender and BroadcastReceiver are different
+        //it doesn't work
         response.setVersion( Net::DataStreamVersion );
 
         data1.clear();
-        data1.resize( pendingDatagramSize() );
 
-        readDatagram(
-                                      data1.data(),
-                                      data1.size(),
-                                      &(info.address),
-                                      &(info.port)
-                                    );
+        data1.resize(int(pendingDatagramSize()));
+
+        readDatagram(data1.data(), data1.size(), &(info.address), &(info.port));
 
         response >> size;
         response >> info.data;
+
         info.port = info.data.getTcpPort();
 
 
@@ -57,7 +58,7 @@ void BroadcastReceiver::processPendingDatagramms() {
         }
 
         if ( newSrv ) {
-            servers.push_back( info );
+            servers.push_back( info ); //Copy constructor for BroadcastData must be implemented
             emit newServer( servers.count() - 1 );
         }
     }

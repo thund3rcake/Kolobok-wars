@@ -31,7 +31,17 @@ BroadcastData::BroadcastData(
 
 BroadcastData::BroadcastData(const BroadcastData &rhs) :
     Serializable(rhs.parent()),
-    broadcastDataRegistrator(rhs.broadcastDataRegistrator) {}
+    broadcastDataRegistrator(rhs.broadcastDataRegistrator) {
+    signature = rhs.signature;
+    serverName = rhs.serverName;
+    mapName = rhs.mapName;
+    tcpPort = rhs.tcpPort;
+    version = rhs.version;
+    subversion = rhs.subversion;
+    bots = rhs.bots;
+    players = rhs.players;
+    maxPlayers = rhs.maxPlayers;
+}
 
 BroadcastData::~BroadcastData() {}
 
