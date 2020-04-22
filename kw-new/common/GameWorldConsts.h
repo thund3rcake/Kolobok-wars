@@ -4,8 +4,6 @@
 #include <QtCore>
 #include <CommonGlobal.h>
 
-namespace GameWorld
-{
 
 namespace consts
 {
@@ -21,7 +19,5 @@ namespace consts
 
   static const int playerSize  = 7; //in map coordinates
 }
-
-} /* namespace GameWorld */
 
 #endif /* GAMESCENECONSTS_H_ */

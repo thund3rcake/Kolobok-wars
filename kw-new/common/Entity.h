@@ -5,8 +5,6 @@
 #include <QVector2D>
 #include <CommonGlobal.h>
 
-//using namespace GameWorld;
-
 const int NOT_VALID = -1;
 
 class KW_COMMON_EXPORT Entity: public QObject {

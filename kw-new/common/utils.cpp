@@ -24,7 +24,7 @@ double  scale_x_100 ()
   if ( scale.isNull() )
   {
     scale = 100 * double ( getDesktopSize().ry() )/
-                  double ( GameWorld::consts::heightOfVisibleArea ); //.ry  это ссылка на координату y.
+                  double (consts::heightOfVisibleArea ); //.ry  это ссылка на координату y.
   }
 
   return scale.getdData();
@@ -36,7 +36,7 @@ double scaledPlayerSize()
 
   if ( size.isNull() )
   {
-    size = GameWorld::consts::playerSize*(scale_x_100()/100);
+    size = consts::playerSize*(scale_x_100()/100);
   }
 
   return size.getdData();

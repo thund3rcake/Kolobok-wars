@@ -25,8 +25,8 @@ int main (){
     //                secondQReal
     //                );
 
-    GameWorld::Weapon::Type type = GameWorld::Weapon::Blaster;
-    GameWorld::Weapon::State state = GameWorld::Weapon::NoFire;
+    Weapon::Type type = Weapon::Blaster;
+    Weapon::State state = Weapon::NoFire;
     const QPointF target = QPointF(1.0, 0.0);
     quint16 masterId = 1;
 
@@ -45,7 +45,7 @@ int main (){
     const QVector2D intent = QVector2D(2.0, 0.0);
     const QVector2D head = QVector2D(3.0, 0.0);
     quint8 hp = 3;
-    const GameWorld::Weapon weapon = GameWorld::Weapon(
+    const Weapon weapon = Weapon(
                                                                                                                                 type,
                                                                                                                                 state,
                                                                                                                                 target,

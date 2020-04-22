@@ -31,17 +31,16 @@ BroadcastData::BroadcastData(
 
 BroadcastData::BroadcastData(const BroadcastData &rhs) :
     Serializable(rhs.parent()),
-    broadcastDataRegistrator(rhs.broadcastDataRegistrator) {
-    signature = rhs.signature;
-    serverName = rhs.serverName;
-    mapName = rhs.mapName;
-    tcpPort = rhs.tcpPort;
-    version = rhs.version;
-    subversion = rhs.subversion;
-    bots = rhs.bots;
-    players = rhs.players;
-    maxPlayers = rhs.maxPlayers;
-}
+    broadcastDataRegistrator(rhs.broadcastDataRegistrator),
+    signature(rhs.signature),
+    serverName(rhs.serverName),
+    mapName(rhs.mapName),
+    tcpPort(rhs.tcpPort),
+    version(rhs.version),
+    subversion(rhs.subversion),
+    bots(rhs.bots),
+    players(rhs.players),
+    maxPlayers(rhs.maxPlayers) {}
 
 BroadcastData::~BroadcastData() {}
 
@@ -140,7 +139,7 @@ void BroadcastData::setMaxPlayers(quint8 maxPlayers) {
 MovingObjectProperties::MovingObjectProperties(QObject *parent) :
     Serializable(parent),
     movingObjectPropertiesRegistrator(MetaRegistrator<MovingObjectProperties>("MovingObjectProperties")),
-    weaponRegistrator(MetaRegistrator<GameWorld::Weapon>("GameWorld::Weapon")) {}
+    weaponRegistrator(MetaRegistrator<Weapon>("Weapon")) {}
 
 MovingObjectProperties::MovingObjectProperties(
                                                                                                             quint32 timestamp,
@@ -151,12 +150,12 @@ MovingObjectProperties::MovingObjectProperties(
                                                                                                             const QVector2D & intent,
                                                                                                             const QVector2D & head,
                                                                                                             quint8 hp,
-                                                                                                            const GameWorld::Weapon & weapon,
+                                                                                                            const Weapon & weapon,
                                                                                                             QObject * parent
                                                                                                             ):
     Serializable(parent),
     movingObjectPropertiesRegistrator(MetaRegistrator<MovingObjectProperties>("MovingObjectProperties")),
-    weaponRegistrator(MetaRegistrator<GameWorld::Weapon>("GameWorld::Weapon")) ,
+    weaponRegistrator(MetaRegistrator<Weapon>("Weapon")) ,
     timestamp( timestamp ),
     type( type ),
     team( team ),
@@ -170,7 +169,16 @@ MovingObjectProperties::MovingObjectProperties(
 MovingObjectProperties::MovingObjectProperties(const MovingObjectProperties &rhs) :
     Serializable(rhs.parent()),
     movingObjectPropertiesRegistrator(rhs.movingObjectPropertiesRegistrator),
-    weaponRegistrator(rhs.weaponRegistrator) {}
+    weaponRegistrator(rhs.weaponRegistrator),
+    timestamp(rhs.timestamp),
+    type(rhs.type),
+    team(rhs.team),
+    id(rhs.id),
+    position(rhs.position),
+    intent(rhs.intent),
+    head(rhs.head),
+    hp(rhs.hp),
+    weapon(rhs.weapon) {}
 
 MovingObjectProperties::~MovingObjectProperties() {}
 
@@ -254,10 +262,10 @@ void MovingObjectProperties::setHp(quint8 hp) {
     this -> hp = hp;
 }
 
-GameWorld::Weapon MovingObjectProperties::getWeapon() const {
+Weapon MovingObjectProperties::getWeapon() const {
     return weapon;
 }
-void MovingObjectProperties::setWeapon(GameWorld::Weapon weapon) {
+void MovingObjectProperties::setWeapon(Weapon weapon) {
     this -> weapon = weapon;
 }
 
@@ -286,7 +294,14 @@ GameProperties::GameProperties(QObject *parent) :
 
 GameProperties::GameProperties(const GameProperties &rhs) :
     Serializable(rhs.parent()),
-    gamePropertiesRegistrator(rhs.gamePropertiesRegistrator) {}
+    gamePropertiesRegistrator(rhs.gamePropertiesRegistrator),
+    type(rhs.type),
+    firstQString(rhs.firstQString),
+    secondQString(rhs.secondQString),
+    firstQInt(rhs.firstQInt),
+    secondQInt(rhs.secondQInt),
+    firstQReal(rhs.firstQReal),
+    secondQReal(rhs.secondQReal) {}
 
 GameProperties::~GameProperties() {}
 

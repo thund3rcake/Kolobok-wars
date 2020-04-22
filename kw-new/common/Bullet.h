@@ -6,9 +6,6 @@
 #include <QVector2D>
 #include <CommonGlobal.h>
 
-namespace GameWorld
-{
-
 //Наследуется от MovingEntity (координаты точки + направление) и от QGraphicsRectItem (прямоугольник)
 class KW_COMMON_EXPORT Bullet: public MovingEntity, public QGraphicsRectItem
 {
@@ -33,7 +30,5 @@ private:
     Weapon weapon;
     bool reached; //temporary flag, this flag needs until bullets don't removed
 };
-
-} /* namespace GameWorld */
 
 #endif /* BULLET_H_ */

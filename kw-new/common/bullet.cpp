@@ -6,7 +6,7 @@
 #include <GameWorldConsts.h>
 #include <math.h>
 
-GameWorld::Bullet::Bullet (
+Bullet::Bullet (
                int id,
                const QPointF & position,
                QPointF& targAbs,
@@ -22,7 +22,7 @@ GameWorld::Bullet::Bullet (
             consts::playerSize/4, consts::playerSize/4);
 }
 
-void GameWorld::Bullet::paint (
+void Bullet::paint (
                    QPainter * painter,
                    const QStyleOptionGraphicsItem *,
                    QWidget *
@@ -40,7 +40,7 @@ void GameWorld::Bullet::paint (
                         consts::playerSize/4, consts::playerSize/4);
 }
 
-bool GameWorld::Bullet::isTargetReach ()
+bool Bullet::isTargetReach ()
 {
   if ( reached == true ) return true;
 

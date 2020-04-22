@@ -1,7 +1,5 @@
 ﻿#include<Weapon.h>
 
-namespace GameWorld {
-
 Weapon::Weapon(QObject * parent) :
     Serializable(parent),
     weaponRegistrator(MetaRegistrator<Weapon>("Weapon")) {}
@@ -58,7 +56,7 @@ void Weapon::setQuintState(quint8 state) {
     this -> state = static_cast<Weapon::State>(state);
 }
 
-bool Weapon::operator == (const GameWorld::Weapon & rhs) const {
+bool Weapon::operator == (const Weapon & rhs) const {
 
     if (rhs.type == this -> type) {
         if (rhs.state == this -> state) {
@@ -71,5 +69,3 @@ bool Weapon::operator == (const GameWorld::Weapon & rhs) const {
     }
     return false;
 }
-
-} //End namespace GameWorld

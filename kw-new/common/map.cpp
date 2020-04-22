@@ -5,8 +5,6 @@
 #include <GameWorldConsts.h>
 #include <Entity.h>
 
-using namespace GameWorld;
-
 QPoint abstractMap::getSize () {
     return QPoint(m_sizeW, m_sizeH);
 }
@@ -104,7 +102,7 @@ void abstractNoAIMap::findAvailblDots () {
     }
   }
 
-  double playerRadius = GameWorld::consts::playerSize;
+  double playerRadius = consts::playerSize;
   for (uint i = 0; i < m_sizeW; i++) {
     for(uint j = 0; j < playerRadius; j++) {
       availableDots[i][j] = 1;
@@ -155,7 +153,7 @@ void markTheNearest (
                      int srcX, int srcY,
                      QVector<QVector<quint8> > & availableDots
                     ) {
-  static double size = GameWorld::consts::playerSize;
+  static double size = consts::playerSize;
   static double maxRadius = (size + 0.5) * size;
 
   if ( x < 0 ||

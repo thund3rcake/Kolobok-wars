@@ -156,7 +156,7 @@ public:
                                                         const QVector2D & intent,
                                                         const QVector2D & head,
                                                         quint8 hp,
-                                                        const GameWorld::Weapon & weapon,
+                                                        const Weapon & weapon,
                                                         QObject * parent = 0
                                                         );
 
@@ -189,7 +189,7 @@ public:
     Q_PROPERTY(quint8 hp
                READ getHp
                WRITE setHp);
-    Q_PROPERTY(GameWorld::Weapon weapon
+    Q_PROPERTY(Weapon weapon
                READ getWeapon
                WRITE setWeapon);
 
@@ -203,7 +203,7 @@ public:
     QVector2D getIntent() const;
     QVector2D getHead() const;
     quint8 getHp() const;
-    GameWorld::Weapon getWeapon() const;
+    Weapon getWeapon() const;
 
     void setTimestamp(quint32 timestamp);
     void setType(MovingObjectProperties::Type type);
@@ -215,11 +215,11 @@ public:
     void setIntent(QVector2D intent);
     void setHead(QVector2D head);
     void setHp(quint8 hp);
-    void setWeapon(GameWorld::Weapon weapon);
+    void setWeapon(Weapon weapon);
 
 private:
     MetaRegistrator<MovingObjectProperties> movingObjectPropertiesRegistrator;
-    MetaRegistrator<GameWorld::Weapon> weaponRegistrator;
+    MetaRegistrator<Weapon> weaponRegistrator;
     quint32 timestamp;
     Type type;
     Team team;
@@ -228,7 +228,7 @@ private:
     QVector2D intent;
     QVector2D head;
     quint8 hp;
-    GameWorld::Weapon weapon;
+    Weapon weapon;
 };
 
 Q_DECLARE_METATYPE(MovingObjectProperties);

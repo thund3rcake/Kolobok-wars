@@ -8,8 +8,6 @@
 #include <QPoint>
 #include <Versions.h>
 
-namespace GameWorld {
-
 namespace consts {
     static const int weaponDamage = 10;
 }
@@ -42,7 +40,7 @@ public:
 
     virtual ~Weapon();
 
-    bool operator == (const GameWorld::Weapon & rhs) const;
+    bool operator == (const Weapon & rhs) const;
 
     Q_PROPERTY(quint8 type
                READ getQuintType
@@ -79,10 +77,8 @@ private:
     quint16 masterId;
 };
 
-} /* namespace GameWorld */
-
-Q_DECLARE_METATYPE(GameWorld::Weapon);
-Q_DECLARE_TYPEINFO(GameWorld::Weapon, Q_COMPLEX_TYPE);
+Q_DECLARE_METATYPE(Weapon);
+Q_DECLARE_TYPEINFO(Weapon, Q_COMPLEX_TYPE);
 
 
 #endif /* WEAPON_H_ */
