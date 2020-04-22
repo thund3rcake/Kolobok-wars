@@ -10,10 +10,12 @@ DEFINES += KOLOBOK_SERVER \
 
 HEADERS += \
     BroadcastSender.h \
-    Versions.h
+    Versions.h \
+    udpserver.h
 
 SOURCES += \
-    broadcastSender.cpp
+    broadcastSender.cpp \
+    udpserver.cpp
 
 INCLUDEPATH += $$PWD/../common
 DEPENDPATH += $$PWD/../common
