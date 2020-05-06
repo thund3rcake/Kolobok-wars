@@ -7,6 +7,9 @@
 #include <QtNetwork>
 
 #include "Datagramms.h"
+//#include "servertools.h"
+
+class ServerTools;
 
 class UdpServer : public QThread {
     Q_OBJECT

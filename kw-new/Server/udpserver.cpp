@@ -1,11 +1,6 @@
 #include "udpserver.h"
-
-//TODO: find out why mutexes need here
-//TODO: ServerTools
-
-// ???
-// 1 thread : run()
-// 2 thread : send/getPacket(...)
+#include "servertools.h"
+#include "Versions.h"
 
 UdpServer::UdpServer(quint16 port, QObject *parent):
     QThread(parent),
@@ -60,11 +55,11 @@ void UdpServer::run() {
                 continue;
             }
 
-//            TODO: ServerTools
-//            /* timestamp */
-//            packetBufer.properties.timestamp =
-//                    static_cast<ServerTools *>( parent() ) -> getCurentTime();
-//            /* timestamp */
+            /* timestamp */
+            packetBufer.properties.setTimestamp(
+                        static_cast<ServerTools *>( parent() ) -> getCurentTime()
+                        );
+            /* timestamp */
 
             block.clear();
 
@@ -130,7 +125,7 @@ void UdpServer::sendPacket(const Packet &packet) {
 const UdpServer::Packet UdpServer::getPacket(bool &result) {
   if (incoming.isEmpty()) {
     result = false;
-    return Packet(); //who writes in Packet?
+    return Packet();
   }
 
   QMutexLocker locker( &incomingMutex );

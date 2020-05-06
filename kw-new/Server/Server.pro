@@ -2,7 +2,8 @@
 unix:!macx: LIBS += -L$$PWD/../build-common-Desktop-Debug/ -lcommon
 
 # Libs
-QT += network
+QT += network \
+    widgets
 
 DEFINES += KOLOBOK_SERVER \
     NET_VERSION=1 \
@@ -11,10 +12,19 @@ DEFINES += KOLOBOK_SERVER \
 HEADERS += \
     BroadcastSender.h \
     Versions.h \
+    playerthread.h \
+    servertools.h \
+    sharedobject.h \
+    sharedtypes.h \
+    tcpserver.h \
     udpserver.h
 
 SOURCES += \
     broadcastSender.cpp \
+    playerthread.cpp \
+    servertools.cpp \
+    sharedobject.cpp \
+    tcpserver.cpp \
     udpserver.cpp
 
 INCLUDEPATH += $$PWD/../common
