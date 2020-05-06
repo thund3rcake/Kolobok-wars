@@ -34,6 +34,8 @@ void TcpServer::incomingConnection(int socketDescriptor) {
 
     QObject::connect(thread, SIGNAL(finished()),
                 this, SLOT(deletePlayer));
+    QObject::connect(thread, SIGNAL(finished()),
+                thread, SLOT(deletePlayer));
 
 
     sharedData.playerById.writeLock();
