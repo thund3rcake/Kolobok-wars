@@ -17,6 +17,9 @@ namespace consts
   static const qreal bulletVelocity   =   15;
 
   static const int playerSize  = 7; //in map coordinates
+
+  /************** BOT CONSTS *************/
+  static const int hpEscape = 15; // starts escaping when hp gets lower then that value
 }
 
 #endif /* GAMESCENECONSTS_H_ */

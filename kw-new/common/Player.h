@@ -8,14 +8,14 @@
 #include <QGraphicsItem>
 #include <QGraphicsPolygonItem>
 #include <CommonGlobal.h>
+#include "Datagramms.h"
 
 class KW_COMMON_EXPORT Player: public MovingEntity, public QGraphicsRectItem {
 
 public:
-    enum Team { Red, Blue };
 
     Player ();
-    Player (QString name, Team team);
+    Player (QString name, MovingObjectProperties::Team team);
 
     virtual
     void paint (
@@ -31,19 +31,19 @@ public:
     void setTimeStep (qint32);
     qint32 getTimeStep ();
 
-private:
+protected:
     Player (const Player& rhs);
     Player & operator= (const Player& rhs);
 
-    Team      team;
-    QString   name;
-    quint8    hp;
+    MovingObjectProperties::Team team;
+    QString name;
+    quint8 hp;
     QVector2D head;
-    Weapon    weapon;
-    qint32    timeStep;
+    Weapon weapon;
+    qint32 timeStep;
 
-    QString   modelId;
-    QBrush    playerBrush;
+    QString modelId;
+    QBrush playerBrush;
 
     QList<Bullet*> firedBullets;
 };

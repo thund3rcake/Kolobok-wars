@@ -10,20 +10,22 @@ AIProcessor::AIProcessor() {
 }
 
 
-void AIProcessor::updateMovingProperties(Shared & sharedData, MovingObjectProperties * props) {
-    // find our bot
+void AIProcessor::updateMovingProperties(Shared & sharedData, MovingObjectProperties * props) {    
     quint16 id = props->getId();
-    AIBot * currentBot;
-    foreach(AIBot * aiBot, aiBots) {
+    AIBot * currentBot = nullptr;
+
+    foreach(AIBot * aiBot, aiBots) { // find our bot
         if(aiBot->getId() == id)
             currentBot = aiBot;
     }
+    if (currentBot == nullptr) // create if not found
+        currentBot = new AIBot(props);
 
-    MovingObjectProperties nearestPlayer;
+    MovingObjectProperties nearestPlayerProps;
     foreach (PlayerThread * player, sharedData.playerById.get())
         if (!(player->isFinished()) && player->getId() != id) {
             // find the nearest player
-            nearestPlayer = player->getMovProperties();
+            nearestPlayerProps = player->getMovProperties();
         }
     // change
     //processState(nearestPlayer);

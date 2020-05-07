@@ -18,8 +18,10 @@ DEPENDPATH += $$PWD/../common
 
 HEADERS += \
     aibot.h \
-    aiprocessor.h
+    aiprocessor.h \
+    utilityalgorithms.h
 
 SOURCES += \
     aibot.cpp \
-    aiprocessor.cpp
+    aiprocessor.cpp \
+    utilityalgorithms.cpp
