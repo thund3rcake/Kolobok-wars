@@ -87,10 +87,6 @@ void PlayerThread::run()
   while(1)
   {
     playerProperties = getProperty ( goten );
-    //TODO: on start set respawn coordinates
-    //TODO: add serverTools method "getRespawnPlace(Team??)"
-//    qDebug() << "In Own: Player " << id <<
-//                         "Position : " << playerProperties.position;
     if ( goten == false )
     {
       usleep(100); //TODO: accurate constant
@@ -102,33 +98,6 @@ void PlayerThread::run()
       latency = latencyIter.value();
 
     updateCoordinates (playerProperties);
-
-//    foreach ( GameWorld::Bullet * bullet, sharedData.bulletById.get() )
-//    {
-//      if ( isThereHits(bullet) ) //TODO: implement
-//        playerProperties.hp -= GameWorld::consts::weaponDamage;  //TODO: const damage for blaster
-//    }
-//    if ( playerProperties.weapon.state == GameWorld::Weapon::Fire )
-//    {
-//      static int newBulId = sharedData.nextBulletId.get();
-//      GameWorld::Bullet * newBul = new GameWorld::Bullet
-//                                 (
-//                                   newBulId,
-//                                   playerProperties.position,  //TODO: + playerSize
-//                                   playerProperties.weapon.target,
-//                                   Weapon::Blaster
-//                                 );
-//
-//      sharedData.bulletById.lock();
-//      sharedData.bulletById.get().insert( newBulId, newBul );
-//      sharedData.bulletById.unlock();
-//
-//      sharedData.nextBulletId.lock();
-//      sharedData.nextBulletId.get()++;
-//      sharedData.nextBulletId.unlock();
-//
-//      playerProperties.weapon.state = GameWorld::Weapon::NoFire;
-//    }
     this -> sendProperty(playerProperties);
 
     foreach ( PlayerThread * player, sharedData.playerById.get() )

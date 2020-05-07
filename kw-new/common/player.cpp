@@ -10,7 +10,7 @@ Player::Player()
     this->setRect( 0, 0, scaledPlayerSize(), scaledPlayerSize() );
 }
 
-Player::Player (QString name, int team):
+Player::Player (QString name, Team team):
     team (team),
     name (name)
 {
@@ -34,8 +34,8 @@ void Player::paint (
                    )
 {
 //  qDebug() << "Repaint Player" << id;
-  if ( position != pos() )
-    setPos(pos() + intent.toPointF()*consts::sendTimerInterval/5/consts::sceneUpdateInterval);
+  if (position != pos())
+    setPos(pos() + intent.toPointF()*consts::sendTimerInterval / 5 / consts::sceneUpdateInterval);
   painter->setRenderHint( QPainter::Antialiasing, true );
   painter->drawEllipse ( QPointF(0,0), scaledPlayerSize(), scaledPlayerSize() );
   painter->drawLine    ( QPointF(0,0), head.toPointF()*scaledPlayerSize() );

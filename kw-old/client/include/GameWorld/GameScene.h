@@ -126,9 +126,11 @@ class GameScene: public QGraphicsScene
   public slots:
     void updatePlayerPos  ( NetDataContainer<Net::MovingObjectProperties> *);
     void updateBulletsPos ( NetDataContainer<Net::MovingObjectProperties> *);
+    //void moveAIBot(NetDataContainer<Net::MovingObjectProperties> *);
     void catchError ( int, QString );
     void repaint();
     void characterSteer ();
+    void botSteer();
     void setOwnId( quint16 id ){ mainCharacter.setId( id ); };
 
   signals:

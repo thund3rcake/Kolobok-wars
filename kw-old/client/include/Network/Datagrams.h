@@ -108,7 +108,7 @@ static const qint32 MaxPackegeDelay = 200 /* ms */;
 class MovingObjectProperties
 {
   public:
-    enum Type { Player, Bullet, Timestamp };
+    enum Type { Player, Bullet, Timestamp, AIBot };
     enum Team { Red, Blue };
 
     MovingObjectProperties(){};

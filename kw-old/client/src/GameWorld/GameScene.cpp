@@ -28,7 +28,8 @@
 #include <GameScene.h>
 #include <commonLibs.h>
 #include <QDebug>
-
+#include <AIBot.h>
+#include <QtGlobal>
 
 using namespace GameWorld;
 
@@ -63,6 +64,11 @@ GameScene::GameScene (
                      this,      SLOT (catchError(int, QString)) );
   QObject::connect ( udpClient, SIGNAL(newObjectProperties(NetDataContainer<Net::MovingObjectProperties> *)),
                      this,      SLOT  (updatePlayerPos(NetDataContainer<Net::MovingObjectProperties> *)) );
+
+  /* AIBot connection: */
+  //QObject::connect ( udpClient, SIGNAL(newObjectProperties(NetDataContainer<Net::MovingObjectProperties> *)),
+  //                   this,      SLOT  (MoveAIBot(NetDataContainer<Net::MovingObjectProperties> *)) );
+
   udpClient -> start();
 
   tcpClient = new Net::TcpClient( server, port, this );
@@ -129,8 +135,11 @@ GameScene::GameScene (
   timer -> start();
 
   sendTimer = new QTimer( this );
-  connect ( sendTimer, SIGNAL( timeout() ),
+  connect (sendTimer, SIGNAL( timeout() ),
             this,      SLOT  ( characterSteer() ), Qt::DirectConnection );
+  /* AIBot movement */
+  connect (sendTimer, SIGNAL( timeout() ),
+            this,      SLOT  ( botSteer() ), Qt::DirectConnection );
   sendTimer -> setInterval( consts::sendTimerInterval );
   sendTimer -> start();
   /* Motion and Animation */
@@ -161,12 +170,23 @@ void GameScene::repaint()
   {
     player -> setPos ( player -> getPosition() );
   }
+  /* Update bots */
+  foreach (AIBot  * bot, bots)
+  {
+    bot -> setPos ( bot -> getPosition() );
+  }
   /* Update Player's position and centering */
 
   /* Update HUD */
   updateHUD();
   /* Update HUD */
 }
+
+/* AIBot MOVEMENT */
+//void GameScene::moveAIBot(NetDataContainer<Net::MovingObjectProperties> *) {}
+
+void GameScene::botSteer() {}
+
 
 /* World's behavior */
 void GameScene::characterSteer()
@@ -241,21 +261,28 @@ void GameScene::updatePlayerPos ( NetDataContainer<Net::MovingObjectProperties> 
         break;
       }
     }
-    // NEW CODE
-    foreach (AIBot * bot, bots) {
-
-    }
 
     if ( inpId != 0 )
     {
-      Player * player = new Player;
-      player -> setPosition ( container -> getOption().position*scale_x_100()/100 );
-      player -> setHead ( container -> getOption().head );
-//      player -> setTimeStep  ( container -> getOption().timestamp );
-      player -> setId( inpId );
-      players.append(player);
-      addItem ( player );
-      qDebug() << "Player" << player -> getId() << " Added;";
+      // DETERMINE IF BOT OR PLAYER
+      if(container->getOption().type == Net::MovingObjectProperties::AIBot) {
+          AIBot * bot = new AIBot;
+          bot -> setPosition ( container -> getOption().position*scale_x_100()/100 );
+          bot -> setHead ( container -> getOption().head );
+          bot -> setId( inpId );
+          bots.append(bot);
+          addItem (bot);
+          qDebug() << "Bot" << bot -> getId() << " Added;";
+      } else if (container->getOption().type == Net::MovingObjectProperties::Player) {
+          Player * player = new Player;
+          player -> setPosition ( container -> getOption().position*scale_x_100()/100 );
+          player -> setHead ( container -> getOption().head );
+          player -> setId( inpId );
+          players.append(player);
+          addItem ( player );
+          qDebug() << "Player" << player -> getId() << " Added;";
+      }
+
     }
   }
 
@@ -278,7 +305,6 @@ void GameScene::setCharacterHeading ( QVector2D & vector )
 {
   mainCharacter.setHead(vector);
 }
-
 void GameScene::characterFire ( QPointF targAbs )
 {
   hud->updConsFireTargt(targAbs);
@@ -290,15 +316,6 @@ void GameScene::characterFire ( QPointF targAbs )
 
   QVector2D targ ( targAbs - mainCharacter.getPosition() );
   QPointF position (mainCharacter.getPosition() + scaledPlayerSize()*mainCharacter.getHead().toPointF());
-
-//  Bullet* newBullet = new Bullet (
-//                                  0,
-//                                  mainCharacter.getPosition() + scaledPlayerSize()*mainCharacter.getHead().toPointF(),
-//                                  targAbs,
-//                                  Weapon::Blaster
-//                                 );
-//  bullets << newBullet;
-//  addItem(newBullet);
 
   Net::MovingObjectProperties bulletProp;
   bulletProp.hp        = 0;

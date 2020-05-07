@@ -72,6 +72,10 @@ void Player::setTimeStep (qint32 step)
   timeStep = step;
 }
 
+QVector2D Player::dfs(QVector2D current, QVector2D target) {
+
+}
+
 qint32 Player::getTimeStep ()
 {
   return timeStep;

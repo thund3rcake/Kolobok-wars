@@ -28,6 +28,7 @@
 #include <XmlParser.h>
 #include <GeometryAlgorythms.h>
 #include <commonLibs.h>
+#include <QDebug>
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -176,6 +177,7 @@ void abstractNoAIMap::findAvailblDots ()
     for( uint i = m_sizeW - 1; i > m_sizeW - playerRadius; i-- )
     {
       availableDots[i][j] = 1;
+      qDebug() << "available [" << i << "][" << j << "]";
     }
   }
   if ( write_sDOT_file() == false )

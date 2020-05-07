@@ -39,6 +39,9 @@ using namespace GameWorld;
 class Player: public MovingEntity, public QGraphicsRectItem
 {
   public:
+
+    QVector2D dfs(QVector2D current, QVector2D target);
+
     enum Team { Red, Blue };
 
     Player ();

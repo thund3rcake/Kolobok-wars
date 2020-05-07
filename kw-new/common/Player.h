@@ -15,7 +15,7 @@ public:
     enum Team { Red, Blue };
 
     Player ();
-    Player (QString name, int team);
+    Player (QString name, Team team);
 
     virtual
     void paint (
@@ -35,7 +35,7 @@ private:
     Player (const Player& rhs);
     Player & operator= (const Player& rhs);
 
-    int       team;
+    Team      team;
     QString   name;
     quint8    hp;
     QVector2D head;

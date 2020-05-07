@@ -30,6 +30,7 @@ DEFINES += KOLOBOK_CLIENT \
 # QT_NO_DEBUG_OUTPUT
 # Input
 SOURCES += src/Network/Datagrams.cpp \
+    src/GameWorld/AIBot.cpp \
     src/commonLibs.cpp \
     src/Map/XmlParser.cpp \
     src/Map/Map.cpp \
