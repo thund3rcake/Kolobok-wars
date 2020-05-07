@@ -14,7 +14,6 @@ DEFINES += KOLOBOK_CLIENT \
     COMMON_LIBRARY
 
 HEADERS += \
-    AIBot.h \
     Bullet.h \
     CommonGlobal.h \
     Datagramms.h \
@@ -31,7 +30,6 @@ HEADERS += \
     MetaRegistrator.h
 
 SOURCES += \
-    AIBot.cpp \
     bullet.cpp \
     datagramms.cpp \
     entity.cpp \
