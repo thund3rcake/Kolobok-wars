@@ -14,8 +14,12 @@ class KW_COMMON_EXPORT Player: public MovingEntity, public QGraphicsRectItem {
 
 public:
 
+    QVector2D dfs(QVector2D current, QVector2D target);
+
+    enum Team { Red, Blue };
+
     Player ();
-    Player (QString name, MovingObjectProperties::Team team);
+    Player (QString name, Player::Team team);
 
     virtual
     void paint (
@@ -35,7 +39,7 @@ protected:
     Player (const Player& rhs);
     Player & operator= (const Player& rhs);
 
-    MovingObjectProperties::Team team;
+    Player::Team team;
     QString name;
     quint8 hp;
     QVector2D head;

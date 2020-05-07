@@ -1,4 +1,4 @@
-#ifndef AIBOT_H
+﻿#ifndef AIBOT_H
 #define AIBOT_H
 
 #include <Player.h>
@@ -11,7 +11,7 @@ public:
     enum State {Attack, Pursuit, Patrol, Escape};
 
     AIBot();
-    AIBot(QString name, Team team);
+    AIBot(QString name, Player::Team team);
 
 
 private:

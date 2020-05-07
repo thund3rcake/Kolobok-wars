@@ -10,7 +10,7 @@ Player::Player()
     this->setRect( 0, 0, scaledPlayerSize(), scaledPlayerSize() );
 }
 
-Player::Player (QString name, Team team):
+Player::Player (QString name, Player::Team team):
     team (team),
     name (name)
 {
