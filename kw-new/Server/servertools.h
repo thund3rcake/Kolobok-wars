@@ -1,19 +1,21 @@
 #ifndef SERVERTOOLS_H
 #define SERVERTOOLS_H
 
-
 #include <QtCore>
 #include <QtGui>
 #include <QTime>
 #include <QTextEdit>
 
-#include <sharedtypes.h>
-#include <BroadcastSender.h>
-#include <udpserver.h>
-#include <Bullet.h>
-#include <Map.h>
+#include "sharedtypes.h"
+#include "BroadcastSender.h"
+#include "udpserver.h"
+#include "tcpserver.h"
+#include "playerthread.h"
+#include "Bullet.h"
+#include "Map.h"
 
 class PlayerThread;
+class UdpServer;
 
 class ServerTools: public QObject {
     Q_OBJECT
@@ -31,11 +33,11 @@ public:
     virtual
     ~ServerTools();
 
-    BroadcastSender & getBroadcastSender() { return * broadcastSender; }
-    UdpServer       & getUdpServer      () { return * udpServer; }
-//    TCPServer       & getTcpServer      () { return * tcpServer; }
-    Shared               & getShared         () { return data; }
-    qint32                 getCurentTime     () { return curTime.elapsed(); }
+    BroadcastSender & getBroadcastSender();
+    UdpServer       & getUdpServer();
+    TcpServer       & getTcpServer();
+    Shared          & getShared();
+    qint32          getCurentTime();
 
 private:
     ServerTools();
@@ -54,7 +56,7 @@ private:
 
     BroadcastSender * broadcastSender;
     UdpServer *       udpServer;
-//    TCPServer *       tcpServer;
+    TcpServer *       tcpServer;
 
     Shared data;
 
