@@ -3,6 +3,8 @@
 
 #include "Player.h"
 #include "Datagramms.h"
+#include "sharedtypes.h"
+
 
 
 class AIBot: public MovingEntity {
@@ -10,17 +12,17 @@ public:
     enum State {Attack, Pursuit, Patrol, Escape};
     // TODO: enum Role {Assault, Guardian};
 
-    AIBot(MovingObjectProperties * props);
+    AIBot(MovingObjectProperties props);
 
-    void setHead (QVector2D &);
-    const QVector2D & getHead ();
+    // void setHead (QVector2D &);
+    // const QVector2D & getHead ();
     void fire (QPointF target, int type); //не реализован
 
-    void setTimeStep (qint32);
-    qint32 getTimeStep ();
+    // void setTimeStep (qint32);
+    // qint32 getTimeStep ();
+    void switchState(Shared & sharedData);
+    MovingObjectProperties action(Shared & sharedData, MovingObjectProperties currentProps);
 
-
-    void processState(const MovingObjectProperties & playerProps);
 private:
     AIBot (const AIBot & rhs);
     AIBot & operator= (const Player & rhs);

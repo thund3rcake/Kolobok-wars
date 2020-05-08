@@ -11,6 +11,7 @@ DEFINES += KOLOBOK_SERVER \
 
 HEADERS += \
     BroadcastSender.h \
+    thread.h \
     Versions.h \
     playerthread.h \
     servertools.h \

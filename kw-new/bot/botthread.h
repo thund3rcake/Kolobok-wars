@@ -1,31 +1,19 @@
-#ifndef THREAD_H
-#define THREAD_H
+#ifndef BOTTHREAD_H
+#define BOTTHREAD_H
 
-#include <sharedtypes.h>
+#include "thread.h"
+#include "aiprocessor.h"
 
-class Thread : public QThread {
+class BotThread: public Thread
+{
 public:
-    Thread();
+    BotThread();
 
-    quint16 getId();
-    const MovingObjectProperties & getMovProperties();
+    void run() override;
+    void getProperty() override;
 
-    virtual void run();
-    void stop();
-
-    // MovingObjectProperties WhatTheBotMustDo(...)
-    virtual void getProperty(); // { return WhatTheBotMustDo(...); }
-
-protected:
-    quint16 id;
-    Shared & sharedData; // <-- info
-
-    QMutex mutex;
-    QTime timer;
-    bool stopped;
-
-    QMutex propertiesMutex;
-    MovingObjectProperties playerMovProperties; // ~ botMovProperties
+private:
+    AIProcessor aiProcessor;
 
 };
 
@@ -50,4 +38,4 @@ protected:
 //    }
 //}
 
-#endif // THREAD_H
+#endif // BOTTHREAD_H

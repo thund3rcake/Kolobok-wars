@@ -11,7 +11,7 @@ class AIProcessor
 {
 public:
     AIProcessor();
-    void updateMovingProperties(Shared & sharedData, MovingObjectProperties * props);
+    MovingObjectProperties updateMovingProperties(Shared & sharedData, MovingObjectProperties currentProps);
 private:
     MovingObjectProperties botProps;
     QLinkedList<AIBot *> aiBots;

@@ -14,14 +14,17 @@ unix:!macx: LIBS += -L$$PWD/../build-common-Desktop-Debug/ -lcommon
 
 INCLUDEPATH += $$PWD/../common
 INCLUDEPATH += $$PWD/../Server
+DEPENDPATH += $$PWD/../Server
 DEPENDPATH += $$PWD/../common
 
 HEADERS += \
     aibot.h \
     aiprocessor.h \
+    botthread.h \
     utilityalgorithms.h
 
 SOURCES += \
     aibot.cpp \
     aiprocessor.cpp \
+    botthread.cpp \
     utilityalgorithms.cpp

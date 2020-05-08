@@ -7,7 +7,7 @@ class UtilityAlgorithms
 public:
     UtilityAlgorithms();
 
-    // TODO: BFS
+    // TODO: BFS, A-star
 };
 
 #endif // UTILITYALGORITHMS_H
