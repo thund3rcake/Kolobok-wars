@@ -26,7 +26,7 @@ public:
 private:
     AIBot (const AIBot & rhs);
     AIBot & operator= (const Player & rhs);
-    bool isVisible(QPointF playerPos);
+    bool isVisible(QPointF playerPos, Shared & sharedData);
 
     State state;
     MovingObjectProperties::Team team;

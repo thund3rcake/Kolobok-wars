@@ -8,9 +8,18 @@
 #include "aibot.h"
 #include "Entity.h"
 
-bool AIBot::isVisible(QPointF playerPos) {
-    // TODO
-    return false;
+bool AIBot::isVisible(QPointF playerPos, Shared & sharedData) {
+    quint32 velocity = 32;
+    QVector2D move = QVector2D(playerPos.x() - position.x(), playerPos.y() - position.y());
+    quint16 distance = move.length();
+    qfloat16 moveTime = distance / velocity;
+    QPointF unitIncrement = (move / moveTime).toPointF();
+
+    // split the vector into unit moves; if any of the moves is irrelevant ==> dot is not visible
+    for(int i = 0; i < qCeil(moveTime); i++)
+        if(!sharedData.gameMap.get()->isDotAvailable((position + unitIncrement).toPoint()))
+            return false;
+    return true;
 }
 
 AIBot::AIBot(MovingObjectProperties props) {
@@ -44,18 +53,18 @@ void AIBot::switchState(Shared & sharedData) {
             // TODO: if no visible enemies ==> patrol
             break;
         case Pursuit:
-            if(isVisible(nearestPlayerProps.getPosition()))
+            if(isVisible(nearestPlayerProps.getPosition(), sharedData))
                 state = Attack;
             // TODO: player is dead ==> patrol
             break;
         case Patrol:
-            if(isVisible(nearestPlayerProps.getPosition()) && hp <= consts::hpEscape)
+            if(isVisible(nearestPlayerProps.getPosition(), sharedData) && hp <= consts::hpEscape)
                 state = Escape;
-            if(isVisible(nearestPlayerProps.getPosition()) && hp > consts::hpEscape)
+            if(isVisible(nearestPlayerProps.getPosition(), sharedData) && hp > consts::hpEscape)
                 state = Attack;
             break;
         case Escape:
-            if(!isVisible(nearestPlayerProps.getPosition()))
+            if(!isVisible(nearestPlayerProps.getPosition(), sharedData))
                 state = Patrol;
             break;
         default:

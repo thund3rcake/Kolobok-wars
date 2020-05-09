@@ -2,7 +2,10 @@
 #define BOTTHREAD_H
 
 #include "thread.h"
-#include "aiprocessor.h"
+#include "sharedtypes.h"
+#include "Datagramms.h"
+#include "aibot.h"
+#include <QLinkedList>
 
 class BotThread: public Thread
 {
@@ -13,8 +16,8 @@ public:
     void getProperty() override;
 
 private:
-    AIProcessor aiProcessor;
-
+    MovingObjectProperties updateMovingProperties(Shared & sharedData, MovingObjectProperties currentProps);
+    QLinkedList<AIBot *> aiBots;
 };
 
 //class botThread: public Thread {

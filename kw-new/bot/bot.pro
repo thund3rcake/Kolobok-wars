@@ -5,7 +5,7 @@ QT += widgets \
       core \
 
 # Defines
-DEFINES += KOLOBOK_BOT \
+DEFINES += KOLOBOK_CLIENT \
     NET_VERSION=1 \
     NET_SUBVERSION=0 \
     COMMON_LIBRARY
@@ -19,12 +19,10 @@ DEPENDPATH += $$PWD/../common
 
 HEADERS += \
     aibot.h \
-    aiprocessor.h \
     botthread.h \
     utilityalgorithms.h
 
 SOURCES += \
     aibot.cpp \
-    aiprocessor.cpp \
     botthread.cpp \
     utilityalgorithms.cpp

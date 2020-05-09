@@ -14,7 +14,6 @@ DEFINES += KOLOBOK_CLIENT \
     COMMON_LIBRARY
 
 HEADERS += \
-    AIBot.h \
     Bullet.h \
     CommonGlobal.h \
     Datagramms.h \
@@ -41,5 +40,4 @@ SOURCES += \
     utils.cpp \
     weapon.cpp \
     xmlParser.cpp \
-    main.cpp \
-    AIBot.cpp
+    main.cpp

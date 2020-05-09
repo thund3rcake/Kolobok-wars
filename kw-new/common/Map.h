@@ -63,7 +63,7 @@ private:
     QString backgroundPath;
 
     QList<PolygonEntity*> polygons;
-    QVector<QVector<quint8> > availableDots;
+    QVector<QVector<quint8>> availableDots;
     QVector<QPoint> m_respawnPlaces;
 
 signals:
