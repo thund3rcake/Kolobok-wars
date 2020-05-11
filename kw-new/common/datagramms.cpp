@@ -206,6 +206,37 @@ bool MovingObjectProperties::operator== (const MovingObjectProperties & rhs) con
     return false;
 }
 
+MovingObjectProperties& MovingObjectProperties::operator<<=(const MovingObjectProperties & prop) {
+    timestamp = prop.timestamp;
+    type = prop.type;
+    team = prop.team;
+    id = prop.id;
+    intent = prop.intent;
+    hp = prop.hp;
+    head = prop.head;
+    weapon = prop.weapon;
+    return *this;
+}
+
+MovingObjectProperties MovingObjectProperties::getEmptyProperty() {
+    MovingObjectProperties prop;
+    Weapon wep;
+    prop.setTimestamp(0);
+    prop.setType(MovingObjectProperties::Timestamp);
+    prop.setTeam(MovingObjectProperties::Red);
+    prop.setId(0);
+    prop.setPosition(QPoint(0, 0));
+    prop.setIntent(QVector2D(0, 0));
+    prop.setHead(QVector2D(0, 0));
+    prop.setHp(0);
+    wep.setType(Weapon::Blaster);
+    wep.setState(Weapon::NoFire);
+    wep.setTarget(QPointF(0, 0));
+    wep.setMasterId(0);
+    prop.setWeapon(wep);
+    return prop;
+}
+
 quint32 MovingObjectProperties::getTimestamp() const {
     return timestamp;
 }

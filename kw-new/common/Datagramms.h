@@ -160,10 +160,12 @@ public:
                                                         QObject * parent = 0
                                                         );
 
+    MovingObjectProperties getEmptyProperty();
     MovingObjectProperties (const MovingObjectProperties & rhs);
     virtual ~MovingObjectProperties ();
 
     bool operator== (const MovingObjectProperties & rhs) const;
+    MovingObjectProperties& operator<<=(const MovingObjectProperties & prop);
 
     Q_PROPERTY(quint32 timestamp
                READ getTimestamp
