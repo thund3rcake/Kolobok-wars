@@ -44,17 +44,16 @@ LanTab::LanTab( QWidget * parent ):
   QWidget::connect( lanConnect, SIGNAL( clicked()),
                     this,       SLOT( onConnectClicked()) );
 
-  /*
-  QWidget::connect( lanSrv, SIGNAL( readyToConnect() ),
-                    lanConnect, SLOT( activate()) );
+
+//  QWidget::connect( lanSrv, SIGNAL( readyToConnect() ), lanConnect, SLOT( activate()) );
   QWidget::connect( this, SIGNAL( itemClicked( QTreeWidgetItem *, int )),
                     this, SLOT( setCurrentServer( QTreeWidgetItem *, int )) );
 
 
-  QWidget::connect( lanSrv, SIGNAL( error( int, QString )),
-                    this, SLOT( catchError ( int, QString )) );
+//  QWidget::connect( lanSrv, SIGNAL( error( int, QString )),
+//                    this, SLOT( catchError ( int, QString )) );
 
-  */
+
 }
 
 void LanTab::tableInitialization()

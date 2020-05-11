@@ -160,7 +160,7 @@ public:
                                                         QObject * parent = 0
                                                         );
 
-    MovingObjectProperties getEmptyProperty();
+    void setEmptyProperty(MovingObjectProperties & prop);
     MovingObjectProperties (const MovingObjectProperties & rhs);
     virtual ~MovingObjectProperties ();
 
