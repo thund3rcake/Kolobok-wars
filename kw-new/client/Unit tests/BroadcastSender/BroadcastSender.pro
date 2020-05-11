@@ -16,22 +16,22 @@ CONFIG -= app_bundle
 INCLUDEPATH += $$PWD/../../../common
 DEPENDPATH += $$PWD/../../../common
 
-INCLUDEPATH += $$PWD/../../../server
-DEPENDPATH += $$PWD/../../../server
+INCLUDEPATH += $$PWD/../../../Server
+DEPENDPATH += $$PWD/../../../Server
 
 
 TEMPLATE = app
 
 SOURCES +=  main.cpp \
     testsender.cpp \
-    $$PWD/../../../server/broadcastSender.cpp \
+    $$PWD/../../../Server/broadcastSender.cpp \
     $$PWD/../../../common/serializable.cpp \
     $$PWD/../../../common/datagramms.cpp \
     $$PWD/../../../common/weapon.cpp
 
 HEADERS += \
     testsender.h \
-    $$PWD/../../../server/BroadcastSender.h \
+    $$PWD/../../../Server/BroadcastSender.h \
     $$PWD/../../../common/Serializable.h \
     $$PWD/../../../common/Datagramms.h \
     $$PWD/../../../common/Weapon.h

@@ -8,6 +8,7 @@ BroadcastReceiver::BroadcastReceiver(
                                                                                     ):
     QUdpSocket((QObject * ) parent),
     servers(srvs) {
+    qDebug() << "BroadcastReceiver::BroadcastReceiver";
     if (!bind(27030, QUdpSocket::ShareAddress)) {
         throw Exception(error(), errorString());
     }
@@ -19,8 +20,10 @@ BroadcastReceiver::BroadcastReceiver(
 
 
 void BroadcastReceiver::processPendingDatagramms() {
+    //qDebug() << "readyRead";
 
     while (hasPendingDatagrams()) {
+        qDebug() << "Data here";
         QByteArray data1;
         QDataStream response(&data1, QIODevice::OpenModeFlag::ReadOnly); //BroadcastSender and BroadcastReceiver must call the same constructor
         ServerAbout info;
@@ -36,10 +39,14 @@ void BroadcastReceiver::processPendingDatagramms() {
 
         readDatagram(data1.data(), data1.size(), &(info.address), &(info.port));
 
+        qDebug() << "received";
+
         response >> size;
         response >> info.data;
 
         info.port = info.data.getTcpPort();
+
+        qDebug() << info.port;
 
 
         if(info.data.getSignature() != QStringSignature ||
