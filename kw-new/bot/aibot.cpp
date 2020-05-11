@@ -6,6 +6,7 @@
 #include "sharedobject.h"
 #include <QLinkedList>
 #include "aibot.h"
+#include "utilityalgorithms.h"
 #include "Entity.h"
 
 bool AIBot::isVisible(QPointF playerPos, Shared & sharedData) {
@@ -21,6 +22,21 @@ bool AIBot::isVisible(QPointF playerPos, Shared & sharedData) {
             return false;
     return true;
 }
+
+void AIBot::attack(MovingObjectProperties playerProps)
+{
+    fire(playerProps.getPosition(), 0);
+}
+
+void AIBot::pursuit(MovingObjectProperties playerProps, Shared & sharedData)
+{
+    QVector2D intent = UtilityAlgorithms::getMoveIntent(
+                position, playerProps.getPosition(), sharedData, consts::stride
+                );
+    this->intent = intent;
+}
+
+
 
 AIBot::AIBot(MovingObjectProperties props) {
    state = Patrol;
@@ -85,11 +101,10 @@ MovingObjectProperties AIBot::action(Shared & sharedData, MovingObjectProperties
 
     switch (state) {
         case Attack:
-            // TODO: need to implement fire()
-            fire(nearestPlayerProps.getPosition(), 0);
+            attack(nearestPlayerProps);
             break;
         case Pursuit:
-            // pursuit
+            pursuit(nearestPlayerProps, sharedData);
             break;
         case Patrol:
             // patrol
@@ -100,7 +115,17 @@ MovingObjectProperties AIBot::action(Shared & sharedData, MovingObjectProperties
         default:
             break;
     }
+    newProps.setIntent(intent);
+    newProps.setHp(hp);
+    newProps.setWeapon(weapon);
     return newProps;
+}
+
+void AIBot::setProperties(MovingObjectProperties props)
+{
+    position = props.getPosition();
+    hp = props.getHp();
+    head = props.getHead();
 }
 
 

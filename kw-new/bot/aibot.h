@@ -22,11 +22,17 @@ public:
     // qint32 getTimeStep ();
     void switchState(Shared & sharedData);
     MovingObjectProperties action(Shared & sharedData, MovingObjectProperties currentProps);
+    void setProperties(MovingObjectProperties props);
 
 private:
     AIBot (const AIBot & rhs);
     AIBot & operator= (const Player & rhs);
     bool isVisible(QPointF playerPos, Shared & sharedData);
+
+    void attack(MovingObjectProperties playerProps);
+    void escape(Shared & sharedData);
+    void pursuit(MovingObjectProperties playerProps, Shared & sharedData);
+    void patrol(Shared & sharedData);
 
     State state;
     MovingObjectProperties::Team team;

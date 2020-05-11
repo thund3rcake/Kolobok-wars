@@ -7,17 +7,26 @@
 #include "aibot.h"
 #include <QLinkedList>
 
-class BotThread: public Thread
+class BotThread: public QThread
 {
 public:
-    BotThread();
+    BotThread(quint16 id, Shared & sharedData, QObject * parent);
 
-    void run() override;
-    void getProperty() override;
+    void run();
+    void getProperty();
+    quint16 getId();
 
 private:
-    MovingObjectProperties updateMovingProperties(Shared & sharedData, MovingObjectProperties currentProps);
+    void updateCoordinates (MovingObjectProperties & prop);
+    qreal isThereCollisionsWithTheOthers ( QPointF position );
+    qreal getLength(QPointF a, QPointF b);
+    void updateMovingProperties(Shared & sharedData);
     QLinkedList<AIBot *> aiBots;
+    MovingObjectProperties botProps;
+    Shared & sharedData;
+    QTime timer;
+    QTimer * timestampSendTimer;
+    quint16 id;
 };
 
 //class botThread: public Thread {

@@ -20,6 +20,7 @@ namespace consts
 
   /************** BOT CONSTS *************/
   static const int hpEscape = 15; // starts escaping when hp gets lower then that value
+  static const quint8 stride = 10; // scale of the grid used by BFS in UtilityAlgorithms
 }
 
 #endif /* GAMESCENECONSTS_H_ */

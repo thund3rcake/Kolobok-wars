@@ -15,7 +15,8 @@ struct Node {
     Node() {};
 };
 
-QLinkedList<QPointF> UtilityAlgorithms::breadthFirstSearch(QPointF source, QPointF destination, Shared & sharedData, quint32 timestamp)
+QLinkedList<QPointF> UtilityAlgorithms::breadthFirstSearch(
+        QPointF source, QPointF destination, Shared & sharedData, quint8 stride)
 {
     QLinkedList<QPointF> visited = QLinkedList<QPointF>();
     QLinkedList<QPointF> path = QLinkedList<QPointF>();
@@ -33,10 +34,10 @@ QLinkedList<QPointF> UtilityAlgorithms::breadthFirstSearch(QPointF source, QPoin
         if(current->point == destination)
             break;
 
-        Node * left = new Node(current->point + QPointF(-1, 0), nullptr);
-        Node * right = new Node(current->point + QPointF(1, 0), nullptr);
-        Node * top = new Node(current->point + QPointF(0, 1), nullptr);
-        Node * bottom = new Node(current->point + QPointF(0, -1), nullptr);
+        Node * left = new Node(current->point + QPointF(-stride, 0), nullptr);
+        Node * right = new Node(current->point + QPointF(stride, 0), nullptr);
+        Node * top = new Node(current->point + QPointF(0, stride), nullptr);
+        Node * bottom = new Node(current->point + QPointF(0, -stride), nullptr);
 
         // append adjacent vertices
         if(sharedData.gameMap.get()->isDotAvailable(left->point.toPoint()) && !visited.contains(left->point)) {
@@ -73,6 +74,16 @@ QLinkedList<QPointF> UtilityAlgorithms::breadthFirstSearch(QPointF source, QPoin
     }
 
     return path;
+}
+
+QVector2D UtilityAlgorithms::getMoveIntent(
+        QPointF source, QPointF destination, Shared & sharedData, quint8 stride)
+{
+    QLinkedList<QPointF> path = breadthFirstSearch(source, destination, sharedData, stride);
+    QPointF next_point = path.takeFirst();
+    QVector2D intent = QVector2D(next_point - source);
+    intent.normalize();
+    return intent;
 }
 
 //QVector2D intent = QVector2D(destination.x() - source.x(), destination.y() - source.y());
