@@ -199,7 +199,7 @@ void TcpClient::send() {
     QByteArray block;
     static GameProperties dataForSend;
 
-    QDataStream request(&block, QIODevice::OpenModeFlag::WriteOnly);
+    QDataStream request(&block, QIODevice::WriteOnly);
     request.setVersion(Net::DataStreamVersion);
 
     mutex.lock();

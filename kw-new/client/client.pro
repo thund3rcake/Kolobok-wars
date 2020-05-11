@@ -51,8 +51,7 @@ SOURCES += \
     FavoriteTab.cpp \
     GraphicsView.cpp \
     LanTab.cpp \
-    MainMenuCanvas.cpp \
-    kolobok-wars-client.cpp
+    MainMenuCanvas.cpp
 
 unix:!macx: LIBS += -L$$PWD/../build-common-Desktop-Debug/ -lcommon
 

@@ -50,7 +50,7 @@ void HUD::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void HUD::keyReleaseEvent(QKeyEvent * event) {
+void HUD::keyReleaseEvent(QKeyEvent *event) {
     if (event -> key() == Qt::Key_Tab) {
         statistics -> hide();
         console -> show();

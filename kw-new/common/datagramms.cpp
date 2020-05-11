@@ -218,7 +218,8 @@ MovingObjectProperties& MovingObjectProperties::operator<<=(const MovingObjectPr
     return *this;
 }
 
-void MovingObjectProperties::setEmptyProperty(MovingObjectProperties & prop) {
+MovingObjectProperties MovingObjectProperties::getEmptyProperty() {
+    MovingObjectProperties prop;
     Weapon wep;
     prop.setTimestamp(0);
     prop.setType(MovingObjectProperties::Timestamp);
@@ -233,6 +234,7 @@ void MovingObjectProperties::setEmptyProperty(MovingObjectProperties & prop) {
     wep.setTarget(QPointF(0, 0));
     wep.setMasterId(0);
     prop.setWeapon(wep);
+    return prop;
 }
 
 quint32 MovingObjectProperties::getTimestamp() const {

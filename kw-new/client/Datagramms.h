@@ -160,12 +160,10 @@ public:
                                                         QObject * parent = 0
                                                         );
 
-    MovingObjectProperties getEmptyProperty();
     MovingObjectProperties (const MovingObjectProperties & rhs);
     virtual ~MovingObjectProperties ();
 
     bool operator== (const MovingObjectProperties & rhs) const;
-    MovingObjectProperties& operator<<=(const MovingObjectProperties & prop);
 
     Q_PROPERTY(quint32 timestamp
                READ getTimestamp
@@ -205,7 +203,7 @@ public:
     QVector2D getIntent() const;
     QVector2D getHead() const;
     quint8 getHp() const;
-    Weapon getWeapon();
+    Weapon getWeapon() const;
 
     void setTimestamp(quint32 timestamp);
     void setType(MovingObjectProperties::Type type);
