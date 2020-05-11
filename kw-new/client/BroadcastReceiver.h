@@ -6,8 +6,6 @@
 #include<Versions.h>
 #include<Datagramms.h>
 
-class ServersTable;
-
 
 class BroadcastReceiver:  public QUdpSocket{
     Q_OBJECT

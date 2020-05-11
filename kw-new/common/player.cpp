@@ -17,7 +17,7 @@ Player::Player (QString name, Player::Team team):
   this->setRect( 0, 0, scaledPlayerSize(), scaledPlayerSize() );
 }
 
-void  Player::setHead ( QVector2D & vector )
+void  Player::setHead ( QVector2D vector )
 {
   head = vector.normalized();
 }

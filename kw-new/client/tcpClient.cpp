@@ -10,8 +10,8 @@
 TcpClient::TcpClient(
                                             const QHostAddress & server,
                                             quint16 port,
-                                            quint32 timeout,
-                                            QObject * parent
+                                            QObject * parent,
+                                            quint32 timeout
                                             ):
     QThread(parent),
     host(server),
@@ -173,7 +173,7 @@ bool TcpClient::checkConnectionInfo() {
     udpPortOption.setFirstQInt(0);
 
     while ( !udpPortOption.getFirstQInt()) {
-//        udpPortOption.setFirstQInt(static_cast<GameScene*>(parent()) -> getUdpPort());
+        udpPortOption.setFirstQInt(static_cast<GameScene*>(parent()) -> getUdpPort());
         usleep(3);
     }
 

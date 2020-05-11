@@ -3,6 +3,7 @@
 
 #include<QObject>
 #include<QLabel>
+#include<QWidget>
 #include<QtGui>
 #include<QHBoxLayout>
 

@@ -28,7 +28,7 @@ public:
                QWidget * widget = 0
                );
 
-    void setHead (QVector2D &);
+    void setHead (QVector2D );
     const QVector2D & getHead ();
     void fire (QPointF target, int type); //не реализован
 

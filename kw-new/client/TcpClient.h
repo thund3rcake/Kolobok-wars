@@ -16,7 +16,7 @@
 
 class TcpClient : public QThread {
     Q_OBJECT
-
+public:
     enum Mode {
         None,
         Exit,
@@ -25,12 +25,11 @@ class TcpClient : public QThread {
         Listen
                             };
 
-public:
     TcpClient(
                         const QHostAddress & server,
                         quint16 port,
-                        quint32 timeout = 1000,
-                        QObject * parent = 0
+                        QObject * parent = 0,
+                        quint32 timeout = 1000
                         );
     virtual ~TcpClient();
 

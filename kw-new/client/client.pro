@@ -8,7 +8,8 @@ DEFINES += KOLOBOK_CLIENT \
 
 QT +=  network \
                 core \
-                widgets
+                widgets \
+                opengl
 
 HEADERS += \
     TcpClient.h \
@@ -20,7 +21,19 @@ HEADERS += \
     GamePanel.h \
     HUDStyleSheets.h \
     Console.h \
-    Statistics.h
+    Statistics.h \
+    ActivatableButton.h \
+    GraphicsView.h \
+    LanTab.h \
+    MainMenuCanvas.h \
+    MainMenuStyle.h \
+    MainMenuButton.h \
+    MainMenu.h \
+    BaseWindow.h \
+    DerivedWindows.h \
+    FavoriteTab.h \
+    WindowStyle.h \
+    MainMenuStyle.h
 
 SOURCES += \
     tcpClient.cpp \
@@ -30,7 +43,15 @@ SOURCES += \
     console.cpp \
     gamePanel.cpp \
     statistics.cpp \
-    gameScene.cpp
+    gameScene.cpp \
+    mainMenu.cpp \
+    mainMenuButton.cpp \
+    BaseWindow.cpp \
+    DerivedWindows.cpp \
+    FavoriteTab.cpp \
+    GraphicsView.cpp \
+    LanTab.cpp \
+    MainMenuCanvas.cpp
 
 unix:!macx: LIBS += -L$$PWD/../build-common-Desktop-Debug/ -lcommon
 

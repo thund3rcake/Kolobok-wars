@@ -203,7 +203,7 @@ public:
     QVector2D getIntent() const;
     QVector2D getHead() const;
     quint8 getHp() const;
-    Weapon getWeapon();
+    Weapon getWeapon() const;
 
     void setTimestamp(quint32 timestamp);
     void setType(MovingObjectProperties::Type type);

@@ -262,7 +262,7 @@ void MovingObjectProperties::setHp(quint8 hp) {
     this -> hp = hp;
 }
 
-Weapon MovingObjectProperties::getWeapon() const {
+Weapon MovingObjectProperties::getWeapon() {
     return weapon;
 }
 void MovingObjectProperties::setWeapon(Weapon weapon) {

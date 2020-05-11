@@ -18,7 +18,7 @@ Console::Console(QWidget *parent) :
 
     consoleWidget -> setLayout(console);
 
-//    playerPos.setStyle(console);
+//    playerPos.setStyleSheet(console);
 //    topLeft.setStyleSheet(console);
 //    available.setStyleSheet(console);
 //    heading.setStyleSheet(console);
