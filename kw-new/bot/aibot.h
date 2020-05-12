@@ -1,7 +1,7 @@
 #ifndef AIBOT_H
 #define AIBOT_H
 
-#include "Player.h"
+#include <QVector>
 #include "Datagramms.h"
 #include "sharedtypes.h"
 
@@ -12,7 +12,7 @@ public:
     enum State {Attack, Pursuit, Patrol, Escape};
     // TODO: enum Role {Assault, Guardian};
 
-    AIBot(MovingObjectProperties props);
+    AIBot(Shared & sharedData, MovingObjectProperties props);
 
     // void setHead (QVector2D &);
     // const QVector2D & getHead ();
@@ -26,15 +26,25 @@ public:
 
 private:
     AIBot (const AIBot & rhs);
-    AIBot & operator= (const Player & rhs);
+    AIBot & operator= (const AIBot & rhs);
     bool isVisible(QPointF playerPos, Shared & sharedData);
 
+    // attack the specified player
     void attack(MovingObjectProperties playerProps);
-    void escape(Shared & sharedData);
-    void pursuit(MovingObjectProperties playerProps, Shared & sharedData);
-    void patrol(Shared & sharedData);
 
+    // escape from the specified player
+    void escape(MovingObjectProperties playerProps, Shared & sharedData);
+
+    // pursuit specified player
+    void pursuit(MovingObjectProperties playerProps, Shared & sharedData);
+
+    // patrol the map
+    void patrol(Shared &sharedData);
+
+    QRandomGenerator random;
     State state;
+    QVector<QPointF> patrolPoints;
+    qint8 currentPatrolIndex;
     MovingObjectProperties::Team team;
     QString name;
     quint8 hp;

@@ -1,4 +1,5 @@
 #include "utilityalgorithms.h"
+#include "GameWorldConsts.h"
 #include <QLinkedList>
 #include <QPointF>
 #include <QQueue>
@@ -84,6 +85,35 @@ QVector2D UtilityAlgorithms::getMoveIntent(
     QVector2D intent = QVector2D(next_point - source);
     intent.normalize();
     return intent;
+}
+
+QPointF UtilityAlgorithms::selectAvailableDot(Shared &sharedData)
+{
+    QPointF target;
+    do {
+        float x = qrand() % consts::mapSizeX;
+        float y = qrand() % consts::mapSizeY;
+        target = QPointF(x, y);
+    } while(!sharedData.gameMap.get()->isDotAvailable(target.toPoint()));
+}
+
+QVector<QPointF> UtilityAlgorithms::selectPolygon(Shared &sharedData, quint8 minEdgeLength)
+{
+    QVector<QPointF> polygon = QVector<QPointF>();
+    QPointF target = selectAvailableDot(sharedData);
+    polygon.push_back(target);
+    for(quint8 i = 1; i < consts::patrolPointsCount; i++) {
+        bool flag = false;
+        while (!flag) {
+            flag = true;
+            target = selectAvailableDot(sharedData);
+            for(auto it = polygon.begin(); it != polygon.end(); ++it)
+                if(QVector2D(*it - target).length() < minEdgeLength)
+                    flag = false;
+        }
+        polygon.push_back(target);
+    }
+    return polygon;
 }
 
 //QVector2D intent = QVector2D(destination.x() - source.x(), destination.y() - source.y());

@@ -50,7 +50,7 @@ void BotThread::updateMovingProperties(Shared & sharedData) {
     }
 
     if (currentBot == nullptr) { // create if not found
-        currentBot = new AIBot(botProps);
+        currentBot = new AIBot(sharedData, botProps);
         aiBots.append(currentBot);
     }
 
