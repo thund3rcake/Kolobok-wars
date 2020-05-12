@@ -121,13 +121,13 @@ bool TcpClient::waitForDataAvailable(
 bool TcpClient::checkConnectionInfo() {
     static QByteArray block;
     block.clear();
-    quint64 blockSize = 0;
-    QDataStream blockStream(&block, QIODevice::ReadOnly);
+    quint32 blockSize = 0;
+    QDataStream blockStream(&block, QIODevice::OpenModeFlag::ReadOnly);
     blockStream.setVersion(Net::DataStreamVersion);
     QDataStream in(socket);
     in.setVersion(Net::DataStreamVersion);
 
-    if(!waitForDataAvailable(sizeof(quint64), timeout)) {
+    if(!waitForDataAvailable(sizeof(quint32), timeout)) {
         return false;
     }
     in >> blockSize;
@@ -233,7 +233,7 @@ void TcpClient::waitResponse() {
     response.setVersion(Net::DataStreamVersion);
 
     quint32 size = 0;
-    while ((quint64) (socket -> bytesAvailable()) < sizeof(size)) {
+    while ((quint32) (socket -> bytesAvailable()) < sizeof(size)) {
         socket -> waitForReadyRead(50);
         if (QTcpSocket::ConnectedState != socket -> state()) {
             emit error (socket -> error(), "Disconnected from the server");

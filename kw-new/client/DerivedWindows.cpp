@@ -25,8 +25,8 @@ FindWindow::FindWindow( QWidget * parent ):
   QWidget::connect( lan, SIGNAL( error( int, QString)),
                     this, SLOT( catchError( int, QString )) );
 
-  QWidget::connect( lan, SIGNAL( startGame( const Net::ServerAbout & )),
-                    this, SLOT( onStartGame( const Net::ServerAbout & )) );
+  QWidget::connect( lan, SIGNAL( startGame( const ServerAbout & )),
+                    this, SLOT( onStartGame( const ServerAbout & )) );
 }
 
 FindWindow::~FindWindow()

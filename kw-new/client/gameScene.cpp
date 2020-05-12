@@ -127,7 +127,7 @@ void GameScene::repaint() {
 
 /* World's behavior */
 
-void GameScene::characterStreet() {
+void GameScene::characterStreer() {
     static int elapsed = 0;
     QVector2D v(0, 0);
     

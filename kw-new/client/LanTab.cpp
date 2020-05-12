@@ -43,8 +43,7 @@ LanTab::LanTab( QWidget * parent ):
 
   QWidget::connect( lanConnect, SIGNAL( clicked()),
                     this,       SLOT( onConnectClicked()) );
-
-  /*
+/*
   QWidget::connect( lanSrv, SIGNAL( readyToConnect() ),
                     lanConnect, SLOT( activate()) );
   QWidget::connect( this, SIGNAL( itemClicked( QTreeWidgetItem *, int )),
@@ -53,8 +52,8 @@ LanTab::LanTab( QWidget * parent ):
 
   QWidget::connect( lanSrv, SIGNAL( error( int, QString )),
                     this, SLOT( catchError ( int, QString )) );
+*/
 
-  */
 }
 
 void LanTab::tableInitialization()
@@ -71,13 +70,13 @@ void LanTab::tableInitialization()
 //  table -> header() -> setResizeMode( QHeaderView::Fixed );
 //  table -> header() -> setMaximumSize( 551, 16 );
 
-//  table -> setColumnCount ( Net::tableHeadLabels.count() );
-//  table -> setHeaderLabels( Net::tableHeadLabels );
+  table -> setColumnCount ( tableHeadLabels.count() );
+  table -> setHeaderLabels( tableHeadLabels );
 
-//  table -> header() -> resizeSection( 0, 540/Net::tableHeadLabels.count() ); //240
-//  table -> header() -> resizeSection( 1, 540/Net::tableHeadLabels.count() ); //95
-//  table -> header() -> resizeSection( 2, 540/Net::tableHeadLabels.count() ); //155
-//  table -> header() -> resizeSection( 3, 540/Net::tableHeadLabels.count() ); //60
+//  table -> header() -> resizeSection( 0, 540/tableHeadLabels.count() ); //240
+//  table -> header() -> resizeSection( 1, 540/tableHeadLabels.count() ); //95
+//  table -> header() -> resizeSection( 2, 540/tableHeadLabels.count() ); //155
+//  table -> header() -> resizeSection( 3, 540/tableHeadLabels.count() ); //60
 }
 
 

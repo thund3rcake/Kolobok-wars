@@ -109,7 +109,7 @@ public slots:
     void updateBulletsPos (NetDataContainer<MovingObjectProperties> *);
     void catchError (int, QString);
     void repaint();
-    void characterStreet();
+    void characterStreer();
     void setOwnId(quint16 id) {
         mainCharacter.setId(id);
     }

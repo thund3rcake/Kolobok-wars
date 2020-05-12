@@ -68,8 +68,8 @@ MainMenuScene::MainMenuScene( QApplication * pApp, QGraphicsView * pView ):
 
   QWidget::connect( findW,      SIGNAL( error( int, QString )),
                     this,       SLOT( catchError( int, QString )) );
-  QWidget::connect( findW,      SIGNAL( startGame( const Net::ServerAbout & )),
-                    parentView, SLOT( onConnect( const Net::ServerAbout & )) );
+  QWidget::connect( findW,      SIGNAL( startGame( const ServerAbout & )),
+                    parentView, SLOT( onConnect( const ServerAbout & )) );
 }
 
 MainMenuScene::~MainMenuScene()
