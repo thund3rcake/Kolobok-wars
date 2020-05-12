@@ -19,6 +19,7 @@ PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
     allowFire(true) {
 
     qDebug() << "PT:PT";
+    qDebug() << "PT:PT";
 
     playerMovProperties = getEmptyProperty();
 
