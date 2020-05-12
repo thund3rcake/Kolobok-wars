@@ -6,11 +6,11 @@ QPoint getDesktopSize() // Проблемы с QDescrtopWidget
 {
   static OnceCreated<QPoint> size;
 
-//  if ( size.isNull() ) //isNull() вернёт false, если вектор не пуст, иначе true.
-//  {
-//    QDesktopWidget desktop;
-//    size = QPoint( desktop.width(), desktop.height() );
-//  }
+  if ( size.isNull() ) //isNull() вернёт false, если вектор не пуст, иначе true.
+  {
+    QDesktopWidget desktop;
+    size = QPoint( desktop.width(), desktop.height() );
+  }
 
   return size.getdData(); //
 }

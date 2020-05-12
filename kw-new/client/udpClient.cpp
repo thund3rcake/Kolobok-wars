@@ -82,11 +82,13 @@ void UdpClient::send() {
         request << (quint32)(block.size() - sizeof(quint32));
 
         socket -> writeDatagram( block.data(), block.size(), server, port );
+
     }
 }
 
 
 void UdpClient::receive() {
+
 
     static QByteArray block;
     QDataStream response(&block, QIODevice::OpenModeFlag::ReadOnly);
@@ -95,8 +97,9 @@ void UdpClient::receive() {
     static QHostAddress address;
     static quint16 port;
 
-    if (socket -> hasPendingDatagrams()) {
 
+
+    if (socket -> hasPendingDatagrams()) {
         block.clear();
         block.resize(socket -> pendingDatagramSize());
         socket ->readDatagram(
@@ -144,7 +147,7 @@ bool UdpClient::packegeQuality(quint32 timestamp, bool incrementBadPckg) {
         }
     }
 
-    if (laggingFrom100 > 50) {
+    if (laggingFrom100 > 1000) {
         emit error(QUdpSocket::UnknownSocketError, "Bad connection.. : (");
     }
     if (receivedFrom100 >= 100) {

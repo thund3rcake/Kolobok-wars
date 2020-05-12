@@ -68,11 +68,11 @@ public:
     MovingEntity () {}
     MovingEntity (int, QPointF, QVector2D);
 
-    void setIntent (const QVector2D&);
+    void setIntention (const QVector2D);
     void setPosition (const QPointF&);
 
-    const QPointF & getPosition ();
-    const QVector2D & getIntention ();
+    const QPointF getPosition ();
+    const QVector2D getIntention ();
 
 protected:
     QPointF position;

@@ -81,7 +81,7 @@ QuitWindow::QuitWindow( QWidget * parent ):
   No  -> setStyleSheet( WindowStyle::PushButton );
 
   QWidget::connect( Yes,    SIGNAL( clicked() ),
-                    parent, SLOT( exit() ));
+                    parent, SLOT(exit() ));
   QWidget::connect( No,     SIGNAL( clicked() ),
                     this,   SLOT( close() ));
 
@@ -130,7 +130,7 @@ ErrorWindow::ErrorWindow( QWidget * parent ):
   QWidget::connect( Ok,     SIGNAL( clicked() ),
                     parent, SLOT( exit() ));
   QWidget::connect( this,   SIGNAL( closed() ),
-                    parent, SLOT( exit() ));
+                    parent, SLOT( close() ));
 
   QVBoxLayout * VLayout = new QVBoxLayout;
   QHBoxLayout * H1Layout = new QHBoxLayout;

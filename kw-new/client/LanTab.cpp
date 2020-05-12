@@ -97,7 +97,7 @@ void LanTab::refreshStart()
               this,  SLOT( onServerSelection( QTreeWidgetItem *, int )) );
 
 
-  timer.start( 4000 );
+  timer.start( 1000 );
 
   table -> clear();
   servers.clear();

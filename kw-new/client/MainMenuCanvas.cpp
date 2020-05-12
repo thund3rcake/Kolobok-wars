@@ -1,6 +1,6 @@
 ﻿#include <MainMenuCanvas.h>
 
-MainMenuCanvas::MainMenuCanvas( QApplication * pApp, int w, int h )
+MainMenuCanvas::MainMenuCanvas( QCoreApplication * pApp, int w, int h )
 {
   parentApp = pApp;
 
@@ -34,5 +34,5 @@ void MainMenuCanvas::addWidget( QWidget * widget )
 
 void MainMenuCanvas::exit()
 {
-//  parentApp -> exit( 0 );
+  parentApp -> exit(0);
 }

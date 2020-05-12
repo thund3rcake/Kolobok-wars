@@ -129,14 +129,18 @@ MovingEntity::MovingEntity (
     intent(intention)
 {}
 
-void MovingEntity::setIntent (const QVector2D & intention) {
+void MovingEntity::setIntention (const QVector2D intention) {
     intent = intention;
+}
+
+const QVector2D MovingEntity::getIntention () {
+  return intent;
 }
 
 void MovingEntity::setPosition (const QPointF & pos) {
     position = pos;
 }
 
-const QPointF & MovingEntity::getPosition () {
+const QPointF MovingEntity::getPosition () {
     return position;
 }

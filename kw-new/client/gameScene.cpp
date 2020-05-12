@@ -40,8 +40,6 @@ GameScene::GameScene(
 
     tcpClient -> setMode(TcpClient::Connect);
 
-    qDebug() << port;
-
     s_size = map -> getSize();
     s_size = (s_size * scale_x_100()) / 100;
 
@@ -78,7 +76,7 @@ GameScene::GameScene(
                           QPoint( desktopSize.rwidth()/2,
                                   desktopSize.rheight()/2 )
                          );
-    mainCharacter.setIntent ( QVector2D(0,0) );
+    mainCharacter.setIntention ( QVector2D(0,0) );
     mainCharacter.blockSignals(true);
     addItem(&mainCharacter);
     /* Draw the Player */
@@ -127,7 +125,7 @@ void GameScene::repaint() {
 
 /* World's behavior */
 
-void GameScene::characterStreer() {
+void GameScene::characterSteer() {
     static int elapsed = 0;
     QVector2D v(0, 0);
     
@@ -151,7 +149,7 @@ void GameScene::characterStreer() {
     
     v.normalize();
     
-    mainCharacter.setIntent(v);
+    mainCharacter.setIntention(v);
     
     MovingObjectProperties playerProp;
     playerProp.setHp(100);
@@ -159,7 +157,7 @@ void GameScene::characterStreer() {
     playerProp.setHead(mainCharacter.getHead());
     playerProp.setTeam(MovingObjectProperties::Red);
     playerProp.setType(MovingObjectProperties::Player);
-//    playerProp.setIntent(mainCharacter.getIntention());
+    playerProp.setIntent(mainCharacter.getIntention());
     playerProp.setPosition(mainCharacter.getPosition() * 100 / scale_x_100());
     playerProp.setTimestamp(time -> elapsed() - elapsed);
     playerProp.getWeapon().setType(Weapon::Blaster);

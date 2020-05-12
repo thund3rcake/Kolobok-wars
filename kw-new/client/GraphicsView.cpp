@@ -95,6 +95,7 @@ void GraphicsView::onError( int errNo, QString msg )
   curentScene = Menu;
 
   SignalsSwitchTo( Menu );
+  qDebug() << "no gameScene on error";
   deleteGameScene();
 }
 

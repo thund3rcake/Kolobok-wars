@@ -62,6 +62,7 @@ bool abstractNoAIMap::load_sDOT_file() {
     return false;
   }
   QDataStream dotData(&file);
+  dotData.setVersion(QDataStream::Qt_4_0);
 
   dotData >> availableDots;
   return true;
