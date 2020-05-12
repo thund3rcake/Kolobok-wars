@@ -94,11 +94,9 @@ void BroadcastSender::run() {
     while ( !quit ) {
         if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, 27030 ) < 0)
             emit error( socket -> error(), socket -> errorString() );
-        else
-            qDebug() << "Sended";
 
         mutex.unlock();
-        sleep( 4 );
+        usleep(1000);
         mutex.lock();
     }
     mutex.unlock();

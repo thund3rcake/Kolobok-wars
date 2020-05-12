@@ -103,24 +103,16 @@ quint16 PlayerThread::receivePeerPort() {
 
     //blockStream.device()->seek(0);
 
-    qDebug() << "comes to receivePeerPort";
-
     QDataStream sockStream(tcpSocket);
     sockStream.setVersion(Net::DataStreamVersion);
-
-    qDebug() << "sockStreamCreated";
 
     if (!(tcpSocket->isWritable())) {
         qDebug() << "notWritable";
         emit error(-1, "Client closes the connection");
     }
 
-    qDebug() << "before packing";
-
     sockStream << (quint32)packetBufer.size();
     sockStream << packetBufer;
-
-    qDebug() << "toSocketDone";
 
     tcpSocket->waitForBytesWritten(10);
 
@@ -128,8 +120,6 @@ quint16 PlayerThread::receivePeerPort() {
     quint32 blockSize;
     QDataStream in(tcpSocket);
     in.setVersion(Net::DataStreamVersion);
-
-    qDebug() << "QDataStream in created";
 
     if (!waitForBytesAvailable(sizeof(quint32), 1500)) {
         qDebug() << "PlayerThread::startCommutication() : TCP error 1"
@@ -222,7 +212,7 @@ void PlayerThread::updateCoordinates (MovingObjectProperties & prop) {
 
 void PlayerThread::regularGameEvents() {
 
-    if (noPacketsCounter >= 10000) {
+    if (noPacketsCounter >= 300000) {
         stopped = true;
     }
 
@@ -265,13 +255,13 @@ void PlayerThread::run() {
     }
 
     setPeerPort(receivePeerPort());
+    qDebug() << "peerP" << peerPort;
     peerAddress = new QHostAddress(tcpSocket->peerAddress());
 
     bool gotten = false;
     QMap<qint32, qint32>::iterator latencyIter;
 
     while(!stopped) {
-        qDebug() << noPacketsCounter;
         playerMovProperties = getProperty(gotten);
 
         if (gotten == false) {

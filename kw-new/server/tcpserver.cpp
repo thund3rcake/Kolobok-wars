@@ -15,7 +15,7 @@ TcpServer::TcpServer(quint16 port,
     if (!listen(QHostAddress::Any, port)) {
         qDebug() << "TCP Server: listen failed";
     } else {
-        qDebug() << "TCP Server: listen OK";
+        qDebug() << "TCP Serve r: listen OK";
     }
 }
 
