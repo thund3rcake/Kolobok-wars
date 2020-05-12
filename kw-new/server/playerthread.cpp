@@ -1,7 +1,7 @@
 #include <playerthread.h>
 #include <GameWorldConsts.h>
 
-PlayerThread::PlayerThread(quint16 id, int socketDescriptor,
+PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
              UdpServer & udpServer, Shared & sharedData,
              QObject * parent):
     QThread(parent),
@@ -18,6 +18,8 @@ PlayerThread::PlayerThread(quint16 id, int socketDescriptor,
     stopped(false),
     allowFire(true) {
 
+    qDebug() << "PT:PT";
+
     playerMovProperties = getEmptyProperty();
 
     sharedData.playerLatencyById.writeLock();
@@ -26,7 +28,7 @@ PlayerThread::PlayerThread(quint16 id, int socketDescriptor,
 
     gameEventsTimer->setInterval(100);
     QObject::connect(gameEventsTimer, SIGNAL(timeout()),
-                     this, SLOT(sendTimestamp()));
+                     this, SLOT(regularGameEvents()));
     gameEventsTimer->start();
     timer.start();
 }
@@ -58,62 +60,89 @@ void PlayerThread::sendTimestamp() {
     sendMovProperties(prop);
 }
 
-void PlayerThread::sendGameProperty(const GameProperties & prop)
-{
-  QDataStream request(tcpSocket);
-  request.setVersion(Net::DataStreamVersion);
+//void PlayerThread::sendGameProperty(const GameProperties & prop)
+//{
+//  QDataStream request(tcpSocket);
+//  request.setVersion(Net::DataStreamVersion);
 
-  if (!(tcpSocket->isWritable())) {
-      //delete the thread
-  }
+//  if (!(tcpSocket->isWritable())) {
+//      //delete the thread
+//  }
 
-  request << (quint32)0;
-  request << prop;
-  request.device() -> seek(0);
-  request << (quint32)(packetBufer.size() - sizeof(quint32));
+//  request << (quint32)0;
+//  request << prop;
+//  request.device() -> seek(0);
+//  request << (quint32)(packetBufer.size() - sizeof(quint32));
 
-  tcpSocket -> waitForBytesWritten(10);
-}
+//  tcpSocket -> waitForBytesWritten(10);
+//}
 
 bool PlayerThread::waitForBytesAvailable(qint64 size, qint32 maxTime,
                                          bool noBytesIsError) {
     while (tcpSocket->bytesAvailable() < size) {
-        if (!(tcpSocket->waitForReadyRead(maxTime)) && noBytesIsError) {
-            emit error(tcpSocket->error(), tcpSocket->errorString());
-            tcpSocket->disconnectFromHost();
+        if (!(tcpSocket->waitForReadyRead(maxTime))) {
+            if (noBytesIsError) {
+                emit error(tcpSocket->error(), tcpSocket->errorString());
+                tcpSocket->disconnectFromHost();
+            }
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 quint16 PlayerThread::receivePeerPort() {
     QDataStream blockStream(&packetBufer, QIODevice::WriteOnly);
     blockStream.setVersion(Net::DataStreamVersion);
 
-    // ! blockStream << (quint32)0;
     blockStream << QStringSignature;
     blockStream << Net::ProtVersion;
     blockStream << Net::ProtSubversion;
     blockStream << id;
 
-    // blockStream.device()->seek(0);
-    // ! blockStream << (quint32)(packetBufer.size() - sizeof(quint32));
+    //blockStream.device()->seek(0);
 
-    if (!waitForBytesAvailable(sizeof(quint64), 1500)) {
-        qDebug() << "PlayerThread::startCommutication() : TCP error "
+    qDebug() << "comes to receivePeerPort";
+
+    QDataStream sockStream(tcpSocket);
+    sockStream.setVersion(Net::DataStreamVersion);
+
+    qDebug() << "sockStreamCreated";
+
+    if (!(tcpSocket->isWritable())) {
+        qDebug() << "notWritable";
+        emit error(-1, "Client closes the connection");
+    }
+
+    qDebug() << "before packing";
+
+    sockStream << (quint32)packetBufer.size();
+    sockStream << packetBufer;
+
+    qDebug() << "toSocketDone";
+
+    tcpSocket->waitForBytesWritten(10);
+
+    packetBufer.clear();
+    quint32 blockSize;
+    QDataStream in(tcpSocket);
+    in.setVersion(Net::DataStreamVersion);
+
+    qDebug() << "QDataStream in created";
+
+    if (!waitForBytesAvailable(sizeof(quint32), 1500)) {
+        qDebug() << "PlayerThread::startCommutication() : TCP error 1"
                  << tcpSocket->errorString();
         return 0;
     }
 
-    quint64 blockSize;
-    QDataStream in(tcpSocket);
-    in.setVersion(Net::DataStreamVersion);
+    qDebug() << "data available";
 
     in >> blockSize;
-    //qDebug() << blockSize;
+    qDebug() << blockSize;
 
     if (!waitForBytesAvailable(blockSize, 500)) {
-        qDebug() << "PlayerThread::startCommutication() : TCP error "
+        qDebug() << "PlayerThread::startCommutication() : TCP error 2"
                  << tcpSocket->errorString();
         return 0;
     }
@@ -127,6 +156,7 @@ quint16 PlayerThread::receivePeerPort() {
         //delete the thread
     }
 
+    qDebug() << (quint16)prop.getFirstQInt();
     return (quint16)prop.getFirstQInt();
 }
 
@@ -225,6 +255,7 @@ MovingObjectProperties PlayerThread::getEmptyProperty() {
 }
 
 void PlayerThread::run() {
+    qDebug() << "PT::run()";
     tcpSocket = new QTcpSocket;
     if (!(tcpSocket->setSocketDescriptor(socketDescriptor))) {
         qDebug() << "PlayerThread::run(): " << tcpSocket->errorString();
@@ -239,6 +270,7 @@ void PlayerThread::run() {
     QMap<qint32, qint32>::iterator latencyIter;
 
     while(!stopped) {
+        qDebug() << noPacketsCounter;
         playerMovProperties = getProperty(gotten);
 
         if (gotten == false) {

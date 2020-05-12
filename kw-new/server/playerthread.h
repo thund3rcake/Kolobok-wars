@@ -14,7 +14,7 @@ class PlayerThread : public QThread {
     Q_OBJECT
 
 public:
-    PlayerThread(quint16 id, int socketDescriptor,
+    PlayerThread(quint16 id, qintptr socketDescriptor,
                  UdpServer & udpServer, Shared & sharedData,
                  QObject * parent);
 
@@ -27,7 +27,7 @@ public:
 
 private:
     quint16 id;
-    int socketDescriptor;
+    qintptr socketDescriptor;
     QTcpSocket * tcpSocket;
     QByteArray packetBufer;
 

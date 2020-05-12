@@ -19,7 +19,7 @@ TcpServer::TcpServer(quint16 port,
     }
 }
 
-void TcpServer::incomingConnection(int socketDescriptor) {
+void TcpServer::incomingConnection(qintptr socketDescriptor) {
     qDebug() << "TcpServer::incomingConnection";
 
     quint16 id = 0;
@@ -32,10 +32,10 @@ void TcpServer::incomingConnection(int socketDescriptor) {
     PlayerThread * thread = new PlayerThread(id, socketDescriptor,
                                              udpServer, sharedData, this);
 
+//    QObject::connect(thread, SIGNAL(finished()),
+//                this, SLOT(deletePlayer));
     QObject::connect(thread, SIGNAL(finished()),
-                this, SLOT(deletePlayer));
-    QObject::connect(thread, SIGNAL(finished()),
-                thread, SLOT(deletePlayer));
+                thread, SLOT(deleteLater));
 
 
     sharedData.playerById.writeLock();
@@ -45,11 +45,11 @@ void TcpServer::incomingConnection(int socketDescriptor) {
     thread->start();
 }
 
-void TcpServer::deletePlayer() {
-    PlayersMap::iterator it = sharedData.playerById.get().begin();
-    for (;it != sharedData.playerById.get().end() && it.value()->isFinished(); ++it);
-    if (it != sharedData.playerById.get().end()) {
-        delete it.value();
-        sharedData.playerById.get().remove(it.key());
-    }
-}
+//void TcpServer::deletePlayer() {
+//    PlayersMap::iterator it = sharedData.playerById.get().begin();
+//    for (;it != sharedData.playerById.get().end() && it.value()->isFinished(); ++it);
+//    if (it != sharedData.playerById.get().end()) {
+//        delete it.value();
+//        sharedData.playerById.get().remove(it.key());
+//    }
+//}

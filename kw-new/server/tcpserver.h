@@ -32,10 +32,10 @@ public:
 
 protected slots:
     virtual
-    void incomingConnection(int socketDescriptor);
+    void incomingConnection(qintptr socketDescriptor);
 
 private slots:
-    void deletePlayer();
+    //void deletePlayer();
 
 private:
     quint16 port;
