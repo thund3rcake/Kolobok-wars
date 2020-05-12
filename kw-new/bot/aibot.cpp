@@ -8,12 +8,26 @@
 #include "aibot.h"
 #include "utilityalgorithms.h"
 #include "Entity.h"
+#include <QRandomGenerator>
+
+AIBot::AIBot(Shared & sharedData, MovingObjectProperties props) {
+   state = Patrol;
+   team = props.getTeam();
+   hp = props.getHp();
+   // head = props->getHead();
+   weapon = props.getWeapon();
+   position = props.getPosition();
+   id = props.getId();
+   patrolPoints = UtilityAlgorithms::selectPolygon(sharedData, consts::patrolEdgeMinLength);
+   currentPatrolIndex = -1;
+   random = QRandomGenerator();
+}
+
 
 bool AIBot::isVisible(QPointF playerPos, Shared & sharedData) {
-    quint32 velocity = 32;
     QVector2D move = QVector2D(playerPos.x() - position.x(), playerPos.y() - position.y());
     quint16 distance = move.length();
-    qfloat16 moveTime = distance / velocity;
+    qfloat16 moveTime = distance / consts::velocity;
     QPointF unitIncrement = (move / moveTime).toPointF();
 
     // split the vector into unit moves; if any of the moves is irrelevant ==> dot is not visible
@@ -28,25 +42,50 @@ void AIBot::attack(MovingObjectProperties playerProps)
     fire(playerProps.getPosition(), 0);
 }
 
-void AIBot::pursuit(MovingObjectProperties playerProps, Shared & sharedData)
+void AIBot::escape(MovingObjectProperties playerProps, Shared &sharedData)
 {
-    QVector2D intent = UtilityAlgorithms::getMoveIntent(
-                position, playerProps.getPosition(), sharedData, consts::stride
-                );
+    // move opposite direction
+    QVector2D moveDirection = (-1) * QVector2D(playerProps.getPosition() - position);
+    float moveDistance = moveDirection.length() / consts::velocity;
+    moveDirection.normalize();
+    QVector2D intent = moveDirection * moveDistance;
+    QPoint nextPos = position.toPoint() + intent.toPoint();
+    float nextDist;
+    if(!sharedData.gameMap.get()->isDotAvailable(nextPos))
+        do {
+            intent = QVector2D(random.generateDouble(), random.generateDouble());
+            nextPos = position.toPoint() + intent.toPoint();
+            nextDist = QVector2D(nextPos - playerProps.getPosition()).length();
+        } while(!sharedData.gameMap.get()->isDotAvailable(nextPos) && nextDist <= moveDistance);
     this->intent = intent;
 }
 
+void AIBot::pursuit(MovingObjectProperties playerProps, Shared & sharedData)
+{
+    QVector2D intent = UtilityAlgorithms::getMoveIntent(
+                position,
+                playerProps.getPosition(),
+                sharedData,
+                consts::stride);
 
-
-AIBot::AIBot(MovingObjectProperties props) {
-   state = Patrol;
-   team = props.getTeam();
-   hp = props.getHp();
-   // head = props->getHead();
-   weapon = props.getWeapon();
-   position = props.getPosition();
-   id = props.getId();
+    this->intent = intent;
 }
+
+void AIBot::patrol(Shared &sharedData)
+{
+    if(currentPatrolIndex == -1 || position == patrolPoints.at(currentPatrolIndex)) {
+        currentPatrolIndex += 1;
+        currentPatrolIndex %= consts::patrolPointsCount;
+    }
+    QVector2D intent = UtilityAlgorithms::getMoveIntent(
+                position,
+                patrolPoints.at(currentPatrolIndex),
+                sharedData,
+                consts::stride);
+
+    this->intent = intent;
+}
+
 
 void AIBot::fire(QPointF target, int type) {
     // TODO: implement
@@ -108,9 +147,11 @@ MovingObjectProperties AIBot::action(Shared & sharedData, MovingObjectProperties
             break;
         case Patrol:
             // patrol
+            patrol(sharedData);
             break;
         case Escape:
             // escape
+            escape(nearestPlayerProps, sharedData);
             break;
         default:
             break;
