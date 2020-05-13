@@ -8,8 +8,8 @@
 
 Bullet::Bullet (
                int id,
-               const QPointF & position,
-               QPointF& targAbs,
+               const QPointF position,
+               QPointF targAbs,
                Weapon::Type typ
                ):
     MovingEntity(id, position, QVector2D(-position+targAbs).normalized()),
@@ -55,4 +55,8 @@ bool Bullet::isTargetReach ()
     return true;
   }
   return false;
+}
+
+Weapon Bullet::getBulletWeapon() const {
+    return weapon;
 }

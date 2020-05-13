@@ -182,10 +182,6 @@ void markTheNearest (
 
 bool abstractNoAIMap::isDotAvailable (QPoint dot) {
 
-#ifdef KOLOBOK_CLIENT
-  dot = dot*100/scale_x_100();
-#endif
-
   if ( (uint)dot.rx() >= m_sizeW || (uint)dot.ry() >= m_sizeH )
     return false;
   else {

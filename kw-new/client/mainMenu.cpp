@@ -136,9 +136,9 @@ void MainMenuScene::catchError( int, const QString & msg )
 
   resume     -> deactivate();
   disconnect -> deactivate();
-  findBtn    -> deactivate();
-  optionsBtn -> deactivate();
-  quitBtn    -> deactivate();
+//  findBtn    -> deactivate();
+//  optionsBtn -> deactivate();
+//  quitBtn    -> deactivate();
 }
 
 void MainMenuScene::onDisconnect()

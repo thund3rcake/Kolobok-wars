@@ -8,7 +8,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsPolygonItem>
 #include <CommonGlobal.h>
-#include "Datagramms.h"
+#include <Datagramms.h>
 
 class KW_COMMON_EXPORT Player: public MovingEntity, public QGraphicsRectItem {
 

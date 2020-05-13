@@ -20,8 +20,8 @@ namespace consts
   static const int playerSize  = 7; //in map coordinates
 
   /************** MAP CONSTS *************/
-  static const quint8 mapSizeX = 700;
-  static const quint8 mapSizeY = 900;
+  static const quint32 mapSizeX = 700;
+  static const quint32 mapSizeY = 900;
 
   /************** BOT CONSTS *************/
   static const int hpEscape = 15; // starts escaping when hp gets lower then that value

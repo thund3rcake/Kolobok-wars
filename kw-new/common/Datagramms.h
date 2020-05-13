@@ -160,7 +160,6 @@ public:
                                                         QObject * parent = 0
                                                         );
 
-    MovingObjectProperties getEmptyProperty();
     MovingObjectProperties (const MovingObjectProperties & rhs);
     virtual ~MovingObjectProperties ();
 
@@ -194,6 +193,8 @@ public:
     Q_PROPERTY(Weapon weapon
                READ getWeapon
                WRITE setWeapon);
+
+    void setEmptyProperty();
 
     quint32 getTimestamp() const;
     MovingObjectProperties::Type getType() const;

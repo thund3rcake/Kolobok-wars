@@ -218,23 +218,21 @@ MovingObjectProperties& MovingObjectProperties::operator<<=(const MovingObjectPr
     return *this;
 }
 
-MovingObjectProperties MovingObjectProperties::getEmptyProperty() {
-    MovingObjectProperties prop;
+void MovingObjectProperties::setEmptyProperty() {
     Weapon wep;
-    prop.setTimestamp(0);
-    prop.setType(MovingObjectProperties::Timestamp);
-    prop.setTeam(MovingObjectProperties::Red);
-    prop.setId(0);
-    prop.setPosition(QPoint(0, 0));
-    prop.setIntent(QVector2D(0, 0));
-    prop.setHead(QVector2D(0, 0));
-    prop.setHp(0);
+    setTimestamp(0);
+    setType(MovingObjectProperties::Timestamp);
+    setTeam(MovingObjectProperties::Red);
+    setId(0);
+    setPosition(QPoint(0, 0));
+    setIntent(QVector2D(0, 0));
+    setHead(QVector2D(0, 0));
+    setHp(100);
     wep.setType(Weapon::Blaster);
     wep.setState(Weapon::NoFire);
     wep.setTarget(QPointF(0, 0));
     wep.setMasterId(0);
-    prop.setWeapon(wep);
-    return prop;
+    setWeapon(wep);
 }
 
 quint32 MovingObjectProperties::getTimestamp() const {

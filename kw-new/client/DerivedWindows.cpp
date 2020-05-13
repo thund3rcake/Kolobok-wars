@@ -128,7 +128,7 @@ ErrorWindow::ErrorWindow( QWidget * parent ):
   Ok -> setStyleSheet( WindowStyle::PushButton );
 
   QWidget::connect( Ok,     SIGNAL( clicked() ),
-                    parent, SLOT( exit() ));
+                    parent, SLOT( close() ));
   QWidget::connect( this,   SIGNAL( closed() ),
                     parent, SLOT( close() ));
 

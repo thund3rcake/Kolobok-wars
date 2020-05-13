@@ -10,7 +10,7 @@
 class KW_COMMON_EXPORT Bullet: public MovingEntity, public QGraphicsRectItem
 {
 public:
-    Bullet (int, const QPointF&, QPointF&, Weapon::Type);
+    Bullet (int, const QPointF, QPointF, Weapon::Type);
 
     virtual
     //отрисовывает пулю
@@ -21,6 +21,8 @@ public:
                );
     //определяет, попало или нет
     bool isTargetReach ();
+
+    Weapon getBulletWeapon() const;
 
 private:
     Bullet ();

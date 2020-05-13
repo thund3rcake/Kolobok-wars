@@ -63,7 +63,7 @@ void UdpClient::send() {
 
     static QByteArray block;
     MovingObjectProperties sendProperty;
-//    MovingObjectProperties::setEmptyProperty(sendProperty);
+    sendProperty.setEmptyProperty();
     QDataStream request(&block, QIODevice::OpenModeFlag::WriteOnly);
 
     request.setVersion( Net::DataStreamVersion );
