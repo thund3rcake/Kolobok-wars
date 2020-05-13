@@ -16,7 +16,8 @@ ServerTools::ServerTools(
     console(console),
     broadcastSender(NULL),
     udpServer(NULL),
-    tcpServer(NULL) {
+    tcpServer(NULL),
+    quit(false) {
 
     console->clear();
     curTime.start();
@@ -34,7 +35,7 @@ ServerTools::ServerTools(
 
     try {
         console->insertHtml("Starting TCP-server... &nbsp");
-        TcpServer * tcpServer = new TcpServer(port, maxPlayers, *udpServer, data, this);
+        TcpServer * tcpServer = new TcpServer(port, maxPlayers, *udpServer, data, quit, this);
     } catch (TcpServer::Exception exception) {
         console->insertHtml("[Fail]<br />");
         console->insertHtml(exception.message + "<br />");
@@ -55,11 +56,20 @@ ServerTools::ServerTools(
 ServerTools::~ServerTools()
 {
     qDebug() << "~ServTools";
+    quit = true;
     delete broadcastSender;
     disconnect( udpServer, SIGNAL( newPacket() ),
                 this,      SLOT( setNewUdpPacket() ));
     delete udpServer;
+    qDebug() << "start deleting tcp";
+    for (PlayersMap::iterator it = data.playerById.get().begin();
+         it != data.playerById.get().end(); ++it) {
+        it.value()->wait();
+        delete it.value();
+        qDebug() << "another player deleted";
+    }
     delete tcpServer;
+    qDebug() << "~~ServTools";
 }
 
 BroadcastSender & ServerTools::getBroadcastSender() {

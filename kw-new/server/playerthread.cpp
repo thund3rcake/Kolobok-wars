@@ -2,7 +2,7 @@
 #include <GameWorldConsts.h>
 
 PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
-             UdpServer & udpServer, Shared & sharedData,
+             UdpServer & udpServer, Shared & sharedData, const bool & quit,
              QObject * parent):
     QThread(parent),
     id(id),
@@ -16,7 +16,8 @@ PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
     timestampCounter(0),
     noPacketsCounter(0),
     stopped(false),
-    allowFire(true) {
+    allowFire(true),
+    quit(quit) {
 
     playerMovProperties = getEmptyProperty();
 
@@ -29,6 +30,16 @@ PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
                      this, SLOT(regularGameEvents()));
     gameEventsTimer->start();
     timer.start();
+}
+
+PlayerThread::~PlayerThread() {
+    if (tcpSocket) {
+        delete tcpSocket;
+    }
+
+    if (incomingUdpQueue) {
+        delete incomingUdpQueue;
+    }
 }
 
 quint16 PlayerThread::getId() {
@@ -105,10 +116,7 @@ quint16 PlayerThread::receivePeerPort() {
         return 0;
     }
 
-    qDebug() << "data available";
-
     in >> blockSize;
-    qDebug() << blockSize;
 
     if (!waitForBytesAvailable(blockSize, 500)) {
         qDebug() << "PlayerThread::startCommutication() : TCP error 2"
@@ -237,10 +245,6 @@ QPointF PlayerThread::getRespawnPlace() {
     return QPointF(x, y);
 }
 
-void PlayerThread::stop() {
-    stopped = true;
-}
-
 void PlayerThread::run() {
     tcpSocket = new QTcpSocket;
     if (!(tcpSocket->setSocketDescriptor(socketDescriptor))) {
@@ -250,7 +254,6 @@ void PlayerThread::run() {
     }
 
     setPeerPort(receivePeerPort());
-    qDebug() << "peerP" << peerPort;
     peerAddress = new QHostAddress(tcpSocket->peerAddress());
 
     bool gotten = false;
@@ -258,7 +261,7 @@ void PlayerThread::run() {
 
     playerMovProperties.setPosition(getRespawnPlace());
 
-    while(!stopped) {
+    while(!stopped && !quit) {
         playerMovProperties <<= getProperty(gotten);
 
         if (gotten == false) {
@@ -290,11 +293,13 @@ void PlayerThread::run() {
     QObject::disconnect(gameEventsTimer, SIGNAL(timeout()),
                          this, SLOT(regularGameEvents()));
 
-    playerMovProperties.setPosition(QPointF(0, 0));
+    if (!quit) {
+        playerMovProperties.setPosition(QPointF(0, 0));
+        usleep(100000);
+        emit PlayerThread::deletePlayer(id);
+    }
 
-    usleep(100000);
-    sharedData.playerById.writeLock();
-    sharedData.playerById.get().remove(id);
-    qDebug() << "Player removed from the dic";
-    sharedData.playerById.writeUnlock();
+//    sharedData.playerById.writeLock();
+//    sharedData.playerById.get().remove(id);
+//    sharedData.playerById.writeUnlock();
 }

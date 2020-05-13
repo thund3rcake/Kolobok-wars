@@ -9,14 +9,14 @@
 #include "Weapon.h"
 
 
-
 class PlayerThread : public QThread {
     Q_OBJECT
 
 public:
     PlayerThread(quint16 id, qintptr socketDescriptor,
                  UdpServer & udpServer, Shared & sharedData,
-                 QObject * parent);
+                 const bool & quit, QObject * parent);
+    ~PlayerThread();
 
     quint16 getId();
     const MovingObjectProperties & getMovProperties();
@@ -49,6 +49,7 @@ private:
 
     bool stopped;
     bool allowFire;
+    const bool & quit;
 
     QMutex propertiesMutex;
     MovingObjectProperties playerMovProperties;
@@ -75,10 +76,10 @@ private:
 
 private slots:
     void regularGameEvents();
-    void stop();
 
 signals:
     void error(int errNo, const QString & msg);
+    void deletePlayer(quint16);
 };
 
 #endif // PLAYERTHREAD_H

@@ -59,6 +59,7 @@ private:
     TcpServer *       tcpServer;
 
     Shared data;
+    bool quit;
 
 private slots:
     void setNewUdpPacket();

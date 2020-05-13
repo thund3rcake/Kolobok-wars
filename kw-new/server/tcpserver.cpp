@@ -7,13 +7,14 @@ TcpServer::TcpServer(quint16 port,
                      quint8 maxPlayers,
                      UdpServer & udpServer,
                      Shared & shared,
+                     const bool & quit,
                      QObject * parent) :
     QTcpServer(parent),
     port(port),
     maxPlayers(maxPlayers),
     udpServer(udpServer),
-    sharedData(shared)
-{
+    sharedData(shared),
+    quit(quit) {
     if (!listen(QHostAddress::Any, port)) {
         qDebug() << "TCP Server: listen failed";
     } else {
@@ -40,13 +41,10 @@ void TcpServer::incomingConnection(qintptr socketDescriptor) {
         sharedData.nextPlayerId.writeUnlock();
 
         PlayerThread * thread = new PlayerThread(id, socketDescriptor,
-                                             udpServer, sharedData, this);
+                                    udpServer, sharedData, quit, this);
 
-//        QObject::connect(thread, SIGNAL(finished()),
-//                this, SLOT(deletePlayer));
-        QObject::connect(thread, SIGNAL(finished()),
-                thread, SLOT(deleteLater));
-
+        QObject::connect(thread, &PlayerThread::finished, thread, &PlayerThread::deleteLater);
+        QObject::connect(thread, &PlayerThread::deletePlayer, this, &TcpServer::onDeletePlayer);
 
         sharedData.playerById.writeLock();
         sharedData.playerById.get().insert(id, thread);
@@ -56,11 +54,9 @@ void TcpServer::incomingConnection(qintptr socketDescriptor) {
     }
 }
 
-//void TcpServer::deletePlayer() {
-//    PlayersMap::iterator it = sharedData.playerById.get().begin();
-//    for (;it != sharedData.playerById.get().end() && it.value()->isFinished(); ++it);
-//    if (it != sharedData.playerById.get().end()) {
-//        delete it.value();
-//        sharedData.playerById.get().remove(it.key());
-//    }
-//}
+void TcpServer::onDeletePlayer(quint16 id) {
+    sharedData.playerById.writeLock();
+    sharedData.playerById.get().remove(id);
+    qDebug() << "deleted from dic new way";
+    sharedData.playerById.writeUnlock();
+}

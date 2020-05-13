@@ -22,16 +22,16 @@ BroadcastSender::BroadcastSender(
     bots( 0 ) {}
 
 BroadcastSender::~BroadcastSender() {
+    qDebug() << "~BroadcastSender";
     quit = true;
     wait();
     if (socket) {
         delete socket;
     }
+    qDebug() << "~~BroadcastSender";
 }
 
 void BroadcastSender::generateDatagram() {
-    QMutexLocker locker( &mutex );
-
     datagram.clear();
 
     BroadcastData dataToSend(
@@ -78,6 +78,7 @@ void BroadcastSender::run() {
     if ( !socket ) {
     socket = new QUdpSocket;
 
+
     if ( !(socket -> bind( port, QUdpSocket::ShareAddress )) )
         emit error( socket -> error(), socket -> errorString() );
     }
@@ -91,6 +92,7 @@ void BroadcastSender::run() {
 
         if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, 27030 ) < 0)
             emit error( socket -> error(), socket -> errorString() );
+
 
         mutex.unlock();
         usleep(10000);
