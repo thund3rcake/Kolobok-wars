@@ -11,7 +11,7 @@ DEFINES += KOLOBOK_SERVER \
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ServerAlpha
+TARGET = kolobok-wars-server
 TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11

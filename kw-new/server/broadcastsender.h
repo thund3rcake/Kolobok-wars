@@ -8,6 +8,7 @@
 
 #include <Datagramms.h>
 #include <Versions.h>
+#include <sharedtypes.h>
 
 namespace Net {}
 
@@ -19,6 +20,7 @@ class BroadcastSender: public QThread
     BroadcastSender(
                      const QString & serverName,
                      const QString & mapName,
+                     Shared & sharedData,
                      quint16 port,
                      quint16 tcpPort,
                      quint8  maxPlayers,
@@ -32,7 +34,6 @@ class BroadcastSender: public QThread
     void generateDatagram();
     void setMapName(const QString & mapName);
     void setBotCount(quint8 count);
-    void setPlayerCount(quint8);
 
   private:
     BroadcastSender();
@@ -41,6 +42,7 @@ class BroadcastSender: public QThread
 
     bool         quit;
     QUdpSocket * socket;
+    Shared & sharedData;
 
     QMutex     mutex;
     QString    serverName;

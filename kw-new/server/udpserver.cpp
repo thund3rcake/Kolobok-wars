@@ -75,7 +75,6 @@ void UdpServer::run() {
             request << (quint32)(block.size() - sizeof(quint32));
 
             socket->writeDatagram(block.data(), block.size(), packetBufer.address, packetBufer.port);
-            qDebug() << "Sended: " << packetBufer.properties.getIntent() << packetBufer.properties.getPosition();
         } else {
             outgoingMutex.unlock();
         }
@@ -83,8 +82,6 @@ void UdpServer::run() {
 
         /* receiving */
         if (socket->hasPendingDatagrams()) {
-
-            //qDebug() << "try to receive";
 
             static quint16 clientPort;
             static quint32 size;
@@ -102,8 +99,6 @@ void UdpServer::run() {
 
             response >> size;
             response >> packetBufer.properties;
-
-            qDebug() << "Received: " << packetBufer.properties.getIntent() << packetBufer.properties.getPosition();
 
             incomingMutex.lock();
             incoming.enqueue(packetBufer);

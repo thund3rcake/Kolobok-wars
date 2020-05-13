@@ -11,10 +11,10 @@ class TcpServer : public QTcpServer {
     Q_OBJECT
 
 public:
-    TcpServer(quint16 port, UdpServer & udpServer,
+    TcpServer(quint16 port, quint8 maxPlayers, UdpServer & udpServer,
               Shared & sharedData, QObject *parent = 0);
 
-//    ~TcpServer();
+    //~TcpServer();
 
     class Exception {
     public:
@@ -34,14 +34,11 @@ protected slots:
     virtual
     void incomingConnection(qintptr socketDescriptor);
 
-private slots:
-    //void deletePlayer();
-
 private:
     quint16 port;
+    quint8 maxPlayers;
     UdpServer & udpServer;
     Shared & sharedData;
-
 };
 
 #endif // TCPSERVER_H

@@ -21,8 +21,9 @@ ServerTools::ServerTools(
     console->clear();
     curTime.start();
     data.nextPlayerId.get() = 1;
+    data.nextBulletId.get() = 1;
 
-    broadcastSender = new BroadcastSender(serverName, mapName, 27030,
+    broadcastSender = new BroadcastSender(serverName, mapName, data, 27030,
                                           port, maxPlayers, this);
 
     udpServer = new UdpServer(port, this);
@@ -33,7 +34,7 @@ ServerTools::ServerTools(
 
     try {
         console->insertHtml("Starting TCP-server... &nbsp");
-        TcpServer * tcpServer = new TcpServer(port, *udpServer, data, this);
+        TcpServer * tcpServer = new TcpServer(port, maxPlayers, *udpServer, data, this);
     } catch (TcpServer::Exception exception) {
         console->insertHtml("[Fail]<br />");
         console->insertHtml(exception.message + "<br />");
@@ -85,7 +86,7 @@ void ServerTools::setNewUdpPacket() {
         switch(newPacket.properties.getType()) {
 
         break; case MovingObjectProperties::Player: {
-            qDebug() << "player";
+            //qDebug() << "player";
             data.playerById.readLock();
             QMap<qint32, PlayerThread*>::iterator playerIt = data.playerById.get().find((newPacket.properties.getId()));
             if (playerIt != data.playerById.get().end()
@@ -102,9 +103,9 @@ void ServerTools::setNewUdpPacket() {
         }
 
         break; case MovingObjectProperties::Timestamp: {
-            qDebug() << "timestamp";
+            //qDebug() << "timestamp";
             qint32 newLatency = getCurentTime() - newPacket.properties.getTimestamp();
-            qDebug() << newLatency;
+            //qDebug() << newLatency;
 
             data.playerLatencyById.writeLock();
             QMap<qint32, qint32>::iterator latency =

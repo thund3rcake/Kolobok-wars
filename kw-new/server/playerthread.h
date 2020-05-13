@@ -65,14 +65,17 @@ private:
     inline void byteArrayToSocket(const QByteArray & array);
     inline bool waitForBytesAvailable(qint64 size, qint32 maxTime, bool noBytesIsError = true);
 
-    qreal collisionMeasure (const QPointF position); //rename
+    qreal distanceToTheClosestPlayer (const QPointF position);
     qreal getLength(const QPointF, const QPointF);
+
+    QPointF getRespawnPlace();
 
     void updateCoordinates(MovingObjectProperties &);
     bool isThereHits(Bullet *bullet);
 
 private slots:
     void regularGameEvents();
+    void stop();
 
 signals:
     void error(int errNo, const QString & msg);

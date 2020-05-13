@@ -4,11 +4,13 @@
 #include "playerthread.h"
 
 TcpServer::TcpServer(quint16 port,
+                     quint8 maxPlayers,
                      UdpServer & udpServer,
                      Shared & shared,
                      QObject * parent) :
     QTcpServer(parent),
     port(port),
+    maxPlayers(maxPlayers),
     udpServer(udpServer),
     sharedData(shared)
 {
@@ -22,27 +24,36 @@ TcpServer::TcpServer(quint16 port,
 void TcpServer::incomingConnection(qintptr socketDescriptor) {
     qDebug() << "TcpServer::incomingConnection";
 
-    quint16 id = 0;
+    quint8 curPlayers = 0;
 
-    sharedData.nextPlayerId.writeLock();
-    id = sharedData.nextPlayerId.read();
-    sharedData.nextPlayerId.get()++;
-    sharedData.nextPlayerId.writeUnlock();
+    sharedData.playerById.readLock();
+    curPlayers = sharedData.playerById.get().size();
+    sharedData.playerById.readUnlock();
 
-    PlayerThread * thread = new PlayerThread(id, socketDescriptor,
+    if (curPlayers < maxPlayers) {
+
+        quint16 id = 0;
+
+        sharedData.nextPlayerId.writeLock();
+        id = sharedData.nextPlayerId.read();
+        sharedData.nextPlayerId.get()++;
+        sharedData.nextPlayerId.writeUnlock();
+
+        PlayerThread * thread = new PlayerThread(id, socketDescriptor,
                                              udpServer, sharedData, this);
 
-//    QObject::connect(thread, SIGNAL(finished()),
+//        QObject::connect(thread, SIGNAL(finished()),
 //                this, SLOT(deletePlayer));
-    QObject::connect(thread, SIGNAL(finished()),
+        QObject::connect(thread, SIGNAL(finished()),
                 thread, SLOT(deleteLater));
 
 
-    sharedData.playerById.writeLock();
-    sharedData.playerById.get().insert(id, thread);
-    sharedData.playerById.writeUnlock();
+        sharedData.playerById.writeLock();
+        sharedData.playerById.get().insert(id, thread);
+        sharedData.playerById.writeUnlock();
 
-    thread->start();
+        thread->start();
+    }
 }
 
 //void TcpServer::deletePlayer() {

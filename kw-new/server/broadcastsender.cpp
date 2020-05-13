@@ -5,6 +5,7 @@
 BroadcastSender::BroadcastSender(
                                   const QString & serverName,
                                   const QString & mapName,
+                                  Shared & sharedData,
                                   quint16 p,
                                   quint16 tcpPort,
                                   quint8  maxPlayers,
@@ -15,14 +16,12 @@ BroadcastSender::BroadcastSender(
     socket( NULL ),
     serverName( serverName ),
     mapName( mapName ),
+    sharedData(sharedData),
     port( p ),
     tcpPort( tcpPort ),
     maxPlayers( maxPlayers ),
     players( 0 ),
-    bots( 0 ) {
-    generateDatagram();
-}
-
+    bots( 0 ) {}
 
 BroadcastSender::~BroadcastSender() {
     quit = true;
@@ -75,15 +74,9 @@ void BroadcastSender::setBotCount( quint8 count ) {
     bots = count;
 }
 
-void BroadcastSender::setPlayerCount( quint8 count ) {
-    QMutexLocker locker( &mutex );
-    players = count;
-}
-
 void BroadcastSender::run() {
-    generateDatagram();
 
-    mutex.lock();
+    //mutex.lock();
     if ( !socket ) {
     socket = new QUdpSocket;
 
@@ -92,12 +85,18 @@ void BroadcastSender::run() {
     }
 
     while ( !quit ) {
+        sharedData.playerById.readLock();
+        players = sharedData.playerById.get().size();
+        sharedData.playerById.readUnlock();
+
+        generateDatagram();
+
         if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, 27030 ) < 0)
             emit error( socket -> error(), socket -> errorString() );
 
-        mutex.unlock();
-        usleep(1000);
-        mutex.lock();
+        //mutex.unlock();
+        usleep(10000);
+        //mutex.lock();
     }
     mutex.unlock();
 }

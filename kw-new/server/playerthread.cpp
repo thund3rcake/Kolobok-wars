@@ -18,9 +18,6 @@ PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
     stopped(false),
     allowFire(true) {
 
-    qDebug() << "PT:PT";
-    qDebug() << "PT:PT";
-
     playerMovProperties = getEmptyProperty();
 
     sharedData.playerLatencyById.writeLock();
@@ -61,23 +58,6 @@ void PlayerThread::sendTimestamp() {
     sendMovProperties(prop);
 }
 
-//void PlayerThread::sendGameProperty(const GameProperties & prop)
-//{
-//  QDataStream request(tcpSocket);
-//  request.setVersion(Net::DataStreamVersion);
-
-//  if (!(tcpSocket->isWritable())) {
-//      //delete the thread
-//  }
-
-//  request << (quint32)0;
-//  request << prop;
-//  request.device() -> seek(0);
-//  request << (quint32)(packetBufer.size() - sizeof(quint32));
-
-//  tcpSocket -> waitForBytesWritten(10);
-//}
-
 bool PlayerThread::waitForBytesAvailable(qint64 size, qint32 maxTime,
                                          bool noBytesIsError) {
     while (tcpSocket->bytesAvailable() < size) {
@@ -100,8 +80,6 @@ quint16 PlayerThread::receivePeerPort() {
     blockStream << Net::ProtVersion;
     blockStream << Net::ProtSubversion;
     blockStream << id;
-
-    //blockStream.device()->seek(0);
 
     QDataStream sockStream(tcpSocket);
     sockStream.setVersion(Net::DataStreamVersion);
@@ -180,16 +158,18 @@ qreal PlayerThread::getLength(const QPointF a, const QPointF b) {
     return sqrt( (a.x() - b.x())*(a.x() - b.x()) + (a.y() - b.y())*(a.y() - b.y()) );
 }
 
-qreal PlayerThread::collisionMeasure (const QPointF position ) {
+qreal PlayerThread::distanceToTheClosestPlayer (const QPointF position ) {
+    qreal minLength = 1000;
     foreach ( PlayerThread * player, sharedData.playerById.get() ) {
         if (player->getId() != this->id) {
             qreal lgth = getLength(position, player -> getMovProperties().getPosition() );
             if (lgth < consts::playerSize*2) {
                 return lgth;
             }
+            minLength = minLength < lgth ? minLength : lgth;
         }
     }
-  return consts::playerSize*2;
+  return minLength;
 }
 
 void PlayerThread::updateCoordinates (MovingObjectProperties & prop) {
@@ -199,8 +179,10 @@ void PlayerThread::updateCoordinates (MovingObjectProperties & prop) {
 
         for (int i = 0; i < 5; i++) {
             intentedDot += increment;
-            if ( collisionMeasure(intentedDot) >= collisionMeasure(getMovProperties().getPosition())
-            && sharedData.gameMap.get() -> isDotAvailable(intentedDot.toPoint()) ) {
+            qreal thenTheClosest = distanceToTheClosestPlayer(intentedDot);
+            if (sharedData.gameMap.get() -> isDotAvailable(intentedDot.toPoint())
+                && (thenTheClosest >= 2*consts::playerSize
+                    || thenTheClosest > distanceToTheClosestPlayer(prop.getPosition()))) {
                 propertiesMutex.lock();
                 prop.setPosition(intentedDot);
                 propertiesMutex.unlock();
@@ -212,7 +194,7 @@ void PlayerThread::updateCoordinates (MovingObjectProperties & prop) {
 
 void PlayerThread::regularGameEvents() {
 
-    if (noPacketsCounter >= 300000) {
+    if (noPacketsCounter >= 20000) {
         stopped = true;
     }
 
@@ -245,8 +227,21 @@ MovingObjectProperties PlayerThread::getEmptyProperty() {
     return prop;
 }
 
+QPointF PlayerThread::getRespawnPlace() {
+    quint16 x = 0, y = 0;
+    srand (time(NULL));
+    while(!(sharedData.gameMap.get()->isDotAvailable(QPoint(x, y)))) {
+        x = rand() % 950;
+        y = rand() % 700;
+    }
+    return QPointF(x, y);
+}
+
+void PlayerThread::stop() {
+    stopped = true;
+}
+
 void PlayerThread::run() {
-    qDebug() << "PT::run()";
     tcpSocket = new QTcpSocket;
     if (!(tcpSocket->setSocketDescriptor(socketDescriptor))) {
         qDebug() << "PlayerThread::run(): " << tcpSocket->errorString();
@@ -261,8 +256,10 @@ void PlayerThread::run() {
     bool gotten = false;
     QMap<qint32, qint32>::iterator latencyIter;
 
+    playerMovProperties.setPosition(getRespawnPlace());
+
     while(!stopped) {
-        playerMovProperties = getProperty(gotten);
+        playerMovProperties <<= getProperty(gotten);
 
         if (gotten == false) {
             noPacketsCounter++;
