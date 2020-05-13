@@ -1,7 +1,5 @@
 #include <broadcastsender.h>
 
-//using namespace Net;
-
 BroadcastSender::BroadcastSender(
                                   const QString & serverName,
                                   const QString & mapName,
@@ -76,7 +74,7 @@ void BroadcastSender::setBotCount( quint8 count ) {
 
 void BroadcastSender::run() {
 
-    //mutex.lock();
+    mutex.lock();
     if ( !socket ) {
     socket = new QUdpSocket;
 
@@ -94,9 +92,9 @@ void BroadcastSender::run() {
         if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, 27030 ) < 0)
             emit error( socket -> error(), socket -> errorString() );
 
-        //mutex.unlock();
+        mutex.unlock();
         usleep(10000);
-        //mutex.lock();
+        mutex.lock();
     }
     mutex.unlock();
 }
