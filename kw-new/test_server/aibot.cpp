@@ -19,7 +19,7 @@ AIBot::AIBot(Shared & sharedData, MovingObjectProperties props) {
    id = props.getId();
    patrolPoints = UtilityAlgorithms::selectPolygon(sharedData, consts::patrolEdgeMinLength);
    currentPatrolIndex = -1;
-   qDebug() << "aiBot constructor finished\n";
+   qDebug() << "aiBot constructor finished, state: " << state;
 }
 
 
@@ -77,6 +77,8 @@ void AIBot::patrol(Shared &sharedData)
         currentPatrolIndex += 1;
         currentPatrolIndex %= consts::patrolPointsCount;
     }
+
+    qDebug() << "Patrol: target = " << patrolPoints.at(currentPatrolIndex) << " position = " << position;
     QVector2D intent = UtilityAlgorithms::getMoveIntent(
                 position,
                 patrolPoints.at(currentPatrolIndex),
@@ -84,6 +86,7 @@ void AIBot::patrol(Shared &sharedData)
                 consts::stride);
 
     this->intent = intent;
+    //qDebug() << "Patrol: intent = " << intent << " position = " << position;
 }
 
 
@@ -101,28 +104,44 @@ void AIBot::switchState(Shared & sharedData) {
             nearestPlayerProps = player->getMovProperties();
         }
 
-    qDebug() << "[switchState] nearestPlayerPos: " << nearestPlayerProps.getPosition() << " botPos: " << position;
+    //qDebug() << "[switchState] nearestPlayerPos: " << nearestPlayerProps.getPosition() << " botPos: " << position;
 
     switch (state) {
         case Attack:
-            if(hp <= consts::hpEscape)
+            if(hp <= consts::hpEscape) {
+                qDebug() << "state: Attack --> Escape";
                 state = Escape;
-            // TODO: if no visible enemies ==> patrol
+            }
+
+            if(!isVisible(nearestPlayerProps.getPosition(), sharedData)) {
+                qDebug() << "state: Attack --> Patrol";
+                state = Patrol;
+            }
+
             break;
         case Pursuit:
-            if(isVisible(nearestPlayerProps.getPosition(), sharedData))
+            if(isVisible(nearestPlayerProps.getPosition(), sharedData)) {
+                qDebug() << "state: Pursuit --> Attack";
                 state = Attack;
+            }
             // TODO: player is dead ==> patrol
             break;
         case Patrol:
-            if(isVisible(nearestPlayerProps.getPosition(), sharedData) && hp <= consts::hpEscape)
+            /*if(isVisible(nearestPlayerProps.getPosition(), sharedData) && hp <= consts::hpEscape) {
+                qDebug() << "state: Patrol --> Escape";
                 state = Escape;
-            if(isVisible(nearestPlayerProps.getPosition(), sharedData) && hp > consts::hpEscape)
+            }
+
+            if(isVisible(nearestPlayerProps.getPosition(), sharedData) && hp > consts::hpEscape) {
+                qDebug() << "state: Patrol --> Attack";
                 state = Attack;
-            break;
+            }
+            break; */
         case Escape:
-            if(!isVisible(nearestPlayerProps.getPosition(), sharedData))
+            if(!isVisible(nearestPlayerProps.getPosition(), sharedData)) {
+                qDebug() << "state: Escape --> Patrol";
                 state = Patrol;
+            }
             break;
         default:
             break;

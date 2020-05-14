@@ -13,6 +13,7 @@ BotThread::BotThread(quint16 id, Shared & sharedData, QObject * parent):
     botProps = MovingObjectProperties(parent);
     botProps.setEmptyProperty();
     botProps.setPosition(getRespawnPlace());
+    botProps.setTimestamp(25);
     sharedData.playerLatencyById.writeLock();
     sharedData.playerLatencyById.get().insert(id, 1);
     sharedData.playerLatencyById.writeUnlock();
@@ -36,15 +37,6 @@ void BotThread::run() {
         //qDebug() << "botthread::run start" << botProps.getId();
         updateMovingProperties(sharedData);
         //qDebug() << "botthread::run mprops updated" << botProps.getPosition();
-        MovingObjectProperties property = botProps;
-        //if(count % int(1e10) == 0)
-        //    qDebug() << "botthread::run mprops updated" << botProps.getPosition();
-        /* std::cout << "SEND PACKET: " << property.getTimestamp() << " " << property.getType() << " " <<
-                    property.getTeam() << " " << property.getId() << " " << property.getPosition() <<
-                    " " << property.getIntent() << " " << " " <<
-                    property.getHead() << " " << property.getHp() << " " <<
-                    property.getWeapon().getType() << " " << property.getWeapon().getState() << " " << property.getWeapon().getTarget() << " " <<
-                    property.getWeapon().getMasterId(); */
        usleep(100);
     }
 }
@@ -79,20 +71,21 @@ void BotThread::updateMovingProperties(Shared & sharedData) {
 
     currentBot->switchState(sharedData); // change the bot state
     newProps = currentBot->action(sharedData, botProps);
-    updateCoordinates(botProps);
+    botProps.setIntent(newProps.getIntent());
+    updateCoordinates();
 }
 
 
-void BotThread::updateCoordinates (MovingObjectProperties & prop) {
-    if ( prop.getTimestamp() <= consts::sendTimerInterval * 1.25 ) {
-        QPointF increment = prop.getIntent().toPointF()*prop.getTimestamp()/25;
-        QPointF intentedDot = prop.getPosition();
+void BotThread::updateCoordinates () {
+    if ( botProps.getTimestamp() <= consts::sendTimerInterval * 1.25 ) {
+        QPointF increment = botProps.getIntent().toPointF()* botProps.getTimestamp()/25;
+        QPointF intentedDot = botProps.getPosition();
 
         for (int i = 0; i < 5; i++) {
             intentedDot += increment;
             if ( isThereCollisionsWithTheOthers(intentedDot) >= isThereCollisionsWithTheOthers(botProps.getPosition())
             && sharedData.gameMap.get() -> isDotAvailable(intentedDot.toPoint()) ) {
-                prop.setPosition(intentedDot);
+                botProps.setPosition(intentedDot);
             }
         }
     }

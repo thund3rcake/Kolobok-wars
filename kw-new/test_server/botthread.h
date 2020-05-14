@@ -18,7 +18,7 @@ public:
 
 private:
     QPointF getRespawnPlace();
-    void updateCoordinates (MovingObjectProperties & prop);
+    void updateCoordinates ();
     qreal isThereCollisionsWithTheOthers ( QPointF position );
     qreal getLength(QPointF a, QPointF b);
     void updateMovingProperties(Shared & sharedData);

@@ -4,6 +4,7 @@
 #include <QPointF>
 #include <QQueue>
 #include <QStack>
+#include <QDebug>
 #include <QLinkedList>
 
 UtilityAlgorithms::UtilityAlgorithms()
@@ -74,6 +75,8 @@ QLinkedList<QPointF> UtilityAlgorithms::breadthFirstSearch(
         delete tmp;
     }
 
+    //qDebug() << "path (" << path.first() << " , " << path.last() << " )";
+
     return path;
 }
 
@@ -81,7 +84,7 @@ QVector2D UtilityAlgorithms::getMoveIntent(
         QPointF source, QPointF destination, Shared & sharedData, quint8 stride)
 {
     QLinkedList<QPointF> path = breadthFirstSearch(source, destination, sharedData, stride);
-    QPointF next_point = path.takeFirst();
+    QPointF next_point = path.takeLast();
     QVector2D intent = QVector2D(next_point - source);
     intent.normalize();
     return intent;
