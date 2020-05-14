@@ -1,5 +1,6 @@
 #include <playerthread.h>
 #include <GameWorldConsts.h>
+#include "Bullet.h"
 
 PlayerThread::PlayerThread(quint16 id, qintptr socketDescriptor,
              UdpServer & udpServer, Shared & sharedData, const bool & quit,

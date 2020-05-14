@@ -4,32 +4,47 @@
 #include <QLinkedList>
 #include "aibot.h"
 #include "Entity.h"
+#include <iostream>
 
 BotThread::BotThread(quint16 id, Shared & sharedData, QObject * parent):
     QThread(parent),
     sharedData(sharedData),
     id(id) {
+    botProps = MovingObjectProperties(parent);
+    botProps.setEmptyProperty();
+    botProps.setPosition(getRespawnPlace());
     sharedData.playerLatencyById.writeLock();
     sharedData.playerLatencyById.get().insert(id, 1);
     sharedData.playerLatencyById.writeUnlock();
+    qDebug() << "bot thread initialized; respawn place = " << botProps.getPosition();
+}
 
-//    timestampSendTimer->setInterval(5000);
-//    QObject::connect(timestampSendTimer, SIGNAL(timeout()),
-//                     this, SLOT(sendTimestamp()));
-//    timestampSendTimer->start();
-//    timer.start();
+
+QPointF BotThread::getRespawnPlace() {
+    quint16 x = rand() % consts::mapSizeX, y = rand() % consts::mapSizeY;
+    srand (time(NULL));
+    while(!(sharedData.gameMap.get()->isDotAvailable(QPoint(x, y)))) {
+        x = rand() % rand() % consts::mapSizeX;
+        y = rand() % rand() % consts::mapSizeY;
+    }
+    return QPointF(x, y);
 }
 
 void BotThread::run() {
-   while(1) {
+    int count = 0;
+    while(1) {
+        //qDebug() << "botthread::run start" << botProps.getId();
         updateMovingProperties(sharedData);
-//        MovingObjectProperties property = botProps;
-//        qDebug() << "SEND PACKET: " << property.getTimestamp() << " " << property.getType() << " " <<
-//                    property.getTeam() << " " << property.getId() << " " << property.getPosition() <<
-//                    " " << property.getIntent() << " " << " " <<
-//                    property.getHead() << " " << property.getHp() << " " <<
-//                    property.getWeapon().getType() << " " << property.getWeapon().getState() << " " << property.getWeapon().getTarget() << " " <<
-//                    property.getWeapon().getMasterId();
+        //qDebug() << "botthread::run mprops updated" << botProps.getPosition();
+        MovingObjectProperties property = botProps;
+        //if(count % int(1e10) == 0)
+        //    qDebug() << "botthread::run mprops updated" << botProps.getPosition();
+        /* std::cout << "SEND PACKET: " << property.getTimestamp() << " " << property.getType() << " " <<
+                    property.getTeam() << " " << property.getId() << " " << property.getPosition() <<
+                    " " << property.getIntent() << " " << " " <<
+                    property.getHead() << " " << property.getHp() << " " <<
+                    property.getWeapon().getType() << " " << property.getWeapon().getState() << " " << property.getWeapon().getTarget() << " " <<
+                    property.getWeapon().getMasterId(); */
        usleep(100);
     }
 }

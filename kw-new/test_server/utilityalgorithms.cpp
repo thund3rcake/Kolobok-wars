@@ -95,6 +95,7 @@ QPointF UtilityAlgorithms::selectAvailableDot(Shared &sharedData)
         float y = qrand() % consts::mapSizeY;
         target = QPointF(x, y);
     } while(!sharedData.gameMap.get()->isDotAvailable(target.toPoint()));
+    return target;
 }
 
 QVector<QPointF> UtilityAlgorithms::selectPolygon(Shared &sharedData, quint8 minEdgeLength)
@@ -106,6 +107,7 @@ QVector<QPointF> UtilityAlgorithms::selectPolygon(Shared &sharedData, quint8 min
         bool flag = false;
         while (!flag) {
             flag = true;
+            qDebug() << "select: " << target;
             target = selectAvailableDot(sharedData);
             for(auto it = polygon.begin(); it != polygon.end(); ++it)
                 if(QVector2D(*it - target).length() < minEdgeLength)

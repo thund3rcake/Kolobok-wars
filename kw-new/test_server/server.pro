@@ -1,4 +1,4 @@
-unix:!macx: LIBS += -L$$PWD/../build-common-Desktop-Debug/ -lcommon
+unix:!macx: LIBS += -L$$PWD/../common/ -lcommon
 
 QT += network \
     widgets \

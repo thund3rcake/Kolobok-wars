@@ -17,6 +17,7 @@ public:
     quint16 getId();
 
 private:
+    QPointF getRespawnPlace();
     void updateCoordinates (MovingObjectProperties & prop);
     qreal isThereCollisionsWithTheOthers ( QPointF position );
     qreal getLength(QPointF a, QPointF b);

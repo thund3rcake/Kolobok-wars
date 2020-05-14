@@ -52,6 +52,8 @@ ServerTools::ServerTools(
     } catch (Exception excp) {
         qDebug() << "ServerTools::ServerTools: Map has crashed" << excp.message;
     }
+    BotThread * bot = new BotThread(22, data, this);
+    bot->start();
 }
 
 ServerTools::~ServerTools()

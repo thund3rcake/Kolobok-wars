@@ -19,6 +19,7 @@ AIBot::AIBot(Shared & sharedData, MovingObjectProperties props) {
    id = props.getId();
    patrolPoints = UtilityAlgorithms::selectPolygon(sharedData, consts::patrolEdgeMinLength);
    currentPatrolIndex = -1;
+   qDebug() << "aiBot constructor finished\n";
 }
 
 
@@ -99,6 +100,8 @@ void AIBot::switchState(Shared & sharedData) {
             // find the nearest player
             nearestPlayerProps = player->getMovProperties();
         }
+
+    qDebug() << "[switchState] nearestPlayerPos: " << nearestPlayerProps.getPosition() << " botPos: " << position;
 
     switch (state) {
         case Attack:
