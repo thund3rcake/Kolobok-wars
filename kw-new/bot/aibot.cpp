@@ -8,7 +8,6 @@
 #include "aibot.h"
 #include "utilityalgorithms.h"
 #include "Entity.h"
-#include <QRandomGenerator>
 
 AIBot::AIBot(Shared & sharedData, MovingObjectProperties props) {
    state = Patrol;
