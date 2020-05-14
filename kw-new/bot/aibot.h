@@ -41,7 +41,6 @@ private:
     // patrol the map
     void patrol(Shared &sharedData);
 
-    QRandomGenerator random;
     State state;
     QVector<QPointF> patrolPoints;
     qint8 currentPatrolIndex;

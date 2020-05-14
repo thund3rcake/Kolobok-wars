@@ -20,7 +20,6 @@ AIBot::AIBot(Shared & sharedData, MovingObjectProperties props) {
    id = props.getId();
    patrolPoints = UtilityAlgorithms::selectPolygon(sharedData, consts::patrolEdgeMinLength);
    currentPatrolIndex = -1;
-   random = QRandomGenerator();
 }
 
 
@@ -53,7 +52,8 @@ void AIBot::escape(MovingObjectProperties playerProps, Shared &sharedData)
     float nextDist;
     if(!sharedData.gameMap.get()->isDotAvailable(nextPos))
         do {
-            intent = QVector2D(random.generateDouble(), random.generateDouble());
+            double phi = qrand() % 360;
+            intent = QVector2D(cos(phi), sin(phi));
             nextPos = position.toPoint() + intent.toPoint();
             nextDist = QVector2D(nextPos - playerProps.getPosition()).length();
         } while(!sharedData.gameMap.get()->isDotAvailable(nextPos) && nextDist <= moveDistance);
