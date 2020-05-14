@@ -10,6 +10,7 @@ Bullet::Bullet (
                int id,
                const QPointF position,
                QPointF targAbs,
+               quint16 masterId,
                Weapon::Type typ
                ):
     MovingEntity(id, position, QVector2D(-position+targAbs).normalized()),
@@ -18,6 +19,7 @@ Bullet::Bullet (
     setPosition (position);
     weapon.setType(typ);
     weapon.setTarget(targAbs);
+    weapon.setMasterId(masterId);
     setRect(position.x(), position.y(),
             consts::playerSize/4, consts::playerSize/4);
 }

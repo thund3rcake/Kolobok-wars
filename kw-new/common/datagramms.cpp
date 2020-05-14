@@ -212,7 +212,6 @@ MovingObjectProperties& MovingObjectProperties::operator<<=(const MovingObjectPr
     team = prop.team;
     id = prop.id;
     intent = prop.intent;
-    hp = prop.hp;
     head = prop.head;
     weapon = prop.weapon;
     return *this;

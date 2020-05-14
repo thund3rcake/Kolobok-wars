@@ -10,7 +10,7 @@
 class KW_COMMON_EXPORT Bullet: public MovingEntity, public QGraphicsRectItem
 {
 public:
-    Bullet (int, const QPointF, QPointF, Weapon::Type);
+    Bullet (int, const QPointF, QPointF, quint16, Weapon::Type);
 
     virtual
     //отрисовывает пулю
