@@ -39,5 +39,4 @@ SOURCES += \
     serializable.cpp \
     utils.cpp \
     weapon.cpp \
-    xmlParser.cpp \
-    main.cpp
+    xmlParser.cpp
