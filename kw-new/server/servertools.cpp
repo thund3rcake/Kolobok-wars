@@ -1,10 +1,12 @@
-#include "servertools.h"
+﻿#include "servertools.h"
+#include "botthread.h"
 
 ServerTools::ServerTools(
                          const QString & server,
                          const QString & map,
                          quint16 port,
                          quint8 mPlayers,
+                         quint8 bots,
                          QTextEdit * console,
                          QObject * parent
                          ):
@@ -13,19 +15,21 @@ ServerTools::ServerTools(
     mapName(map),
     port(port),
     maxPlayers(mPlayers),
+    bots(bots),
     console(console),
     broadcastSender(NULL),
     udpServer(NULL),
-    tcpServer(NULL),
-    quit(false) {
+    tcpServer(NULL) {
 
     console->clear();
     curTime.start();
+
     data.nextPlayerId.get() = 1;
     data.nextBulletId.get() = 1;
+    data.quit.get() = false;
 
     broadcastSender = new BroadcastSender(serverName, mapName, data, 27030,
-                                          port, maxPlayers, this);
+                                          port, maxPlayers, bots, this);
 
     udpServer = new UdpServer(port, this);
     connect(udpServer, SIGNAL(newPacket()),
@@ -35,7 +39,7 @@ ServerTools::ServerTools(
 
     try {
         console->insertHtml("Starting TCP-server... &nbsp");
-        TcpServer * tcpServer = new TcpServer(port, maxPlayers, *udpServer, data, quit, this);
+        TcpServer * tcpServer = new TcpServer(port, maxPlayers, *udpServer, data, this);
     } catch (TcpServer::Exception exception) {
         console->insertHtml("[Fail]<br />");
         console->insertHtml(exception.message + "<br />");
@@ -51,25 +55,54 @@ ServerTools::ServerTools(
     } catch (Exception excp) {
         qDebug() << "ServerTools::ServerTools: Map has crashed" << excp.message;
     }
+
+    for (int i = 0; i < bots; i++) {
+
+        quint16 id = 0;
+
+        data.nextPlayerId.writeLock();
+        BotThread * bot = new BotThread(data.nextPlayerId.get(), data, this);
+        id = data.nextPlayerId.get();
+        data.nextPlayerId.get()++;
+        data.nextPlayerId.writeUnlock();
+
+        data.botById.writeLock();
+        data.botById.get().insert(id, bot);
+        data.botById.writeUnlock();
+
+        bot->start();
+    }
 }
 
-ServerTools::~ServerTools()
-{
+ServerTools::~ServerTools() {
     qDebug() << "~ServTools";
-    quit = true;
+
+    data.quit.writeLock();
+    data.quit.get() = true;
+    data.quit.writeUnlock();
+
     delete broadcastSender;
+
+    for (PlayersMap::iterator player = data.playerById.get().begin();
+        player != data.playerById.get().end(); ++player) {
+        player.value()->wait();
+    }
+
+    for (BotsMap::iterator bot = data.botById.get().begin();
+        bot != data.botById.get().end(); ++bot) {
+        bot.value()->wait();
+    }
+
+    for (BulletsMap::iterator blt = data.bulletById.get().begin();
+        blt != data.bulletById.get().end(); ++blt) {
+        delete blt.value();
+    }
+
     disconnect( udpServer, SIGNAL( newPacket() ),
                 this,      SLOT( setNewUdpPacket() ));
+
     delete udpServer;
-    qDebug() << "start deleting tcp";
-    for (PlayersMap::iterator it = data.playerById.get().begin();
-         it != data.playerById.get().end(); ++it) {
-        it.value()->wait();
-        delete it.value();
-        qDebug() << "another player deleted";
-    }
     delete tcpServer;
-    qDebug() << "~~ServTools";
 }
 
 BroadcastSender & ServerTools::getBroadcastSender() {
@@ -96,7 +129,6 @@ void ServerTools::setNewUdpPacket() {
         switch(newPacket.properties.getType()) {
 
         break; case MovingObjectProperties::Player: {
-            //qDebug() << "player";
             data.playerById.readLock();
             QMap<qint32, PlayerThread*>::iterator playerIt = data.playerById.get().find((newPacket.properties.getId()));
             if (playerIt != data.playerById.get().end()
@@ -113,7 +145,6 @@ void ServerTools::setNewUdpPacket() {
         }
 
         break; case MovingObjectProperties::Timestamp: {
-            //qDebug() << "timestamp";
             qint32 newLatency = getCurentTime() - newPacket.properties.getTimestamp();
             //qDebug() << newLatency;
 

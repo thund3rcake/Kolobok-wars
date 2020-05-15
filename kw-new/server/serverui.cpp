@@ -40,6 +40,7 @@ void ServerUi::setupTools(const QString &serverName) {
                                 ui->mapName->currentText(),
                                 ui->port->currentText().toInt(&ok, 10),
                                 (quint8)(ui->players->value()),
+                                (quint8)(ui->bots->value()),
                                 ui->console,
                                 this
                                 );

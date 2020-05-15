@@ -9,7 +9,6 @@ UdpServer::UdpServer(quint16 port, QObject *parent):
     toQuit(false) {}
 
 UdpServer::~UdpServer() {
-    qDebug() << "~UdpServer";
     incomingMutex.lock();
     outgoingMutex.lock();
     toQuit = true;
@@ -19,8 +18,6 @@ UdpServer::~UdpServer() {
     wait();
     if (socket)
         delete socket;
-
-    qDebug() << "~~UdpServer";
 }
 
 

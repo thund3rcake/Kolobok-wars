@@ -12,7 +12,9 @@ class TcpServer : public QTcpServer {
 
 public:
     TcpServer(quint16 port, quint8 maxPlayers, UdpServer & udpServer,
-              Shared & sharedData, const bool & quit, QObject *parent = 0);
+              Shared & sharedData, QObject *parent = 0);
+
+    //~TcpServer();
 
     class Exception {
     public:
@@ -31,15 +33,12 @@ public:
 protected slots:
     virtual
     void incomingConnection(qintptr socketDescriptor);
-    void onDeletePlayer(quint16);
 
 private:
     quint16 port;
     quint8 maxPlayers;
     UdpServer & udpServer;
     Shared & sharedData;
-    const bool & quit;
-
 };
 
 #endif // TCPSERVER_H

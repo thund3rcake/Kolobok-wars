@@ -24,6 +24,7 @@ class BroadcastSender: public QThread
                      quint16 port,
                      quint16 tcpPort,
                      quint8  maxPlayers,
+                     quint8  bots,
                      QObject * parent = 0
                     );
 

@@ -25,7 +25,8 @@ public:
                   const QString & serverName,
                   const QString & mapName,
                   quint16 port,
-                  quint8  maxPlayers,
+                  quint8 maxPlayers,
+                  quint8 bots,
                   QTextEdit * console,
                   QObject * parent
                  );
@@ -59,7 +60,6 @@ private:
     TcpServer *       tcpServer;
 
     Shared data;
-    bool quit;
 
 private slots:
     void setNewUdpPacket();

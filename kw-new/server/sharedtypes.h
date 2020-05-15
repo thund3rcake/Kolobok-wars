@@ -19,14 +19,22 @@ class PlayerThread;
 typedef QMap<qint32, PlayerThread *> PlayersMap;
 typedef SharedObject<PlayersMap>     SharedPlayersMap;
 
+class BotThread;
+typedef QMap<qint32, BotThread *> BotsMap;
+typedef SharedObject<BotsMap> SharedBotsMap;
+
 class Shared
 {
   public:
     SharedObject<Map*>    gameMap;
 
+    SharedObject<bool>    quit;
+
     SharedObject<quint16> nextPlayerId;
     SharedPlayersMap      playerById;
     SharedLatencysMap     playerLatencyById;
+
+    SharedBotsMap         botById;
 
     SharedObject<qint32>  nextBulletId;
     SharedBulletsMap      bulletById;

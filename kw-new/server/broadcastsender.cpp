@@ -1,4 +1,4 @@
-#include <broadcastsender.h>
+﻿#include <broadcastsender.h>
 
 BroadcastSender::BroadcastSender(
                                   const QString & serverName,
@@ -7,6 +7,7 @@ BroadcastSender::BroadcastSender(
                                   quint16 p,
                                   quint16 tcpPort,
                                   quint8  maxPlayers,
+                                  quint8  bots,
                                   QObject * parent
                                  ):
     QThread( parent ),
@@ -19,19 +20,18 @@ BroadcastSender::BroadcastSender(
     tcpPort( tcpPort ),
     maxPlayers( maxPlayers ),
     players( 0 ),
-    bots( 0 ) {}
+    bots( bots ) {}
 
 BroadcastSender::~BroadcastSender() {
-    qDebug() << "~BroadcastSender";
     quit = true;
     wait();
     if (socket) {
         delete socket;
     }
-    qDebug() << "~~BroadcastSender";
 }
 
 void BroadcastSender::generateDatagram() {
+
     datagram.clear();
 
     BroadcastData dataToSend(
@@ -76,11 +76,10 @@ void BroadcastSender::run() {
 
     mutex.lock();
     if ( !socket ) {
-    socket = new QUdpSocket;
+        socket = new QUdpSocket;
 
-
-    if ( !(socket -> bind( port, QUdpSocket::ShareAddress )) )
-        emit error( socket -> error(), socket -> errorString() );
+        if ( !(socket -> bind( port, QUdpSocket::ShareAddress )) )
+            emit error( socket -> error(), socket -> errorString() );
     }
 
     while ( !quit ) {
@@ -92,7 +91,6 @@ void BroadcastSender::run() {
 
         if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, 27030 ) < 0)
             emit error( socket -> error(), socket -> errorString() );
-
 
         mutex.unlock();
         usleep(10000);

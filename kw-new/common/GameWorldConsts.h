@@ -16,6 +16,7 @@ namespace consts
   static const int sceneUpdateInterval   =   1000 / fps;      //ms
   static const qreal timeUnit   =   sendTimerInterval / 5; // qreal синоним double
   static const qreal bulletVelocity   =   15;
+  static const quint8 bulletDamage = 12;
 
   static const int playerSize  = 7; //in map coordinates
 

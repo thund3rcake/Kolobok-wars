@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        aibot.cpp \
+        botthread.cpp \
         broadcastsender.cpp \
         main.cpp \
         playerthread.cpp \
@@ -24,9 +26,12 @@ SOURCES += \
         serverui.cpp \
         sharedobject.cpp \
         tcpserver.cpp \
-        udpserver.cpp
+        udpserver.cpp \
+        utilityalgorithms.cpp
 
 HEADERS += \
+        aibot.h \
+        botthread.h \
         broadcastsender.h \
         playerthread.h \
         servertools.h \
@@ -34,7 +39,8 @@ HEADERS += \
         sharedobject.h \
         sharedtypes.h \
         tcpserver.h \
-        udpserver.h
+        udpserver.h \
+        utilityalgorithms.h
 
 FORMS += \
         serverui.ui

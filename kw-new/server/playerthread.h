@@ -9,19 +9,20 @@
 #include "Weapon.h"
 
 
+
 class PlayerThread : public QThread {
     Q_OBJECT
 
 public:
     PlayerThread(quint16 id, qintptr socketDescriptor,
                  UdpServer & udpServer, Shared & sharedData,
-                 const bool & quit, QObject * parent);
-    ~PlayerThread();
+                 QObject * parent);
 
     quint16 getId();
     const MovingObjectProperties & getMovProperties();
     SharedUdpQueue * getUdpQueue();
     QHostAddress * getPeerAddr();
+    void getDamage();
 
     void run();
 
@@ -49,7 +50,6 @@ private:
 
     bool stopped;
     bool allowFire;
-    const bool & quit;
 
     QMutex propertiesMutex;
     MovingObjectProperties playerMovProperties;
@@ -71,7 +71,13 @@ private:
 
     QPointF getRespawnPlace();
 
+    void sendDamage(quint16 id);
+
     void updateCoordinates(MovingObjectProperties &);
+    void updateBulletCoordinates();
+
+    inline
+    qint32 playerIdToBeHit(QPointF);
     bool isThereHits(Bullet *bullet);
 
 private slots:
@@ -79,7 +85,6 @@ private slots:
 
 signals:
     void error(int errNo, const QString & msg);
-    void deletePlayer(quint16);
 };
 
 #endif // PLAYERTHREAD_H
