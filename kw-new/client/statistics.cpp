@@ -1,6 +1,7 @@
 ﻿#include <Statistics.h>
 #include <HUDStyleSheets.h>
 #include <Utils.h>
+#include <QHeaderView>
 #include <QTableWidget>
 
 Statistics::Statistics ( QWidget * parent ):
@@ -24,14 +25,14 @@ Statistics::Statistics ( QWidget * parent ):
 
     QTableWidget * table = new QTableWidget(6,4);
 
-    //table->setGridStyle(Qt::NoPen);
-//    table -> verticalHeader() -> hide();                      //No more function verticalHeader in QTableWidget
-//    table -> horizontalHeader() -> hide();                 //No more function horizontalHeader in QTableWidget
+    table->setGridStyle(Qt::NoPen);
+    table -> verticalHeader() -> hide();
+    table -> horizontalHeader() -> hide();
 
     table->setColumnWidth(1, this->width()/6); //score
     table->setColumnWidth(2, this->width()/6); //deaths
     table->setColumnWidth(3, this->width()/6); //Latency
-//    table->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch); //name          //No more function horizontalHeader in QTableWidget
+    table->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
 
     QWidget * tableTitleWidget = new QWidget;
 

@@ -1,4 +1,5 @@
 ﻿#include<Console.h>
+#include<QWidget>
 #include<Utils.h>
 
 Console::Console(QWidget *parent) :

@@ -15,7 +15,7 @@ GraphicsView::GraphicsView( QApplication * pApp, QWidget * parent ):
 
 
   QGLFormat * glFormat = new QGLFormat(QGL::DoubleBuffer | QGL::SampleBuffers );
-  //glFormat -> setSwapInterval(0);
+  glFormat -> setSwapInterval(0);
   QGLWidget * viewport = new QGLWidget( *glFormat );
 
   setViewport( viewport );
@@ -34,12 +34,14 @@ GraphicsView::GraphicsView( QApplication * pApp, QWidget * parent ):
            (
             QCursor(QPixmap("./images/cursorMenu.png",0,0), 0, 0 )
            );
+  qDebug() << "GraView";
 }
 
 GraphicsView::~GraphicsView()
 {
-  delete menuScene;
-  delete gameScene;
+    qDebug() << "~GraView";
+    delete gameScene;
+    delete menuScene;
 }
 
 
@@ -95,7 +97,6 @@ void GraphicsView::onError( int errNo, QString msg )
   curentScene = Menu;
 
   SignalsSwitchTo( Menu );
-  qDebug() << "no gameScene on error";
   deleteGameScene();
 }
 

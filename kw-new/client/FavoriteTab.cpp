@@ -10,6 +10,7 @@
 FavoriteTab::FavoriteTab( QWidget * parent ):
   QWidget( parent )
 {
+    qDebug() << "FavoriteTab";
   QVBoxLayout * favVLayout = new QVBoxLayout;
   QHBoxLayout * favHLayout = new QHBoxLayout;
 
@@ -38,6 +39,7 @@ FavoriteTab::FavoriteTab( QWidget * parent ):
 
 FavoriteTab::~FavoriteTab()
 {
+    qDebug() << "~FavoriteTab";
   delete favAddFav;
   delete favConnect;
   delete favSrv;

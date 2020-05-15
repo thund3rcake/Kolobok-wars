@@ -1,7 +1,8 @@
 ﻿#include <MainMenuCanvas.h>
 
-MainMenuCanvas::MainMenuCanvas( QCoreApplication * pApp, int w, int h )
+MainMenuCanvas::MainMenuCanvas( QApplication * pApp, int w, int h )
 {
+    qDebug() << "MMCanvas";
   parentApp = pApp;
 
   if ( w && h )
@@ -23,6 +24,7 @@ MainMenuCanvas::MainMenuCanvas( QCoreApplication * pApp, int w, int h )
 
 MainMenuCanvas::~MainMenuCanvas()
 {
+    qDebug() << "~MMCanvas";
   delete VLayout;
 }
 
@@ -34,5 +36,6 @@ void MainMenuCanvas::addWidget( QWidget * widget )
 
 void MainMenuCanvas::exit()
 {
-  parentApp -> exit(0);
+    qDebug() << "~MMCanvasExit";
+  parentApp -> closeAllWindows ();
 }
