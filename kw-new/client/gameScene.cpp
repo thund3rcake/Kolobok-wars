@@ -1,5 +1,6 @@
 ﻿#include <GameScene.h>
 #include<Utils.h>
+#include<Map.h>
 #include<QDebug>
 #include<GraphicsView.h>
 
@@ -18,7 +19,6 @@ GameScene::GameScene(
     desktopSize(QSizeF (getDesktopSize().x(), getDesktopSize().y())),
     server(address),
     port(port) {
-
     map = new Map("./maps/" + mapName + "/" + mapName + ".xml");
 
     proxy -> setZValue(100);
@@ -71,7 +71,7 @@ GameScene::GameScene(
   }
   /* Draw the Map */
 
-  /* Draw the Player */ //TODO: respawn place
+  /* Draw the Player */
     mainCharacter.setPosition (
                           QPoint( desktopSize.rwidth()/2,
                                   desktopSize.rheight()/2 )
@@ -96,12 +96,19 @@ GameScene::GameScene(
     /* Motion and Animation */
     time = new QTime();
     time -> start();
+    qDebug () << "GameScene";
 }
 
 GameScene::~GameScene() {
-    delete timer;
+    qDebug() << "timer";
+    delete map;
+    qDebug() << "map";
+    delete udpClient;
+    qDebug() << "udp";
+    qDebug() << "time";
+    qDebug() << "sTimer";
     delete hud;
-    qDebug() << "GameScene::~GameScene(): Deleted";
+    qDebug() << "Hud";
 }
 
 QPointF GameScene::getSize() {
@@ -168,6 +175,8 @@ void GameScene::characterSteer() {
     }
     playerProp.getWeapon().setTarget(QPointF(0, 0));
     playerProp.getWeapon().setMasterId(mainCharacter.getId());
+
+    updateCoordinates(playerProp);
     
     udpClient -> sendNewObjectProperties(playerProp);
     elapsed = time -> elapsed();
@@ -211,6 +220,22 @@ void GameScene::updateBulletsPos ( NetDataContainer<MovingObjectProperties> * pr
     if ( prop -> getOption().getType() == MovingObjectProperties::Bullet ) {
         qDebug() << "GameScene::updateBulletsPos:" << "Bullet was received";
     return;
+    }
+}
+
+void GameScene::updateCoordinates (MovingObjectProperties & prop) {
+    if ( prop.getTimestamp() <= consts::sendTimerInterval*1.25 ) {
+        QPointF increment = prop.getIntent().toPointF()*prop.getTimestamp()/25;
+        QPointF intentedDot = prop.getPosition();
+
+        for (int i = 0; i < 5; i++) {
+            intentedDot += increment;
+            if (map->getMap() -> isDotAvailable(intentedDot.toPoint())) {
+                propertiesMutex.lock();
+                prop.setPosition(intentedDot);
+                propertiesMutex.unlock();
+            }
+        }
     }
 }
 

@@ -22,9 +22,13 @@ TcpClient::TcpClient(
 
 TcpClient::~TcpClient() {
     setMode(Exit);
-    wait();
+    qDebug() << "TCP exit";
+    wait(1000);
+    qDebug() << "Tcp wait";
     if (socket) {
+        qDebug() << "TCP socket";
         delete socket;
+        qDebug() << "Tcp delete";
     }
 }
 

@@ -15,10 +15,11 @@ MainMenuScene::MainMenuScene( QApplication * pApp, QGraphicsView * pView ):
   if (
         (double)(size -> x())/(size -> y()) > 1.6 &&
         (double)(size -> x())/(size -> y()) < 2
-      )
+          ) {
     bg.load( "./images/bg-16:9.png" );
-  else
+  } else {
     bg.load( "./images/bg-4:3.png" );
+  }
 
   setBackgroundBrush( bg.scaled( (size -> x()) - 2, (size -> y()) - 2 ));
 
@@ -70,22 +71,27 @@ MainMenuScene::MainMenuScene( QApplication * pApp, QGraphicsView * pView ):
                     this,       SLOT( catchError( int, QString )) );
   QWidget::connect( findW,      SIGNAL( startGame( const ServerAbout & )),
                     parentView, SLOT( onConnect( const ServerAbout & )) );
+  qDebug() << "MMScene";
 }
 
 MainMenuScene::~MainMenuScene()
 {
-  delete canvas;
-
-  delete size;
+    qDebug() << "~MMscene";
   delete resume;
   delete disconnect;
   delete findBtn;
   delete optionsBtn;
   delete quitBtn;
+    delete startServer;
+
+    delete canvas;
 
   delete findW;
   delete optionsW;
   delete quitW;
+    delete errorW;
+
+    delete size;
 }
 
 void MainMenuScene::keyPressEvent ( QKeyEvent * event )
@@ -109,6 +115,7 @@ void MainMenuScene::onQuit()
   findBtn    -> deactivate();
   optionsBtn -> deactivate();
   quitBtn    -> deactivate();
+
 }
 
 void MainMenuScene::cancelQuit()
@@ -145,6 +152,6 @@ void MainMenuScene::onDisconnect()
 {
   resume     -> hide();
   disconnect -> hide();
-
+qDebug() << "onDisconect";
   static_cast<GraphicsView*>( parentView ) -> deleteGameScene();
 }

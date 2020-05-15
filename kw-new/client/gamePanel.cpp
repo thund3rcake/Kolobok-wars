@@ -5,6 +5,7 @@ GamePanel::GamePanel():
     ammoVal(100),
     secsVal(0),
     minsVal(0) {
+    qDebug() << "GamePanel";
     QLabel * hp = new QLabel("HP ");
     QLabel * ammo = new QLabel("AMMO ");
     hpValLabel = new QLabel("99");
@@ -41,7 +42,11 @@ GamePanel::GamePanel():
 }
 
 GamePanel::~GamePanel() {
+    qDebug() << "~GamePanel";
     delete font;
+    delete timerValLabel;
+    delete ammoValLabel;
+    delete hpValLabel;
     QFontDatabase::removeAllApplicationFonts();
 }
 

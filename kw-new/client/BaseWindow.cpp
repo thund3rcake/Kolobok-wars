@@ -8,6 +8,7 @@ Window::Window(
               ):
   QWidget( parent, flags )
 {
+    qDebug() << "Window";
     setStyleSheet( WindowStyle::Window );
 
     closeButton = new QToolButton;
@@ -62,9 +63,9 @@ Window::Window(
 
 Window::~Window()
 {
+    qDebug() << "~Window";
   delete closeButton;
   delete title;
-
   delete layout;
 }
 

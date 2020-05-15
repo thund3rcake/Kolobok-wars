@@ -18,13 +18,16 @@ UdpClient::UdpClient(
 
 
 UdpClient::~UdpClient() {
+    qDebug() << "udp";
     mutex.lock();
     toQuit = true;
     mutex.unlock();
-
+//    qDebug() << "udpquit";
     wait();
+//    qDebug() << "udpwait";
     if(socket) {
         delete socket;
+//        qDebug() << "udpdelete";
     }
 }
 
@@ -46,13 +49,15 @@ void UdpClient::run() {
     ownPort = socket -> localPort();
 
     mutex.lock();
-    while (!toQuit) {
-        mutex.unlock();;
-        send();
-        receive();
-        mutex.lock();
-    }
-    mutex.unlock();
+//    if (!toQuit) {
+        while (!toQuit) {
+            mutex.unlock();;
+            send();
+            receive();
+        }
+//    } else {
+//        return;
+//    }
 }
 
 

@@ -5,6 +5,7 @@
 FindWindow::FindWindow( QWidget * parent ):
   Window( parent )
 {
+    qDebug() << "FindWindow";
   setWindowTitle( "Find server" );
 
   QVBoxLayout * mainLayout = new QVBoxLayout;
@@ -31,8 +32,8 @@ FindWindow::FindWindow( QWidget * parent ):
 
 FindWindow::~FindWindow()
 {
+    qDebug() << "~FindWind";
   delete findType;
-
   delete lan;
   delete fav;
 }
@@ -66,7 +67,7 @@ QuitWindow::QuitWindow( QWidget * parent ):
   setMaximumSize( 300, 100 );
 
   QPoint wPosition = getDesktopSize();
-  wPosition += QPoint( -300, -100 );
+  wPosition += QPoint( -600, -300 );
   wPosition /= 2;
 
   move( wPosition );

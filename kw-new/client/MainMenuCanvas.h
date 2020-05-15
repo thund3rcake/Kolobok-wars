@@ -3,7 +3,7 @@
 
 
 #include<QtGui>
-#include <QCoreApplication>
+#include <QApplication>
 #include<MainMenuStyle.h>
 #include<QBoxLayout>
 #include<QWidget>
@@ -13,7 +13,7 @@ class MainMenuCanvas: public QWidget {
 
   public:
     explicit
-    MainMenuCanvas(QCoreApplication * parent, int width = 0, int height = 0);
+    MainMenuCanvas(QApplication * parent, int width = 0, int height = 0);
 
     virtual
     ~MainMenuCanvas();
@@ -27,7 +27,7 @@ class MainMenuCanvas: public QWidget {
 
 
     QVBoxLayout  * VLayout;
-    QCoreApplication * parentApp;
+    QApplication * parentApp;
 
   private slots:
       void exit();

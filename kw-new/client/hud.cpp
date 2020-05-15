@@ -22,6 +22,7 @@ HUD::HUD() :
     vLayout -> addLayout(bottomPanel);
 
     statistics -> hide();
+    qDebug() << "Hud";
 }
 
 void HUD::updateConsole(
@@ -40,7 +41,10 @@ void HUD::updConstFireTarget (const QPointF & target) {
 }
 
 HUD::~HUD() {
-    delete bottomPanel;
+    qDebug() << "~HUD";
+    delete statistics;
+    delete topHLayout;
+    delete vLayout;
 }
 
 void HUD::keyPressEvent(QKeyEvent *event) {
