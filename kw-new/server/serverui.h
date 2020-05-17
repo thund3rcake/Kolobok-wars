@@ -22,8 +22,6 @@ private slots:
     void on_stop_clicked();
     void printIP(QString);
 
-    void on_portToBroadcast_cursorPositionChanged(int arg1, int arg2);
-
 private:
     void findMaps();
     void setupTools(const QString & serverName);
