@@ -15,6 +15,7 @@ TARGET = kolobok-wars-server
 TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
+CONFIG += sanitizer sanitize_address
 
 SOURCES += \
         aibot.cpp \

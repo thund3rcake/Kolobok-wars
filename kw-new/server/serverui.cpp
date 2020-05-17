@@ -3,13 +3,18 @@
 #include <QDebug>
 #include <QDir>
 
-ServerUi::ServerUi(QWidget *parent) :
+ServerUi::ServerUi(int port, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ServerUi),
-    tools(NULL)
+    tools(NULL),
+    portForSending(port)
 {
-    setFixedSize(530, 255);
+    char sPort[128];
+    sprintf(sPort, "%d", portForSending);
+    QString qsPort(sPort);
+    setFixedSize(530, 265);
     ui->setupUi(this);
+    ui->portToBroadcast->setText(qsPort);
     findMaps();
 }
 
@@ -41,9 +46,13 @@ void ServerUi::setupTools(const QString &serverName) {
                                 ui->port->currentText().toInt(&ok, 10),
                                 (quint8)(ui->players->value()),
                                 (quint8)(ui->bots->value()),
+                                ui->portToBroadcast->text().toInt(&ok, 10),
                                 ui->console,
                                 this
                                 );
+
+        QObject::connect(tools, &ServerTools::newPlayer, this, &ServerUi::printIP);
+
         ui->console -> insertHtml( "Starting broadcast... &nbsp" );
         tools -> getBroadcastSender().start();
         ui->console -> insertHtml( "[DONE]<br />" );
@@ -71,6 +80,19 @@ void ServerUi::setupTools(const QString &serverName) {
                                "\"<br />"
                               );
         ui->console -> insertHtml( "==========================<br />" );
+
+        for (const QNetworkInterface &netInterface: QNetworkInterface::allInterfaces()) {
+            QNetworkInterface::InterfaceFlags flags = netInterface.flags();
+            if( (flags & QNetworkInterface::IsRunning) && !(flags & QNetworkInterface::IsLoopBack)){
+                for (const QNetworkAddressEntry &address: netInterface.addressEntries()) {
+                    if(address.ip().protocol() == QAbstractSocket::IPv4Protocol)
+                        ui->console -> insertHtml("Server IP: " + address.ip().toString() + "<br />");
+                }
+            }
+        }
+
+        ui->console -> insertHtml("Local domain name: " + QHostInfo::QHostInfo::localDomainName());
+
     } else {
         ui->console -> insertHtml( "<b>Server already has been started</b><br />" );
     }
@@ -95,8 +117,12 @@ void ServerUi::on_stop_clicked() {
     if (tools) {
         delete tools;
         tools = NULL;
-
         ui->console->clear();
         ui->console->insertHtml( "Server stopped.<br />" );
     }
+}
+
+void ServerUi::printIP(QString ipStr) {
+    qDebug() << "ui: " << ipStr;
+    ui->console->insertHtml("New Player: " + ipStr);
 }

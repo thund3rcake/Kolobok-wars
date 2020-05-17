@@ -314,7 +314,11 @@ void PlayerThread::run() {
     }
 
     setPeerPort(receivePeerPort());
+
     peerAddress = new QHostAddress(tcpSocket->peerAddress());
+    QHostAddress ip4Address(peerAddress->toIPv4Address());
+    //qDebug() << "Player " << id << "has IP " << ip4Address.toString();
+    emit getIP(ip4Address.toString());
 
     bool gotten = false;
     bool toQuit = false;
@@ -401,6 +405,10 @@ void PlayerThread::run() {
 
     if (incomingUdpQueue) {
         delete incomingUdpQueue;
+    }
+
+    if (peerAddress) {
+        delete peerAddress;
     }
 
     if (!toQuit) {

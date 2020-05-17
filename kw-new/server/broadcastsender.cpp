@@ -20,7 +20,10 @@ BroadcastSender::BroadcastSender(
     tcpPort( tcpPort ),
     maxPlayers( maxPlayers ),
     players( 0 ),
-    bots( bots ) {}
+    bots( bots ) {
+
+    qDebug() << "port for sending: " << (quint16)port;
+}
 
 BroadcastSender::~BroadcastSender() {
     quit = true;
@@ -89,7 +92,7 @@ void BroadcastSender::run() {
 
         generateDatagram();
 
-        if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, 27030 ) < 0)
+        if ( socket -> writeDatagram( datagram, QHostAddress::Broadcast, port) < 0)
             emit error( socket -> error(), socket -> errorString() );
 
         mutex.unlock();

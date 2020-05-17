@@ -27,6 +27,7 @@ public:
                   quint16 port,
                   quint8 maxPlayers,
                   quint8 bots,
+                  quint16 portForSending,
                   QTextEdit * console,
                   QObject * parent
                  );
@@ -51,6 +52,7 @@ private:
     quint8      maxPlayers;
     quint8      bots;
     quint8      players;
+    int         portForSending;
     QTextEdit * console;
 
     QTime       curTime;
@@ -63,6 +65,10 @@ private:
 
 private slots:
     void setNewUdpPacket();
+    void IPtoConsole(QString);
+
+signals:
+    void newPlayer(QString);
 };
 
 #endif // SERVERTOOLS_H

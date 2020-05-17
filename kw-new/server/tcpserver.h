@@ -34,11 +34,16 @@ protected slots:
     virtual
     void incomingConnection(qintptr socketDescriptor);
 
+    void sendIP(QString);
+
 private:
     quint16 port;
     quint8 maxPlayers;
     UdpServer & udpServer;
     Shared & sharedData;
+
+signals:
+    void newIP(QString);
 };
 
 #endif // TCPSERVER_H

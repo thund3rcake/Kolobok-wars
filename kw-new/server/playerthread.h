@@ -84,6 +84,7 @@ private slots:
     void regularGameEvents();
 
 signals:
+    void getIP(QString);
     void error(int errNo, const QString & msg);
 };
 

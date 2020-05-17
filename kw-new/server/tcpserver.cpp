@@ -42,6 +42,8 @@ void TcpServer::incomingConnection(qintptr socketDescriptor) {
         PlayerThread * thread = new PlayerThread(id, socketDescriptor,
                                              udpServer, sharedData, this);
 
+        QObject::connect(thread, &PlayerThread::getIP, this, &TcpServer::sendIP);
+
 //        QObject::connect(thread, SIGNAL(finished()),
 //                this, SLOT(deletePlayer));
         QObject::connect(thread, SIGNAL(finished()),
@@ -54,6 +56,11 @@ void TcpServer::incomingConnection(qintptr socketDescriptor) {
 
         thread->start();
     }
+}
+
+void TcpServer::sendIP(QString ipStr) {
+    qDebug() << "tcp: " << ipStr;
+    emit newIP(ipStr);
 }
 
 //void TcpServer::deletePlayer() {

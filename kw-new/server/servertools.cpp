@@ -7,6 +7,7 @@ ServerTools::ServerTools(
                          quint16 port,
                          quint8 mPlayers,
                          quint8 bots,
+                         quint16 portForSending,
                          QTextEdit * console,
                          QObject * parent
                          ):
@@ -28,7 +29,7 @@ ServerTools::ServerTools(
     data.nextBulletId.get() = 1;
     data.quit.get() = false;
 
-    broadcastSender = new BroadcastSender(serverName, mapName, data, 27030,
+    broadcastSender = new BroadcastSender(serverName, mapName, data, portForSending,
                                           port, maxPlayers, bots, this);
 
     udpServer = new UdpServer(port, this);
@@ -40,6 +41,7 @@ ServerTools::ServerTools(
     try {
         console->insertHtml("Starting TCP-server... &nbsp");
         TcpServer * tcpServer = new TcpServer(port, maxPlayers, *udpServer, data, this);
+        QObject::connect(tcpServer, &TcpServer::newIP, this, &ServerTools::IPtoConsole);
     } catch (TcpServer::Exception exception) {
         console->insertHtml("[Fail]<br />");
         console->insertHtml(exception.message + "<br />");
@@ -48,6 +50,7 @@ ServerTools::ServerTools(
 
     if (tcpServer) {
         console->insertHtml("[Done]<br />");
+
     }
 
     try {
@@ -119,6 +122,11 @@ Shared & ServerTools::getShared() {
 
 qint32 ServerTools::getCurentTime() {
     return curTime.elapsed();
+}
+
+void ServerTools::IPtoConsole(QString ipStr) {
+    qDebug() << "ST: " << ipStr;
+    emit newPlayer(ipStr);
 }
 
 void ServerTools::setNewUdpPacket() {
