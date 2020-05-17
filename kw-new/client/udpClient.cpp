@@ -79,6 +79,8 @@ void UdpClient::send() {
         sendProperty.setTimestamp(prevTimestamp);
 
         block.clear();
+        while (outgoing.isEmpty());
+
         sendProperty = outgoing.dequeue();
 
         request << (quint32)0;

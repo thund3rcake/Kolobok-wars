@@ -1,9 +1,10 @@
-
-
 # Defines
 DEFINES += KOLOBOK_CLIENT \
     NET_VERSION=1 \
     NET_SUBVERSION=0 # \
+
+CONFIG += sanitizer sanitize_address
+CONFIG += debug
 
 
 QT +=  network \
@@ -54,7 +55,7 @@ SOURCES += \
     MainMenuCanvas.cpp \
     kolobok-wars-client.cpp
 
-unix:!macx: LIBS += -L$$PWD/../build-common-Desktop-Debug/ -lcommon
+unix:!macx: LIBS += -L$$PWD/../common/ -lcommon
 
 INCLUDEPATH += $$PWD/../common
 DEPENDPATH += $$PWD/../common
