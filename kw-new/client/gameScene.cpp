@@ -1,6 +1,5 @@
 ﻿#include <GameScene.h>
 #include<Utils.h>
-#include<Map.h>
 #include<QDebug>
 #include<GraphicsView.h>
 
@@ -19,6 +18,7 @@ GameScene::GameScene(
     desktopSize(QSizeF (getDesktopSize().x(), getDesktopSize().y())),
     server(address),
     port(port) {
+
     map = new Map("./maps/" + mapName + "/" + mapName + ".xml");
 
     proxy -> setZValue(100);
@@ -71,7 +71,7 @@ GameScene::GameScene(
   }
   /* Draw the Map */
 
-  /* Draw the Player */
+  /* Draw the Player */ //TODO: respawn place
     mainCharacter.setPosition (
                           QPoint( desktopSize.rwidth()/2,
                                   desktopSize.rheight()/2 )
@@ -96,19 +96,12 @@ GameScene::GameScene(
     /* Motion and Animation */
     time = new QTime();
     time -> start();
-    qDebug () << "GameScene";
 }
 
 GameScene::~GameScene() {
-    qDebug() << "timer";
-    delete map;
-    qDebug() << "map";
-    delete udpClient;
-    qDebug() << "udp";
-    qDebug() << "time";
-    qDebug() << "sTimer";
+    delete timer;
     delete hud;
-    qDebug() << "Hud";
+    qDebug() << "GameScene::~GameScene(): Deleted";
 }
 
 QPointF GameScene::getSize() {
@@ -159,6 +152,7 @@ void GameScene::characterSteer() {
     mainCharacter.setIntention(v);
     
     MovingObjectProperties playerProp;
+
     playerProp.setHp(100);
     playerProp.setId(mainCharacter.getId());
     playerProp.setHead(mainCharacter.getHead());
@@ -167,16 +161,18 @@ void GameScene::characterSteer() {
     playerProp.setIntent(mainCharacter.getIntention());
     playerProp.setPosition(mainCharacter.getPosition() * 100 / scale_x_100());
     playerProp.setTimestamp(time -> elapsed() - elapsed);
-    playerProp.getWeapon().setType(Weapon::Blaster);
+    Weapon wep;
+    wep.setType(Weapon::Blaster);
     if (mouse.mousePress == true) {
-        playerProp.getWeapon().setState(Weapon::Fire);
+        wep.setState(Weapon::Fire);
     } else {
-        playerProp.getWeapon().setState(Weapon::NoFire);
+        wep.setState(Weapon::NoFire);
     }
-    playerProp.getWeapon().setTarget(QPointF(0, 0));
-    playerProp.getWeapon().setMasterId(mainCharacter.getId());
-
-    updateCoordinates(playerProp);
+    wep.setTarget(QPointF(0, 0));
+    wep.setMasterId(mainCharacter.getId());
+    playerProp.setWeapon(wep);
+//    playerProp.getWeapon().setTarget(QPointF(0, 0));
+//    playerProp.getWeapon().setMasterId(mainCharacter.getId());
     
     udpClient -> sendNewObjectProperties(playerProp);
     elapsed = time -> elapsed();
@@ -185,7 +181,7 @@ void GameScene::characterSteer() {
 
 void GameScene::updatePlayersPos(NetDataContainer<MovingObjectProperties> * container) {
     quint16 inpId = container -> getOption().getId();
-    
+
     if(inpId == mainCharacter.getId()) {
         mainCharacter.setPosition(container ->getOption().getPosition() * scale_x_100() / 100);
         topLeft = QPointF(mainCharacter.getPosition().x() - desktopSize.rwidth() / 2 + scaledPlayerSize() / 2,
@@ -220,22 +216,6 @@ void GameScene::updateBulletsPos ( NetDataContainer<MovingObjectProperties> * pr
     if ( prop -> getOption().getType() == MovingObjectProperties::Bullet ) {
         qDebug() << "GameScene::updateBulletsPos:" << "Bullet was received";
     return;
-    }
-}
-
-void GameScene::updateCoordinates (MovingObjectProperties & prop) {
-    if ( prop.getTimestamp() <= consts::sendTimerInterval*1.25 ) {
-        QPointF increment = prop.getIntent().toPointF()*prop.getTimestamp()/25;
-        QPointF intentedDot = prop.getPosition();
-
-        for (int i = 0; i < 5; i++) {
-            intentedDot += increment;
-            if (map->getMap() -> isDotAvailable(intentedDot.toPoint())) {
-                propertiesMutex.lock();
-                prop.setPosition(intentedDot);
-                propertiesMutex.unlock();
-            }
-        }
     }
 }
 

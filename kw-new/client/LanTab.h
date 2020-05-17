@@ -34,6 +34,8 @@ private:
     QTimer                    timer;
     int                       curSelectedIndex;
 
+    int port;
+
 private slots:
     void refreshStart();
     void refreshStop();

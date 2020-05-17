@@ -14,9 +14,9 @@ GraphicsView::GraphicsView( QApplication * pApp, QWidget * parent ):
   setVerticalScrollBarPolicy   ( Qt::ScrollBarAlwaysOff );
 
 
-  QGLFormat * glFormat = new QGLFormat(QGL::DoubleBuffer | QGL::SampleBuffers );
-  glFormat -> setSwapInterval(0);
-  QGLWidget * viewport = new QGLWidget( *glFormat );
+    glFormat = new QGLFormat(QGL::DoubleBuffer | QGL::SampleBuffers );
+  //glFormat -> setSwapInterval(0);
+  viewport = new QGLWidget( *glFormat );
 
   setViewport( viewport );
   setViewportUpdateMode ( QGraphicsView::FullViewportUpdate );
@@ -34,14 +34,14 @@ GraphicsView::GraphicsView( QApplication * pApp, QWidget * parent ):
            (
             QCursor(QPixmap("./images/cursorMenu.png",0,0), 0, 0 )
            );
-  qDebug() << "GraView";
 }
 
 GraphicsView::~GraphicsView()
 {
-    qDebug() << "~GraView";
-    delete gameScene;
+  delete gameScene;
     delete menuScene;
+    delete glFormat;
+    delete viewport;
 }
 
 
@@ -97,6 +97,7 @@ void GraphicsView::onError( int errNo, QString msg )
   curentScene = Menu;
 
   SignalsSwitchTo( Menu );
+  qDebug() << "no gameScene on error";
   deleteGameScene();
 }
 

@@ -4,11 +4,12 @@
 
 BroadcastReceiver::BroadcastReceiver(
                                                                                     QVector<ServerAbout> & srvs,
-                                                                                    QWidget * parent
+                                                                                    QWidget * parent,
+                                                                                    int port
                                                                                     ):
     QUdpSocket((QObject * ) parent),
     servers(srvs) {
-    if (!bind(27030, QUdpSocket::ShareAddress)) {
+    if (!bind(port, QUdpSocket::ShareAddress)) {
         throw Exception(error(), errorString());
     }
 

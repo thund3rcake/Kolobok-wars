@@ -42,6 +42,8 @@ class GraphicsView: public QGraphicsView
 
     void SignalsSwitchTo( Scene direction );
 
+    QGLFormat * glFormat;
+    QGLWidget * viewport;
     MainMenuScene           * menuScene;
     GameScene    * gameScene;
     QApplication            * parentApp;

@@ -1,10 +1,7 @@
 ﻿#include <LanTab.h>
 #include <QtGui>
-#include <QWidget>
-#include <QScrollBar>
 #include <WindowStyle.h>
-#include <QHeaderView>
-//#include <ServersTable.h>
+#include <QInputDialog>
 #include<QBoxLayout>
 #include <BroadcastReceiver.h>
 
@@ -12,7 +9,6 @@ LanTab::LanTab( QWidget * parent ):
   QWidget( parent ),
   curSelectedIndex( -1 )
 {
-    qDebug() << "LanTab";
   QVBoxLayout * lanVLayout = new QVBoxLayout;
   QHBoxLayout * lanHLayout = new QHBoxLayout;
 
@@ -64,28 +60,28 @@ void LanTab::tableInitialization()
 {
   table -> setStyleSheet( WindowStyle::SrvTableHeight );
 
-  table -> verticalScrollBar() -> setStyleSheet( WindowStyle::SrvTableScrolVertical );
-  table -> verticalScrollBar() -> setContextMenuPolicy( Qt::NoContextMenu );
+//  table -> verticalScrollBar() -> setStyleSheet( WindowStyle::SrvTableScrolVertical );
+//  table -> verticalScrollBar() -> setContextMenuPolicy( Qt::NoContextMenu );
 
   table -> setVerticalScrollBarPolicy(   Qt::ScrollBarAlwaysOn  );
   table -> setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
-  table -> header() -> setStyleSheet( WindowStyle::SrvTableHeader );
-  table -> header() -> setSectionResizeMode( QHeaderView::Fixed );
-  table -> header() -> setMaximumSize( 551, 16 );
+//  table -> header() -> setStyleSheet( WindowStyle::SrvTableHeader );
+//  table -> header() -> setResizeMode( QHeaderView::Fixed );
+//  table -> header() -> setMaximumSize( 551, 16 );
 
   table -> setColumnCount ( tableHeadLabels.count() );
   table -> setHeaderLabels( tableHeadLabels );
 
-  table -> header() -> resizeSection( 0, 540/tableHeadLabels.count() ); //240
-  table -> header() -> resizeSection( 1, 540/tableHeadLabels.count() ); //95
-  table -> header() -> resizeSection( 2, 540/tableHeadLabels.count() ); //155
-  table -> header() -> resizeSection( 3, 540/tableHeadLabels.count() ); //60
+//  table -> header() -> resizeSection( 0, 540/tableHeadLabels.count() ); //240
+//  table -> header() -> resizeSection( 1, 540/tableHeadLabels.count() ); //95
+//  table -> header() -> resizeSection( 2, 540/tableHeadLabels.count() ); //155
+//  table -> header() -> resizeSection( 3, 540/tableHeadLabels.count() ); //60
 }
+
 
 LanTab::~LanTab()
 {
-    qDebug() << "~LAntab";
   delete lanRefresh;
   delete lanConnect;
   delete table;
@@ -101,14 +97,18 @@ void LanTab::refreshStart()
               this,  SLOT( onServerSelection( QTreeWidgetItem *, int )) );
 
 
+  bool ok;
+  port = QInputDialog::getInt(this, tr("Port"), tr("Enter port"), 27030, 27030, 27040, 1, &ok);
+
   timer.start( 1000 );
 
   table -> clear();
   servers.clear();
 
+
   try
   {
-    receiver = new BroadcastReceiver( servers, this );
+    receiver = new BroadcastReceiver( servers, this, port );
   }
   catch( BroadcastReceiver::Exception exc )
   {

@@ -12,7 +12,8 @@ class BroadcastReceiver:  public QUdpSocket{
 public:
     BroadcastReceiver(
             QVector<ServerAbout> & servers,
-            QWidget * parent = 0
+            QWidget * parent = 0,
+            int port = 27030
             );
 
     class Exception

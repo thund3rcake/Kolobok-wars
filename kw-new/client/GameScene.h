@@ -44,7 +44,6 @@ public :
     }
 
     void setCharacterHeading (QVector2D & );
-    void updateCoordinates(MovingObjectProperties & prop);
 
     QPointF getSize();
     quint16 getUdpPort() {
@@ -93,9 +92,6 @@ private:
     Map * map;
     QPointF s_size;
 
-    QMutex mutex;
-    QMutex propertiesMutex;
-
     Player mainCharacter;
     QPointF topLeft;
     QSizeF desktopSize;
@@ -116,6 +112,7 @@ public slots:
     void characterSteer();
     void setOwnId(quint16 id) {
         mainCharacter.setId(id);
+        qDebug() << "MC id: " << id;
     }
 
 signals:
