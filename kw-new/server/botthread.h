@@ -12,6 +12,7 @@ class BotThread: public QThread
 public:
     BotThread(quint16 id, Shared & sharedData, QObject * parent);
 
+    ~BotThread();
     void run();
     void getProperty();
     quint16 getId();
@@ -28,30 +29,8 @@ private:
     MovingObjectProperties botProps;
     Shared & sharedData;
     QTime timer;
-    QMutex propertiesMutex;
-//    QTimer * timestampSendTimer;
+    QMutex propertiesMutex;;
     quint16 id;
 };
-
-//class botThread: public Thread {
-//    ...
-//};
-
-//void botThread::run() {
-//    ...
-
-//    while (1) {
-//        foreach (Thread * player, sharedData.playerById.get()) {    // <-- players and bots
-//            if (!(player->isFinished()) && player->getId() != id) {
-//                teamAnalyse(prop.getTeam());
-//                positionAnalyse(prop.getPosition());
-//                hpAnalyse(prop.getHp());
-//                ...
-//            }
-//            playerMovProperties = WhatTheBotMustDo(...);
-//            usleep(100);
-//        }
-//    }
-//}
 
 #endif // BOTTHREAD_H

@@ -19,7 +19,16 @@ AIBot::AIBot(Shared & sharedData, MovingObjectProperties props) {
    id = props.getId();
    patrolPoints = UtilityAlgorithms::selectPolygon(sharedData, consts::patrolEdgeMinLength);
    currentPatrolIndex = -1;
-   qDebug() << "aiBot constructor finished, state: " << state;
+   qDebug() << "aiBot constructor finished, patrol positions: " << patrolPoints;
+   qsrand(time(NULL));
+
+}
+
+AIBot::~AIBot()
+{
+    patrolPoints.clear();
+    patrolPath.clear();
+    firedBullets.clear();
 }
 
 
@@ -62,31 +71,43 @@ void AIBot::escape(MovingObjectProperties playerProps, Shared &sharedData)
 
 void AIBot::pursuit(MovingObjectProperties playerProps, Shared & sharedData)
 {
-    QVector2D intent = UtilityAlgorithms::getMoveIntent(
+    /*QVector2D intent = UtilityAlgorithms::getMoveIntent(
                 position,
                 playerProps.getPosition(),
                 sharedData,
                 consts::stride);
 
-    this->intent = intent;
+    this->intent = intent;*/
 }
 
 void AIBot::patrol(Shared &sharedData)
 {
-    if(currentPatrolIndex == -1 || position == patrolPoints.at(currentPatrolIndex)) {
+    double prob = rand() % consts::changePathProb;
+    if(prob >= consts::changePathProb - 1) {
+        patrolPoints = UtilityAlgorithms::selectPolygon(sharedData, consts::patrolEdgeMinLength);
+    }
+    bool calcPathFlag = false;
+    if(currentPatrolIndex == -1 ||
+            UtilityAlgorithms::arePointsClose(position, patrolPoints.at(currentPatrolIndex), consts::stride)) {
+        qDebug() << "patrol: switching target!";
         currentPatrolIndex += 1;
         currentPatrolIndex %= consts::patrolPointsCount;
+        calcPathFlag = true;
     }
 
     qDebug() << "Patrol: target = " << patrolPoints.at(currentPatrolIndex) << " position = " << position;
+
+    QLinkedList<QPointF> * path = new QLinkedList<QPointF>;
+
     QVector2D intent = UtilityAlgorithms::getMoveIntent(
                 position,
                 patrolPoints.at(currentPatrolIndex),
                 sharedData,
-                consts::stride);
+                consts::stride,
+                path);
+
 
     this->intent = intent;
-    //qDebug() << "Patrol: intent = " << intent << " position = " << position;
 }
 
 

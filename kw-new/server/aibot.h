@@ -13,6 +13,7 @@ public:
     // TODO: enum Role {Assault, Guardian};
 
     AIBot(Shared & sharedData, MovingObjectProperties props);
+    ~AIBot();
 
     // void setHead (QVector2D &);
     // const QVector2D & getHead ();
@@ -43,6 +44,7 @@ private:
 
     State state;
     QVector<QPointF> patrolPoints;
+    QLinkedList<QPointF> patrolPath;
     qint8 currentPatrolIndex;
     MovingObjectProperties::Team team;
     QString name;

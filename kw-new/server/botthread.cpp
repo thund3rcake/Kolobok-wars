@@ -22,6 +22,11 @@ BotThread::BotThread(quint16 id, Shared & sharedData, QObject * parent):
     qDebug() << "bot thread initialized; respawn place = " << botProps.getPosition();
 }
 
+BotThread::~BotThread()
+{
+    aiBots.clear();
+}
+
 const MovingObjectProperties & BotThread::getBotProperties() {
     QMutexLocker locker(&propertiesMutex);
     return botProps;

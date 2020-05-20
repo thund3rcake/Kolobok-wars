@@ -30,6 +30,8 @@ namespace consts
   static const quint8 patrolPointsCount = 5; // number of vertices in patrolled polygon
   static const quint8 patrolEdgeMinLength = 100;
   static const quint32 velocity = 32;
+  const quint32 botDelay = 100;
+  const quint32 changePathProb = 3000;
 }
 
 
